@@ -10,7 +10,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (company))))
+ '(package-selected-packages (quote (magit company))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -78,6 +78,14 @@
 	python-shell-completion-setup-code "from IPython.core.completerlib import module_completion"
 	python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
 	python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+  ;; 一键执行python
+  (define-key python-mode-map (kbd "<f5>") 'run-buffer-with-python3-interpreter)
+  (defun run-buffer-with-python3-interpreter ()
+	(interactive)
+	(save-buffer)
+	(shell-command (format "python3 %s" (file-name-nondirectory buffer-file-name)))
+	)
 
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
   (highlight-indentation-mode t)        ;高亮代码块
