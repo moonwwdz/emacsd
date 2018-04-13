@@ -116,3 +116,7 @@
 
 ;; 补全括号
 (electric-pair-mode t)
+
+;; golang
+(require 'go-mode)
+
