@@ -120,3 +120,8 @@
 ;; golang
 (require 'go-mode)
 
+;; windows.
+(global-set-key (kbd "M-j") 'windmove-left)
+(global-set-key (kbd "M-k") 'windmove-down)
+(global-set-key (kbd "M-i") 'windmove-up)
+(global-set-key (kbd "M-l") 'windmove-right)
