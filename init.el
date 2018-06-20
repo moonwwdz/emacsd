@@ -123,6 +123,13 @@
 ;; golang
 (require 'go-mode)
 
+
+;; windows.
+(global-set-key (kbd "M-j") 'windmove-left)
+(global-set-key (kbd "M-k") 'windmove-down)
+(global-set-key (kbd "M-i") 'windmove-up)
+(global-set-key (kbd "M-l") 'windmove-right)
+
 ;; markdown
 (autoload 'markdown-mode "markdown-mode"
   "Major mode for editing Markdown files" t)
@@ -132,3 +139,4 @@
 (autoload 'gfm-mode "markdown-mode"
   "Major mode for editing GitHub Flavored Markdown files" t)
 (add-to-list 'auto-mode-alist '("README\\.md\\'" . gfm-mode))
+
