@@ -1,0 +1,9 @@
+* 日用emacs配置
+
+该配置是学习[[https://github.com/emacs-china/Spacemacs-rocks]][21 天学习 Emacs]的产物，感觉日用也顺手，抄了些python的配置，感觉不错
+
+** 安装
+#+BEGIN_SRC sh
+  git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
+#+END_SRC
+
