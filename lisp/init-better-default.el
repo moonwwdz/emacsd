@@ -35,6 +35,8 @@
 ;; 自动加载文件在其它地方修改的内容
 (global-auto-revert-mode 1)
 
+;; 快速确认
+(fset 'yes-or-no-p 'y-or-n-p)
 ;; buffer 增强
 (require 'ibuffer)
 (setq ibuffer-saved-filter-groups
