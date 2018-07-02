@@ -26,6 +26,8 @@
 		      popwin
 		      ;; --- Major Mode ---
 		      js2-mode
+		      js2-refactor
+		      web-mode
 		      markdown-mode
 		      ;; --- Minor Mode ---
 		      nodejs-repl
