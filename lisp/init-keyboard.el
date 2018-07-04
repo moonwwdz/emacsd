@@ -27,7 +27,7 @@
 ;; key bindings
 ;; mac 右command作为ctrl键用
 (setq mac-right-command-modifier 'control)
-(setq mac-option-modifier 'alt)
+(setq mac-option-modifier 'meta)
 ;;(setq mac-command-modifier 'meta)
 (global-set-key [kp-delete] 'delete-char) ;; sets fn-delete to be right-delete
 
