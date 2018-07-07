@@ -24,6 +24,9 @@
 ;;
 (global-set-key (kbd "M-s i") 'counsel-imenu)
 
+;; 英语单词
+(global-set-key (kbd "M-s s") 'toggle-company-english-helper)
+
 ;; key bindings
 ;; mac 右command作为ctrl键用
 (setq mac-right-command-modifier 'control)
