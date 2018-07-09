@@ -7,3 +7,24 @@
   git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
 #+END_SRC
 
+** 原有快捷键
+*** Org-mode
+- C-c C-l :: 编辑链接
+
+
+** 已安装包快捷键
+
+*** [[https://github.com/pwalsh/pipenv.el][pipenv]]
+在emacs中使用pipenv虚拟环境
+| keyboard  | action            |
+|-----------+-------------------|
+| C-c C-p a | pipenv-activate   |
+| C-c C-p d | pipenv-deactivate |
+| C-c C-p s | pipenv-shell      |
+| C-c C-p o | pipenv-open       |
+| C-c C-p i | pipenv-install    |
+| C-c C-p u | pipenv-uninstall  | 
+
+
+*** [[https://emacs-china.org/t/topic/6322][英语自动补全]]
+- M-s s :: 激活/关闭   

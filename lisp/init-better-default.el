@@ -86,6 +86,7 @@
   (pretty-symbols-mode t)               ;开启 pretty-symbols-mode 将 lambda 显示成希腊字符 λ
   (set (make-local-variable 'electric-indent-mode) nil)) ;关闭自动缩进
 
+(add-hook 'python-mode-hook 'pipenv-mode)
 (add-hook 'python-mode-hook 'my-python-mode-config)
 
 ;; run-python 的时候，python shell 里显示一堆乱码

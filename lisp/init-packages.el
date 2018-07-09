@@ -24,6 +24,7 @@
 		      counsel
 		      smartparens
 		      popwin
+		      pipenv
 		      ;; --- Major Mode ---
 		      js2-mode
 		      js2-refactor
