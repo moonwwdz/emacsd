@@ -24,8 +24,17 @@
 ;;
 (global-set-key (kbd "M-s i") 'counsel-imenu)
 
-;; 英语单词
+;; 英语单词自动补全
 (global-set-key (kbd "M-s s") 'toggle-company-english-helper)
+;; Enable Cache
+(setq url-automatic-caching t)
+
+;; 有道字典翻译 Example Key binding
+(global-set-key (kbd "C-c y") 'youdao-dictionary-search-at-point)
+
+;;  打开/关闭粘贴模式
+(global-set-key (kbd "M-s p") 'moonwwdz-toggle-paste-helper)
+
 
 ;; key bindings
 ;; mac 右command作为ctrl键用

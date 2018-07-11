@@ -13,7 +13,7 @@
 (require 'init-org)
 (require 'init-keyboard)
 (require 'company-english-helper)
-
+(require 'moonwwdz-helper)
 ;; custom auto save configure 
 ;; -----------------------------------------------------------------
 

@@ -1,3 +1,5 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://moonwwdz.win/emacs-html.css" />
+
 * 日用emacs配置
 
 该配置是学习[[https://github.com/emacs-china/Spacemacs-rocks][21 天学习 Emacs]]的产物，感觉日用也顺手，抄了些python的配置，感觉不错
@@ -10,6 +12,7 @@
 ** 原有快捷键
 *** Org-mode
 - C-c C-l :: 编辑链接
+- C-c C-e h :: 生成html文件
 
 
 ** 已安装包快捷键
