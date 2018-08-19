@@ -6,3 +6,5 @@ eshell
 # ignore temp file
 auto-save-list
 url
+*#
+*.#

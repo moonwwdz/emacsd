@@ -88,6 +88,8 @@
 
 (add-hook 'python-mode-hook 'pipenv-mode)
 (add-hook 'python-mode-hook 'my-python-mode-config)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 ;; run-python 的时候，python shell 里显示一堆乱码
 (setenv "IPY_TEST_SIMPLE_PROMPT" "1")
