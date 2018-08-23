@@ -27,4 +27,9 @@
 ;;高寒当前行
 ;;(global-hl-line-mode t)
 
+;;theme
+(add-to-list 'custom-theme-load-path "~/.emacs.d/theme/")
+(setq molokai-theme-kit t)
+
+
 (provide 'init-ui)
