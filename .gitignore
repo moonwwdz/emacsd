@@ -2,6 +2,9 @@
 elpa
 recentf
 eshell
+.python-environments
+session.*
+\#*
 *~
 # ignore temp file
 auto-save-list

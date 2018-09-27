@@ -26,11 +26,13 @@
 		      popwin
 		      pipenv
 		      youdao-dictionary
+		      jedi
 		      ;; --- Major Mode ---
 		      js2-mode
 		      js2-refactor
 		      web-mode
 		      markdown-mode
+		      go-mode
 		      ;; --- Minor Mode ---
 		      nodejs-repl
 		      exec-path-from-shell
