@@ -26,7 +26,11 @@
 		      popwin
 		      pipenv
 		      youdao-dictionary
+<<<<<<< HEAD
 		      jedi
+=======
+              jedi
+>>>>>>> 4096e6145d2334f3b9fd5d130b777b78238364bb
 		      ;; --- Major Mode ---
 		      js2-mode
 		      js2-refactor
