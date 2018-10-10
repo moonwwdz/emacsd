@@ -35,6 +35,8 @@
 ;;  打开/关闭粘贴模式
 (global-set-key (kbd "M-s p") 'moonwwdz-toggle-paste-helper)
 
+;;magit
+(global-set-key (kbd "C-c g") 'magit-status)
 
 ;; key bindings
 ;; mac 右command作为ctrl键用

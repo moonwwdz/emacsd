@@ -14,6 +14,19 @@
 - C-c C-l :: 编辑链接
 - C-c C-e h :: 生成html文件
 
+*** Magit
+- C-x g :: 激活
+
+**** magit使用
+- 1,2,3,4 :: 收缩显示
+- s :: git add
+- u :: git checkout <filename>
+- c c :: 进入提交页面
+- C-c C-c :: 在提交页面正式提交
+- l l :: 显示日志
+- P :: 进入推送
+
+
 
 ** 已安装包快捷键
 
