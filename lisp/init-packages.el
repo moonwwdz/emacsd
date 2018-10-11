@@ -27,6 +27,7 @@
 		      pipenv
 		      youdao-dictionary
 		      jedi
+		      magit
 		      ;; --- Major Mode ---
 		      js2-mode
 		      js2-refactor
