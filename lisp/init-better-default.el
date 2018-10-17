@@ -35,6 +35,13 @@
 ;; 自动加载文件在其它地方修改的内容
 (global-auto-revert-mode 1)
 
+(fset 'yes-or-no-p 'y-or-n-p)
+
+;;取消提示音
+(setq 'ring-bell-function 'ignore)
+
+;;粘贴到光标位置而不是鼠标位置
+(setq 'mouse-yank-at-point t)
 ;; 快速确认
 (fset 'yes-or-no-p 'y-or-n-p)
 ;; buffer 增强
