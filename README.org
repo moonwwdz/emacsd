@@ -15,7 +15,14 @@
 - C-c C-e h :: 生成html文件
 
 *** Magit
-- C-x g :: 激活
+- C-c g :: 激活
+
+*** 操作
+
+| keyboard | action         |
+|----------+----------------|
+| C-M-f/b  | 跳转到对应括号 |
+|          |                |
 
 **** magit使用
 | keyboard | action                  |

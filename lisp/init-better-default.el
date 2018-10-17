@@ -35,15 +35,15 @@
 ;; 自动加载文件在其它地方修改的内容
 (global-auto-revert-mode 1)
 
-(fset 'yes-or-no-p 'y-or-n-p)
-
 ;;取消提示音
-(setq 'ring-bell-function 'ignore)
+(setq ring-bell-function 'ignore)
 
 ;;粘贴到光标位置而不是鼠标位置
-(setq 'mouse-yank-at-point t)
+(setq mouse-yank-at-point t)
+
 ;; 快速确认
 (fset 'yes-or-no-p 'y-or-n-p)
+
 ;; buffer 增强
 (require 'ibuffer)
 (setq ibuffer-saved-filter-groups
@@ -82,8 +82,7 @@
   (defun run-buffer-with-python3-interpreter ()
     (interactive)
     (save-buffer)
-    (shell-command (format "python3 %s" (file-name-nondirectory buffer-file-name)))
-    )
+    (shell-command (format "python3 %s" (file-name-nondirectory buffer-file-name))))
 
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
   (highlight-indentation-mode t)        ;高亮代码块
@@ -93,9 +92,12 @@
   (pretty-symbols-mode t)               ;开启 pretty-symbols-mode 将 lambda 显示成希腊字符 λ
   (set (make-local-variable 'electric-indent-mode) nil)) ;关闭自动缩进
 
-(add-hook 'python-mode-hook 'pipenv-mode)
+;; 打开python文件时自动执行
+(add-hook 'python-mode-hook 'pipenv-mode)            
 (add-hook 'python-mode-hook 'my-python-mode-config)
+(add-hook 'python-mode-hook 'jedi:install-server)   ;;自动补全
 (add-hook 'python-mode-hook 'jedi:setup)
+
 (setq jedi:complete-on-dot t)
 
 ;; run-python 的时候，python shell 里显示一堆乱码
