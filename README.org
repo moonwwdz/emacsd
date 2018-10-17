@@ -9,24 +9,25 @@
   git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
 #+END_SRC
 
-** 原有快捷键
+* 原有快捷键
 *** Org-mode
-- C-c C-l :: 编辑链接
-- C-c C-e h :: 生成html文件
+| keyboard | action         |
+|----------+----------------|
+| C-c C-l | 编辑链接|
+| C-c C-e h | 生成html文件|
 
-*** Magit
-- C-c g :: 激活
 
 *** 操作
 
 | keyboard | action         |
 |----------+----------------|
 | C-M-f/b  | 跳转到对应括号 |
-|          |                |
+
 
 **** magit使用
 | keyboard | action                  |
 |----------+-------------------------|
+| C-c g    | 激活                    |
 | 1,2,3,4  | 收缩显示                |
 | s        | git add                 |
 | u        | git checkout <filename> |
@@ -36,7 +37,13 @@
 | P        | 进入推送                |
 
 
-
+*** 编辑
+- M-% :: 替换
+- C-x r t :: 行首插入字符
+- C-x r k :: 删除插入字符
+*** 书签
+- C-x r m :: 标记书签
+- C-x r l :: 列出书签
 ** 已安装包快捷键
 
 *** [[https://github.com/pwalsh/pipenv.el][pipenv]]
@@ -53,3 +60,7 @@
 
 *** [[https://emacs-china.org/t/topic/6322][英语自动补全]]
 - M-s s :: 激活/关闭   
+
+
+
+
