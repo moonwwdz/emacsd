@@ -37,6 +37,7 @@
 
 ;;取消提示音
 (setq ring-bell-function 'ignore)
+(setq visible-bell t)
 
 ;;粘贴到光标位置而不是鼠标位置
 (setq mouse-yank-at-point t)
