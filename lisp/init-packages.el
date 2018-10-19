@@ -17,6 +17,7 @@
 (defvar my/packages '(
 		      ;; --- Auto-completion ---
 		      company
+		      company-go
 		      ;; --- Better Editor ---
 		      smooth-scrolling
 		      hungry-delete
@@ -37,6 +38,7 @@
 		      ;; --- Minor Mode ---
 		      nodejs-repl
 		      exec-path-from-shell
+		      go-eldoc
 		      ;; --- Themes ---
 		      ) "Default packages" )
 

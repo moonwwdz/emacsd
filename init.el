@@ -14,6 +14,7 @@
 (require 'init-keyboard)
 (require 'company-english-helper)
 (require 'moonwwdz-helper)
+(require 'moonwwdz-golang)
 ;; custom auto save configure 
 ;; -----------------------------------------------------------------
 
