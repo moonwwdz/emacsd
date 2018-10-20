@@ -1,15 +1,21 @@
+;;在图形界面的配置
 (when (display-graphic-p)
   ;; 关闭工具栏，tool-bar-mode 即为一个 Minor Mode
   (tool-bar-mode -1)
+  ;; 颜色配置
+  (set-background-color "#2E3436")
+  (set-foreground-color "white")
+  (set-face-foreground 'region "green")
+  (set-face-background 'region "blue")
 
   ;; 关闭文件滑动控件
   (scroll-bar-mode -1))
 
 ;; 关闭工具栏，tool-bar-mode 即为一个 Minor Mode
-;;(tool-bar-mode -1)
+(tool-bar-mode -1)
 
 ;; 关闭文件滑动控件
-;;(scroll-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; 显示行号
 (global-linum-mode 1)
