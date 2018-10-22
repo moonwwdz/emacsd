@@ -15,6 +15,7 @@
 (require 'company-english-helper)
 (require 'moonwwdz-helper)
 (require 'moonwwdz-golang)
+(require 'moonwwdz-shell)
 ;; custom auto save configure 
 ;; -----------------------------------------------------------------
 
