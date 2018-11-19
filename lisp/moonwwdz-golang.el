@@ -1,4 +1,9 @@
 ;;golang 配置
+
+;; go get github.com/rogpeppe/godef
+;; go get golang.org/x/tools/cmd/goimports
+;; go get -u github.com/nsf/gocode
+
 ;; (add-to-list 'load-path "~/.emacs.d/lisp/golang/goflymake")
 ;; (require 'go-flymake)
 ;; (add-to-list 'load-path "~/.emacs.d/lisp/golang/goflymake")
