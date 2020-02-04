@@ -18,6 +18,10 @@
 (ivy-mode 1)
 (setq ivy-use-virtual-buffers t)
 
+;; 打开新窗口后，光标自动切换到新窗口
+(require 'popwin)
+(popwin-mode t)
+
 ;; 取消自动生成备份文件
 (setq make-backup-files nil)
 
