@@ -24,11 +24,13 @@
 		      swiper
 		      counsel
 		      smartparens
+		      expand-region
 		      popwin
 		      pipenv
 		      youdao-dictionary
 		      jedi
 		      magit
+		      iedit
 		      ;; --- Major Mode ---
 		      js2-mode
 		      js2-refactor

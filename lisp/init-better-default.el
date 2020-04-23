@@ -15,7 +15,8 @@
 ;; config js2-mode for js files
 (setq auto-mode-alist
       (append
-       '(("\\.js\\'" . js2-mode))
+       '(("\\.js\\'" . js2-mode)
+	 ("\\.html\\'" . web-mode))
           auto-mode-alist))
 ;; 搜索增强
 (ivy-mode 1)
@@ -24,6 +25,10 @@
 ;; 打开新窗口后，光标自动切换到新窗口
 (require 'popwin)
 (popwin-mode t)
+
+;; 打开当前文件的driect
+(require 'dired-x)
+(setq dired-dwim-target t)
 
 ;; 取消自动生成备份文件
 (setq make-backup-files nil)
@@ -149,7 +154,8 @@
   (setq indent-tabs-mode nil))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;;增强xxx
+;;增强查找后统一编辑(跳转后查找内容不关闭)功能
+;; 抓取光标所在位置的单词
 (defun occur-dwim ()
   "Call `occur' with a sane default."
   (interactive)
