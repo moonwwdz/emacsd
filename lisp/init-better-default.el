@@ -68,6 +68,10 @@
 			(mode . ruby-mode)
 			(mode . enh-ruby-mode)
 			(mode . inf-ruby-mode)))))))
+;;设置缩进
+(setq default-tab-width 4)
+(setq-default indent-tabs-mode nil)
+(setq c-basic-offset 4)
 
 ;; python配置 f5 执行当前脚本
 (defun my-python-mode-config ()

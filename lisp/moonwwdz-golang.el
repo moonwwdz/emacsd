@@ -17,6 +17,8 @@
 (ac-config-default)
 (defun go-mode-setup ()
   (go-eldoc-setup)
+  (setq indent-tabs-mode 1)
+  (setq tab-width 4)
   (setq gofmt-command "goimports")
   (setq compile-command (format "go run %s" (file-name-nondirectory buffer-file-name)))
   ;; (setq compile-command "go build -v && go test -v && go vet")
