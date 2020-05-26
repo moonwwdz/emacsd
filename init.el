@@ -16,6 +16,8 @@
 (require 'moonwwdz-helper)
 (require 'moonwwdz-golang)
 (require 'moonwwdz-shell)
+(require 'jsonrpc)
+(require 'nox)
 
 (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
 (load-file custom-file)
