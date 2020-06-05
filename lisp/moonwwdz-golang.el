@@ -13,7 +13,7 @@
 (require 'go-eldoc)
 (require 'go-mode)
 (require 'auto-complete-config)
-;;(require 'golint)
+(require 'golint)
 (ac-config-default)
 (defun go-mode-setup ()
   (go-eldoc-setup)

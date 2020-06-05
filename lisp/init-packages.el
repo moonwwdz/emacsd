@@ -43,7 +43,9 @@
 		      nodejs-repl
 		      exec-path-from-shell
 		      go-eldoc
+                      golint
 		      ;; --- Themes ---
+                      rainbow-delimiters
 		      ) "Default packages" )
 
 (setq package-selected-packages my/packages)
