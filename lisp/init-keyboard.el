@@ -45,5 +45,10 @@
 ;;(setq mac-command-modifier 'meta)
 (global-set-key [kp-delete] 'delete-char) ;; sets fn-delete to be right-delete
 
+;; 选中光标所在字符串（可扩充到整个buffer）
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;; 多行选中编辑
+(global-set-key (kbd "M-s e") 'iedit-mode)
 
 (provide 'init-keyboard)

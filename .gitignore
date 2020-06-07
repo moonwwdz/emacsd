@@ -1,5 +1,6 @@
 
 .python-environments
+transient
 elpa
 recentf
 eshell

@@ -15,7 +15,7 @@
 (tool-bar-mode -1)
 
 ;; 关闭文件滑动控件
-(scroll-bar-mode -1)
+;;(scroll-bar-mode -1)
 
 ;; 显示行号
 (global-linum-mode 1)
@@ -23,7 +23,8 @@
 (setq linum-format "%2d ")
 ;; 更改光标的样式（不能生效，解决方案见第二集）
 (setq cursor-type 'bar)
-
+;; 括号颜色
+(setq show-paren-style 'expression)
 ;; 关闭启动帮助画面
 (setq inhibit-splash-screen 1)
 
@@ -37,5 +38,7 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/theme/")
 (setq molokai-theme-kit t)
 
+(require 'rainbow-delimiters)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 (provide 'init-ui)

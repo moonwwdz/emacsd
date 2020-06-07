@@ -1,4 +1,9 @@
 ;;golang 配置
+
+;; go get github.com/rogpeppe/godef
+;; go get golang.org/x/tools/cmd/goimports
+;; go get -u github.com/nsf/gocode
+
 ;; (add-to-list 'load-path "~/.emacs.d/lisp/golang/goflymake")
 ;; (require 'go-flymake)
 ;; (add-to-list 'load-path "~/.emacs.d/lisp/golang/goflymake")
@@ -8,10 +13,12 @@
 (require 'go-eldoc)
 (require 'go-mode)
 (require 'auto-complete-config)
-;;(require 'golint)
+(require 'golint)
 (ac-config-default)
 (defun go-mode-setup ()
   (go-eldoc-setup)
+  (setq indent-tabs-mode 1)
+  (setq tab-width 4)
   (setq gofmt-command "goimports")
   (setq compile-command (format "go run %s" (file-name-nondirectory buffer-file-name)))
   ;; (setq compile-command "go build -v && go test -v && go vet")
