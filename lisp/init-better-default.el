@@ -1,3 +1,6 @@
+;;
+(setq default-tab-width 4)
+
 ;; 全局激活自动补全
 (global-company-mode 1)
 
