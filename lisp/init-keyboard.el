@@ -31,6 +31,8 @@
 
 ;; 有道字典翻译 Example Key binding
 (global-set-key (kbd "C-c y") 'youdao-dictionary-search-at-point)
+;; Mac 自带字典
+(global-set-key (kbd "C-c d") 'osx-dictionary-search-word-at-point)
 
 ;;  打开/关闭粘贴模式
 (global-set-key (kbd "M-s p") 'moonwwdz-toggle-paste-helper)

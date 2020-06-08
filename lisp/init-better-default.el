@@ -7,6 +7,7 @@
 
 ;; smartparens与hungry-delete冲突解决
 (defadvice hungry-delete-backward (before sp-delete-pair-advice activate) (save-match-data (sp-delete-pair (ad-get-arg 0))))
+(electric-pair-mode 1)
 
 ;; 补全括号、引号
 (require 'smartparens-config)
