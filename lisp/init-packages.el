@@ -30,6 +30,7 @@
 		      popwin
 		      pipenv
 		      youdao-dictionary
+                      osx-dictionary
 		      jedi
 		      magit
 		      iedit
