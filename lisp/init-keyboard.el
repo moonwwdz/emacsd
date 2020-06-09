@@ -42,7 +42,8 @@
 ;; mac 右command作为ctrl键用
 (setq mac-right-command-modifier 'control)
 (setq mac-option-modifier 'meta)
-;;(setq mac-command-modifier 'meta)
+(setq mac-command-modifier 'meta)
+(setq mac-right-command-modifier 'meta)
 (global-set-key [kp-delete] 'delete-char) ;; sets fn-delete to be right-delete
 
 ;; 选中光标所在字符串（可扩充到整个buffer）
