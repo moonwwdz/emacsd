@@ -18,8 +18,7 @@
 		      ;; --- Auto-completion ---
 		      company
 		      company-go
-                      posframe
-                      
+                      posframe        
 		      ;; --- Better Editor ---
 		      smooth-scrolling
 		      hungry-delete
@@ -34,6 +33,8 @@
 		      jedi
 		      magit
 		      iedit
+                      pyim
+                      pyim-basedict
 		      ;; --- Major Mode ---
 		      js2-mode
 		      js2-refactor
@@ -46,7 +47,7 @@
 		      go-eldoc
                       golint
 		      ;; --- Themes ---
-                      rainbow-delimiters
+              rainbow-delimiters
 		      ) "Default packages" )
 
 (setq package-selected-packages my/packages)

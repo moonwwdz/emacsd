@@ -55,4 +55,9 @@
 ;; 多行选中编辑
 (global-set-key (kbd "M-s e") 'iedit-mode)
 
+;; 切换输入法
+(global-set-key (kbd "C-\\") 'toggle-input-method)
+
+;;
+(global-unset-key (kbd "C-SPC"))
 (provide 'init-keyboard)

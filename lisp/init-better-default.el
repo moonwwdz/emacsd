@@ -1,6 +1,13 @@
 ;;
 (setq default-tab-width 4)
 
+;;输入法
+(require 'pyim)
+(require 'pyim-basedict)
+(pyim-basedict-enable)
+(setq default-input-method "pyim")
+(setq pyim-default-scheme 'microsoft-shuangpin)
+
 ;; 全局激活自动补全
 (global-company-mode 1)
 
@@ -60,6 +67,15 @@
 
 ;; 快速确认
 (fset 'yes-or-no-p 'y-or-n-p)
+
+;; 快捷补全
+(abbrev-mode t)
+(define-abbrev-table 'global-abbrev-table '(
+                                            ;; moonwwdz
+                                            ("5mo" "moonwwdz")
+                                            ;; other
+                                            ;;
+                                            ))
 
 ;; buffer 增强
 (require 'ibuffer)
