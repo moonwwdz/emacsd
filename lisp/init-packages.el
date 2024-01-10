@@ -16,9 +16,9 @@
 ;; Add Packages
 (defvar my/packages '(
 		      ;; --- Auto-completion ---
-		      company
-		      company-go
-                      posframe        
+		      ;;company
+		      ;;company-go
+                      ;;posframe
 		      ;; --- Better Editor ---
 		      smooth-scrolling
 		      hungry-delete
@@ -30,7 +30,7 @@
 		      pipenv
 		      youdao-dictionary
                       osx-dictionary
-		      jedi
+		      ;;jedi
 		      magit
 		      iedit
                       pyim
@@ -47,7 +47,7 @@
 		      go-eldoc
                       golint
 		      ;; --- Themes ---
-              rainbow-delimiters
+                      rainbow-delimiters
 		      ) "Default packages" )
 
 (setq package-selected-packages my/packages)
@@ -64,9 +64,19 @@
     (when (not (package-installed-p pkg))
       (package-install pkg))))
 
+;; github package include
+(add-to-list 'load-path "~/.emacs.d/git-package/lsp-bridge")
+
+(require 'yasnippet)
+(yas-global-mode 1)
+
+(require 'lsp-bridge)
+(global-lsp-bridge-mode)
+
 ;; Find Executable Path on OS X
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
+
 
 
 (dolist (hook (list

@@ -9,7 +9,7 @@
 (setq pyim-default-scheme 'microsoft-shuangpin)
 
 ;; 全局激活自动补全
-(global-company-mode 1)
+;;(global-company-mode 1)
 
 ;; 快速删除多个空格
 (require 'hungry-delete)
@@ -132,10 +132,10 @@
 ;; 打开python文件时自动执行
 (add-hook 'python-mode-hook 'pipenv-mode)            
 (add-hook 'python-mode-hook 'my-python-mode-config)
-(add-hook 'python-mode-hook 'jedi:install-server)   ;;自动补全
-(add-hook 'python-mode-hook 'jedi:setup)
+;;(add-hook 'python-mode-hook 'jedi:install-server)   ;;自动补全
+;;(add-hook 'python-mode-hook 'jedi:setup)
 
-(setq jedi:complete-on-dot t)
+;;(setq jedi:complete-on-dot t)
 
 ;; run-python 的时候，python shell 里显示一堆乱码
 (setenv "IPY_TEST_SIMPLE_PROMPT" "1")
