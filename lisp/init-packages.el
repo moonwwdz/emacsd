@@ -16,9 +16,9 @@
 ;; Add Packages
 (defvar my/packages '(
 		      ;; --- Auto-completion ---
-		      ;;company
+		      company
 		      ;;company-go
-                      ;;posframe
+                      posframe
 		      ;; --- Better Editor ---
 		      smooth-scrolling
 		      hungry-delete
@@ -63,15 +63,6 @@
   (dolist (pkg my/packages)
     (when (not (package-installed-p pkg))
       (package-install pkg))))
-
-;; github package include
-(add-to-list 'load-path "~/.emacs.d/git-package/lsp-bridge")
-
-(require 'yasnippet)
-(yas-global-mode 1)
-
-(require 'lsp-bridge)
-(global-lsp-bridge-mode)
 
 ;; Find Executable Path on OS X
 (when (memq window-system '(mac ns))

@@ -1,3 +1,9 @@
 [submodule "git-package/lsp-bridge"]
 	path = git-package/lsp-bridge
 	url = https://github.com/manateelazycat/lsp-bridge.git
+[submodule "git-package/company-english-helper"]
+	path = git-package/company-english-helper
+	url = https://github.com/manateelazycat/company-english-helper.git
+[submodule "git-package/emacs-rime"]
+	path = git-package/emacs-rime
+	url = https://github.com/DogLooksGood/emacs-rime

@@ -1,16 +1,6 @@
 ;;
 (setq default-tab-width 4)
 
-;;输入法
-(require 'pyim)
-(require 'pyim-basedict)
-(pyim-basedict-enable)
-(setq default-input-method "pyim")
-(setq pyim-default-scheme 'microsoft-shuangpin)
-
-;; 全局激活自动补全
-;;(global-company-mode 1)
-
 ;; 快速删除多个空格
 (require 'hungry-delete)
 (global-hungry-delete-mode)
