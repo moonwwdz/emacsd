@@ -10,7 +10,7 @@
 #+END_SRC
 
 * 原有快捷键
-*** Org-mode
+*** [todo] Org-mode
 | keyboard  | action       |
 |-----------+--------------|
 | C-c C-l   | 编辑链接     |
