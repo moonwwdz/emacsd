@@ -1,4 +1,6 @@
 ;; 自动补全
+;;(if (display-graphic-p)
+;;    )
 (add-to-list 'load-path "~/.emacs.d/git-package/lsp-bridge")
 ;; 全局激活自动补全
 (require 'yasnippet)
@@ -16,11 +18,12 @@
 (require 'rime)
 (setq rime-user-data-dir "~/.config/ibus/rime")
 
-(setq rime-posframe-properties
-      (list :background-color "#333333"
-            :foreground-color "#dcdccc"
-            :font "WenQuanYi Micro Hei Mono-14"
-            :internal-border-width 10))
+;;(setq rime-posframe-properties
+;;      (list :background-color "#333333"
+;;            :foreground-color "#dcdccc"
+;;            :font "WenQuanYi Micro Hei Mono-14"
+;;            :internal-border-width 10))
+(require 'posframe)
 (setq default-input-method "rime"
       rime-show-candidate 'posframe)
 

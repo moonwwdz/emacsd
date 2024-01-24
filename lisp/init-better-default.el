@@ -112,11 +112,11 @@
     (shell-command (format "python3 %s" (file-name-nondirectory buffer-file-name))))
 
   (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
-  (highlight-indentation-mode t)        ;高亮代码块
+  ;;(highlight-indentation-mode t)        ;高亮代码块
   (hs-minor-mode t)                     ;开启 hs-minor-mode 以支持代码折叠
   (auto-fill-mode 0)                    ;关闭 auto-fill-mode，拒绝自动折行
   ;;(whitespace-mode t)                   ;开启 whitespace-mode 对制表符和行为空格高亮
-  (pretty-symbols-mode t)               ;开启 pretty-symbols-mode 将 lambda 显示成希腊字符 λ
+  ;;(pretty-symbols-mode t)               ;开启 pretty-symbols-mode 将 lambda 显示成希腊字符 λ
   (set (make-local-variable 'electric-indent-mode) nil)) ;关闭自动缩进
 
 ;; 打开python文件时自动执行
