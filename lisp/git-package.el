@@ -1,7 +1,12 @@
 ;; 自动补全
-;;(if (display-graphic-p)
-;;    )
+
+;; 终端显示补全
+(unless (display-graphic-p)
+  (add-to-list 'load-path "~/.emacs.d/git-package/popon")
+  (add-to-list 'load-path "~/.emacs.d/git-package/acm-terminal"))
+
 (add-to-list 'load-path "~/.emacs.d/git-package/lsp-bridge")
+
 ;; 全局激活自动补全
 (require 'yasnippet)
 (yas-global-mode 1)
@@ -9,6 +14,9 @@
 (require 'lsp-bridge)
 (global-lsp-bridge-mode)
 
+(unless (display-graphic-p)
+  (with-eval-after-load 'acm
+    (require 'acm-terminal)))
 
 ;; 英语提示
 (add-to-list 'load-path "~/.emacs.d/git-package/company-english-helper")

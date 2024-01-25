@@ -34,8 +34,7 @@
 ;; 取消自动生成备份文件
 (setq make-backup-files nil)
 
-(require 'org)
-(setq org-src-fontify-natively t)
+
 
 ;; 打开最近文件列表
 (require 'recentf)

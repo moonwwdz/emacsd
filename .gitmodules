@@ -7,3 +7,9 @@
 [submodule "git-package/emacs-rime"]
 	path = git-package/emacs-rime
 	url = https://github.com/DogLooksGood/emacs-rime
+[submodule "git-package/acm-terminal"]
+	path = git-package/acm-terminal
+	url = https://github.com/twlz0ne/acm-terminal.git
+[submodule "git-package/popon"]
+	path = git-package/popon
+	url = https://codeberg.org/akib/emacs-popon.git
