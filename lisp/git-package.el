@@ -35,5 +35,8 @@
 (setq default-input-method "rime"
       rime-show-candidate 'posframe)
 
+;; 显示UI美化
+(add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")
+(load-theme 'modus-vivendi)
 
 (provide 'git-package)

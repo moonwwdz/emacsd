@@ -46,8 +46,8 @@
                  "%b"))))
 
 ;;theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/theme/")
-(setq molokai-theme-kit t)
+;;(add-to-list 'custom-theme-load-path "~/.emacs.d/theme/")
+;;(setq molokai-theme-kit t)
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)

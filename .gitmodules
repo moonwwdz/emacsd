@@ -13,3 +13,6 @@
 [submodule "git-package/popon"]
 	path = git-package/popon
 	url = https://codeberg.org/akib/emacs-popon.git
+[submodule "git-package/modus-themes"]
+	path = git-package/modus-themes
+	url = https://gitlab.com/protesilaos/modus-themes.git

@@ -15,3 +15,6 @@ url
 *.#
 ac-comphist.dat
 games
+bookmarks
+eln-cache
+request

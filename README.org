@@ -9,11 +9,12 @@
   git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
 #+END_SRC
 
-* 原有快捷键
+** 原有快捷键
 *** [todo] Org-mode
 | keyboard  | action       |
 |-----------+--------------|
 | C-c C-l   | 编辑链接     |
+| C-c c     | Capture      |
 | C-c C-e h | 生成html文件 |
 
 
@@ -39,13 +40,11 @@
 | C-c C-c  | 在提交页面正式提交      |
 | l l      | 显示日志                |
 | P        | 进入推送                |
-
-
 *** 编辑
 - M-% :: 替换
 - C-x r t :: 行首插入字符
 - C-x r k :: 删除插入字符
-
+  
 *** 书签
 - C-x r m :: 标记书签
 - C-x r l :: 列出书签
