@@ -22,4 +22,21 @@
 
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 
+;; Make verbatim with highlight text background.
+(add-to-list 'org-emphasis-alist
+             '("=" (:background "#f39139")))
+
+(add-to-list 'org-emphasis-alist
+             '("/" (:foreground "#007947")))
+
+;; Make deletion(obsolote) text foreground with dark gray.
+(add-to-list 'org-emphasis-alist
+           '("+" (:foreground "dark gray"
+                  :strike-through t)))
+;; Make code style around with box.
+(add-to-list 'org-emphasis-alist
+           '("~" (:box (:line-width 1
+                        :color "grey75"
+                        :style released-button))))
+
 (provide 'init-org)

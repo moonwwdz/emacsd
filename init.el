@@ -7,7 +7,6 @@
 ;; Package Management
 ;; -----------------------------------------------------------------
 (require 'init-packages)
-(require 'git-package)
 (require 'init-ui)
 (require 'init-better-default)
 (require 'init-org)
@@ -17,6 +16,7 @@
 ;;(require 'moonwwdz-golang)
 (require 'moonwwdz-shell)
 (require 'jsonrpc)
+(require 'git-package)
 
 (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
 (load-file custom-file)

@@ -14,6 +14,7 @@
 (require 'lsp-bridge)
 (global-lsp-bridge-mode)
 
+;; 终端使用lsp_bridge
 (unless (display-graphic-p)
   (with-eval-after-load 'acm
     (require 'acm-terminal)))
@@ -37,6 +38,7 @@
 
 ;; 显示UI美化
 (add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")
-(load-theme 'modus-vivendi)
+;;(load-theme 'modus-vivendi)
+(load-theme 'modus-operandi)
 
 (provide 'git-package)

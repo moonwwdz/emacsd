@@ -44,6 +44,8 @@
       '((:eval (if (buffer-file-name)
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
+;;全屏显示(不生效)
+;;(add-to-list 'default-frame-alist '(fullscreen . maximizd))
 
 ;;theme
 ;;(add-to-list 'custom-theme-load-path "~/.emacs.d/theme/")
