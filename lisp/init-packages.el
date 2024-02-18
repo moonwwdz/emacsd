@@ -35,6 +35,7 @@
 		      iedit
                       pyim
                       pyim-basedict
+                      ox-hugo
 		      ;; --- Major Mode ---
 		      js2-mode
 		      js2-refactor

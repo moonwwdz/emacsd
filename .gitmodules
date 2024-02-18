@@ -16,3 +16,6 @@
 [submodule "git-package/modus-themes"]
 	path = git-package/modus-themes
 	url = https://gitlab.com/protesilaos/modus-themes.git
+[submodule "git-package/ox-hugo"]
+	path = git-package/ox-hugo
+	url = https://github.com/kaushalmodi/ox-hugo.git

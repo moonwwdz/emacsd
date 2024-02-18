@@ -41,4 +41,13 @@
 ;;(load-theme 'modus-vivendi)
 (load-theme 'modus-operandi)
 
+;; hugo
+(add-to-list 'load-path "~/.emacs.d/git-package/ox-hugo")
+(require 'ox-hugo)
+
+;; eaf
+;;(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+;;(require 'eaf)
+;;(require 'eaf-browser)
+;;(require 'eaf-org-previewer)
 (provide 'git-package)
