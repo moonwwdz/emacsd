@@ -6,7 +6,11 @@
 
 ** 安装
 #+BEGIN_SRC sh
+  pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz
   git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
+  cd ~/.emacs.d
+  git submodule init
+  git submodule update
 #+END_SRC
 
 ** 原有快捷键
