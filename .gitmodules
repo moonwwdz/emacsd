@@ -19,3 +19,6 @@
 [submodule "git-package/ox-hugo"]
 	path = git-package/ox-hugo
 	url = https://github.com/kaushalmodi/ox-hugo.git
+[submodule "git-package/wraplish"]
+	path = git-package/wraplish
+	url = https://github.com/manateelazycat/wraplish.git

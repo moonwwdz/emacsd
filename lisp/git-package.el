@@ -41,6 +41,12 @@
 ;;(load-theme 'modus-vivendi)
 (load-theme 'modus-operandi)
 
+;; 英文空格
+(add-to-list 'load-path "~/.emacs.d/git-package/wraplish")
+(require 'wraplish)
+(dolist (hook (list 'markdown-mode-hook 'org-mode-hook))
+  (add-hook hook #'(lambda () (wraplish-mode 1))))
+
 ;; hugo
 (add-to-list 'load-path "~/.emacs.d/git-package/ox-hugo")
 (require 'ox-hugo)
