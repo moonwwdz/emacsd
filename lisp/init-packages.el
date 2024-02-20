@@ -49,6 +49,10 @@
                       golint
 		      ;; --- Themes ---
                       rainbow-delimiters
+                      ;; --- org-roam
+                      emacsql
+                      emacsql-sqlite
+                      magit-section
 		      ) "Default packages" )
 
 (setq package-selected-packages my/packages)

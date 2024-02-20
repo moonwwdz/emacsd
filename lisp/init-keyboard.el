@@ -59,6 +59,14 @@
 ;; 切换输入法
 (global-set-key (kbd "C-\\") 'toggle-input-method)
 
+;; org-roam
+(global-set-key (kbd "C-c n i") 'org-roam-node-insert)
+(global-set-key (kbd "C-c n f") 'org-roam-node-find)
+(global-set-key (kbd "C-c n l") 'org-roam-buffer-toggle)
+(global-set-key (kbd "C-c n u") 'org-roam-ui-mode)
+(global-set-key (kbd "C-c n c") 'org-roam-capture)
+(global-set-key (kbd "C-c n d") 'org-roam-dailies-map)
+
 ;;
 (global-unset-key (kbd "C-SPC"))
 (provide 'init-keyboard)

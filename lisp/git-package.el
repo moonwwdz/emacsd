@@ -13,6 +13,9 @@
 
 (require 'lsp-bridge)
 (global-lsp-bridge-mode)
+;; org 中对yasnippet输入两个字符再补全 
+(with-eval-after-load 'org
+  (setq acm-backend-yas-candidate-min-length 2))
 
 ;; 终端使用lsp_bridge
 (unless (display-graphic-p)
@@ -38,8 +41,8 @@
 
 ;; 显示UI美化
 (add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")
-;;(load-theme 'modus-vivendi)
-(load-theme 'modus-operandi)
+(load-theme 'modus-vivendi)
+;;(load-theme 'modus-operandi)
 
 ;; 英文空格
 (add-to-list 'load-path "~/.emacs.d/git-package/wraplish")
@@ -50,6 +53,14 @@
 ;; hugo
 (add-to-list 'load-path "~/.emacs.d/git-package/ox-hugo")
 (require 'ox-hugo)
+
+;; org-roam
+(add-to-list 'load-path "~/.emacs.d/git-package/org-roam")
+(require 'org-roam)
+(setq org-roam-directory (getenv "ORG_ROAM"))
+(setq org-roam-db-location (concat org-roam-directory "/db"))
+(setq find-file-visit-truename t)
+(org-roam-db-autosync-mode)
 
 ;; eaf
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
