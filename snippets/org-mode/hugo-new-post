@@ -6,7 +6,7 @@
 
 ** TODO ${1:title}                                   :${2:tag}:    
 :PROPERTIES:                                                                     
-:EXPORT_FILE_NAME: ${3:`(format-time-string "%Y-%m-%d-")`}                       
+:EXPORT_FILE_NAME: ${3:`(format-time-string "%Y-%m-%d-")`}${4}                       
 :EXPORT_DATE: `(format-time-string "%Y-%m-%d")`
 :EXPORT_HUGO_CUSTOM_FRONT_MATTER: :toc true                                      
 :EXPORT_HUGO_BUNDLE: `(format-time-string "%Y")`                                                        

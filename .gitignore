@@ -1,4 +1,4 @@
-
+.org-id-locations
 .python-environments
 transient
 elpa
@@ -18,3 +18,4 @@ games
 bookmarks
 eln-cache
 request
+eww-bookmarks
