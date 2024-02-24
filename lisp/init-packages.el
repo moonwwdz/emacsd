@@ -73,23 +73,6 @@
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 
-
-
-(dolist (hook (list
-               'js-mode-hook
-               'rust-mode-hook
-               'python-mode-hook
-               'ruby-mode-hook
-               'java-mode-hook
-               'sh-mode-hook
-               'php-mode-hook
-               'c-mode-common-hook
-               'c-mode-hook
-               'c++-mode-hook
-               'haskell-mode-hook
-               ))
-    (add-hook hook '(lambda () (nox-ensure))))
-
 ;; 文件末尾
 (provide 'init-packages)
 
