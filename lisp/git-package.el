@@ -58,7 +58,6 @@
 (add-to-list 'load-path "~/.emacs.d/git-package/org-roam")
 (require 'org-roam)
 (setq org-roam-directory (getenv "ORG_ROAM"))
-(setq org-roam-db-location (concat org-roam-directory "/db"))
 (setq find-file-visit-truename t)
 ;; 自动构建数据库，数据库不需要同笔记一起同步
 (org-roam-db-autosync-mode)
