@@ -47,7 +47,7 @@
 ;; 英文空格
 (add-to-list 'load-path "~/.emacs.d/git-package/wraplish")
 (require 'wraplish)
-(dolist (hook (list 'markdown-mode-hook 'org-mode-hook))
+(dolist (hook (list 'markdown-mode-hook))
   (add-hook hook #'(lambda () (wraplish-mode 1))))
 
 ;; hugo
