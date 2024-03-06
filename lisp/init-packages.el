@@ -58,8 +58,8 @@
 (setq package-selected-packages my/packages)
 
 (defun my/packages-installed-p ()
-  (loop for pkg in my/packages
-	when (not (package-installed-p pkg)) do (return nil)
+  (cl-loop for pkg in my/packages
+	when (not (package-installed-p pkg)) do (cl-return nil)
 	finally (return t)))
 
 (unless (my/packages-installed-p)
