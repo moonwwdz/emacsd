@@ -1,6 +1,9 @@
 ;;
 (setq default-tab-width 4)
-
+(save-place-mode 1)
+(set-frame-font "LXGW WenKai Mono Screen 14" nil t)
+(set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120)
+(set-frame-size nil 100 30)
 ;; 快速删除多个空格
 (require 'hungry-delete)
 (global-hungry-delete-mode)
@@ -56,15 +59,6 @@
 
 ;; 快速确认
 (fset 'yes-or-no-p 'y-or-n-p)
-
-;; 快捷补全
-(abbrev-mode t)
-(define-abbrev-table 'global-abbrev-table '(
-                                            ;; moonwwdz
-                                            ("5mo" "moonwwdz")
-                                            ;; other
-                                            ;;
-                                            ))
 
 ;; buffer 增强
 (require 'ibuffer)

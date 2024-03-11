@@ -41,8 +41,8 @@
 
 ;; 显示UI美化
 (add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")
-(load-theme 'modus-vivendi)
-;;(load-theme 'modus-operandi)
+;;(load-theme 'modus-vivendi)
+(load-theme 'modus-operandi)
 
 ;; 英文空格
 (add-to-list 'load-path "~/.emacs.d/git-package/wraplish")
@@ -61,6 +61,11 @@
 (setq find-file-visit-truename t)
 ;; 自动构建数据库，数据库不需要同笔记一起同步
 (org-roam-db-autosync-mode)
+
+;; nov
+(add-to-list 'load-path "~/.emacs.d/git-package/nov")
+(require 'nov)
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 ;; eaf
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")

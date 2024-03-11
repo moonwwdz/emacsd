@@ -10,5 +10,17 @@
 	  (setq smartparens-mode t)
 	  (setq electric-indent-mode t)
 	  (message "Paste mode has disable"))))
+;;
+(defun append-work-journal()
+  (interactive)
+  (let* ((the-buffer (find-file-noselect "~/Documents/emacsNotes/org/work-journal.org")))
+    (set-buffer the-buffer)
+    (goto-char (point-max))))
+
+(defun update-work-journal()
+  (interactive)
+  (set-buffer (current-buffer)))
+
+
 
 (provide 'moonwwdz-helper)

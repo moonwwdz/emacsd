@@ -9,9 +9,16 @@
 (require 'org-capture)
 
 ;;工作日志
+
 (add-to-list 'org-capture-templates
              '("w" "Work Journal" entry (file+datetree "~/Documents/emacsNotes/org/work-journal.org")
                "* %U - %^{heading}\n  %?"))
+(add-to-list 'org-capture-templates
+             '("a" "Append Work Journal" plain (function append-work-journal)
+             "***** %U - %^{heading}\n %?"))
+(add-to-list 'org-capture-templates
+             '("u" "Update Work Journal" plain (function update-work-journal)
+               "***** %U - %^{heading}\n %?"))
 ;;日记
 (add-to-list 'org-capture-templates
              '("d" "Daily" entry (file+weektree "~/Documents/emacsNotes/org/daily.org")

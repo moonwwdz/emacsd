@@ -25,3 +25,6 @@
 [submodule "git-package/org-roam"]
 	path = git-package/org-roam
 	url = https://github.com/org-roam/org-roam.git
+[submodule "git-package/nov"]
+	path = git-package/nov
+	url = https://depp.brause.cc/nov.el.git
