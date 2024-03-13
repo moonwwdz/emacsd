@@ -22,5 +22,19 @@
   (set-buffer (current-buffer)))
 
 
+(defun moonwwdz-org-insert-custom-headlines ()
+(interactive)
+  (save-excursion
+    (let ((headline-text (nth 4 (org-heading-components)))
+          (custom-text '("首次学习" "隔天的复习" "三天的复习" "七天的复习" "半个月的复习" "一个月的复习" "三个月的复习" "六个月的复习"))
+          (memory-curve-days '(0 1 4 11 26 56 146 266)))
+      (org-metaright)
+      (org-end-of-line)
+      (dotimes (i 8)
+        (org-insert-heading-respect-content)
+        (setq timestamp (format-time-string "<%Y-%m-%d %a 21:00>" (time-add (current-time) (* (nth i memory-curve-days) 86400))))
+        (insert (format "TODO  %s-%s %s"  (nth i custom-text) headline-text timestamp)))))
+  (org-metaleft))
+
 
 (provide 'moonwwdz-helper)
