@@ -57,15 +57,15 @@
 ;; org-roam
 (add-to-list 'load-path "~/.emacs.d/git-package/org-roam")
 (require 'org-roam)
-(setq org-roam-directory (getenv "ORG_ROAM"))
+(setq org-roam-directory "~/Documents/orgRoam")
 (setq find-file-visit-truename t)
 ;; 自动构建数据库，数据库不需要同笔记一起同步
 (org-roam-db-autosync-mode)
 
 ;; nov
-(add-to-list 'load-path "~/.emacs.d/git-package/nov")
-(require 'nov)
-(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+;;(add-to-list 'load-path "~/.emacs.d/git-package/nov")
+;;(require 'nov)
+;;(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 ;; eaf
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
