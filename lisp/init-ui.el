@@ -8,6 +8,8 @@
   (set-face-foreground 'region "green")
   (set-face-background 'region "blue")
 
+  ;; 关闭滚动条
+  (set-scroll-bar-mode nil)
   ;; 关闭文件滑动控件
   (scroll-bar-mode -1))
 

@@ -35,7 +35,7 @@
 		("r" "reference" plain "%?" :target (file+head "<%Y%m%d%H>-${slug}.org" "#+STARTUP: content\n#+title: {$title}\n%filetags: reference \n\n -tag ::") :unarrowed t)))
 
 ;; 设置默认 Org Agenda 文件目录
-(setq org-agenda-files '("~/Documents/emacsNotes/agenda"))
+(setq org-agenda-files '("~/Documents/emacsNotes/agenda/work.org" "~/Documents/emacsNotes/agenda/learn.org" "~/Documents/emacsNotes/agenda/life.org"))
 
 (add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
 
@@ -55,5 +55,13 @@
            '("~" (:box (:line-width 1
                         :color "grey75"
                         :style released-button))))
+
+;; 自动计算完成状态
+(defun org-summary-todo (n-done n-not-done)
+  "Switch entry to DONE when all subentries are done, to TODO otherwise."
+    (let (org-log-done org-log-states)   ; turn off logging
+      (org-todo (if (= n-not-done 0) "DONE" "TODO"))))
+
+(add-hook 'org-after-todo-statistics-hook 'org-summary-todo)
 
 (provide 'init-org)
