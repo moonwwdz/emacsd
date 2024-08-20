@@ -62,6 +62,11 @@
 ;; 自动构建数据库，数据库不需要同笔记一起同步
 (org-roam-db-autosync-mode)
 
+;; evil 模式
+(add-to-list 'load-path "~/.emacs.d/git-package/evil")
+(require 'evil)
+(evil-mode 1)
+
 ;; nov
 ;;(add-to-list 'load-path "~/.emacs.d/git-package/nov")
 ;;(require 'nov)

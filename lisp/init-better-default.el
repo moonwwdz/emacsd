@@ -4,6 +4,10 @@
 (set-frame-font "LXGW WenKai Mono Screen 14" nil t)
 (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120)
 (set-frame-size nil 100 30)
+;; direct 中显示友好的文件消息
+(setq dired-listing-switches "-alh")
+;; 自动缩进
+(define-key global-map (kbd "RET") 'newline-and-indent)
 ;; 快速删除多个空格
 (require 'hungry-delete)
 (global-hungry-delete-mode)
@@ -80,6 +84,7 @@
 (setq default-tab-width 4)
 (setq-default indent-tabs-mode nil)
 (setq c-basic-offset 4)
+
 
 ;; python配置 f5 执行当前脚本
 (defun my-python-mode-config ()
