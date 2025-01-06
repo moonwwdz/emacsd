@@ -26,7 +26,11 @@
 (global-set-key (kbd "M-s i") 'counsel-imenu)
 
 ;; 英语单词自动补全
-(global-set-key (kbd "M-s s") 'toggle-company-english-helper)
+(global-set-key (kbd "M-s s") 'lsp-bridge-toggle-sdcv-helper)
+
+;;
+(global-set-key (kbd "M-s w") 'moonwwdz-insert-current-week)
+
 ;; Enable Cache
 (setq url-automatic-caching t)
 

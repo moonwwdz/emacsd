@@ -36,5 +36,8 @@
         (insert (format "TODO  %s-%s %s"  (nth i custom-text) headline-text timestamp)))))
   (org-metaleft))
 
+(defun moonwwdz-insert-current-week ()
+  (interactive)
+  (insert (format-time-string "** 第 %V 周 \n 1. ")))
 
 (provide 'moonwwdz-helper)

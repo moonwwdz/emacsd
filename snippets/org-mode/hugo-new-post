@@ -12,4 +12,8 @@
 :EXPORT_HUGO_BUNDLE: `(format-time-string "%Y/%m-%d-")`${3:name}                                                        
 :END:                                                                            
 
-*** $0                                                
+$0
+
+#+hugo: more
+
+*** $1                                                
