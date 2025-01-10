@@ -26,6 +26,9 @@
 (add-to-list 'load-path "~/.emacs.d/git-package/company-english-helper")
 
 ;; 输入法
+(when (eq system-type 'darwin)
+  (setq rime-librime-root "~/.emacs.d/librime/")
+  (setq rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include"))
 (add-to-list 'load-path "~/.emacs.d/git-package/emacs-rime")
 (require 'rime)
 (setq rime-user-data-dir "~/.config/ibus/rime")
@@ -55,12 +58,12 @@
 (require 'ox-hugo)
 
 ;; org-roam
-(add-to-list 'load-path "~/.emacs.d/git-package/org-roam")
-(require 'org-roam)
-(setq org-roam-directory "~/Documents/orgRoam")
-(setq find-file-visit-truename t)
+;;(add-to-list 'load-path "~/.emacs.d/git-package/org-roam")
+;;(require 'org-roam)
+;;(setq org-roam-directory "~/Documents/orgRoam")
+;;(setq find-file-visit-truename t)
 ;; 自动构建数据库，数据库不需要同笔记一起同步
-(org-roam-db-autosync-mode)
+;;(org-roam-db-autosync-mode)
 
 ;; evil 模式
 (add-to-list 'load-path "~/.emacs.d/git-package/evil")
