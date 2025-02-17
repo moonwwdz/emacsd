@@ -4,6 +4,9 @@
 (when (eq system-type 'gun/linux)
   (set-frame-font "LXGW WenKai Mono Screen 14" nil t)
   (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120))
+;;(when (eq system-type 'darwin)
+;;  (set-frame-font "TsangerXuanSan03 15" nil t)
+;;  (set-face-attribute 'default nil :family "TsangerXuanSan03" :height 120))
 (set-frame-size nil 200 60)
 ;; direct 中显示友好的文件消息
 (setq dired-listing-switches "-alh")

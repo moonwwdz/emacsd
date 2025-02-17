@@ -7,8 +7,8 @@
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
-  (setq package-archives '(("gnu"   . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-			   ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))
+  (setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
+			   ("melpa" . "https://melpa.org/packages/"))))
 
 ;; cl - Common Lisp Extension
 (require 'cl)
@@ -42,6 +42,7 @@
 		      web-mode
 		      markdown-mode
 		      go-mode
+                      rust-mode
 		      ;; --- Minor Mode ---
 		      nodejs-repl
 		      exec-path-from-shell
