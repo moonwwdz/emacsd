@@ -28,3 +28,12 @@
 [submodule "git-package/evil"]
 	path = git-package/evil
 	url = https://github.com/emacs-evil/evil.git
+[submodule "git-package/mastodon"]
+	path = git-package/mastodon
+	url = https://codeberg.org/martianh/mastodon.el.git
+[submodule "git-package/emacs-request"]
+	path = git-package/emacs-request
+	url = https://github.com/tkf/emacs-request.git
+[submodule "git-package/tp.el"]
+	path = git-package/tp.el
+	url = https://codeberg.org/martianh/tp.el.git

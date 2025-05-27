@@ -54,6 +54,8 @@
                       ;;emacsql
                       ;;emacsql-sqlite
                       magit-section
+                      ;;mastodon
+                      persist
 		      ) "Default packages" )
 
 (setq package-selected-packages my/packages)

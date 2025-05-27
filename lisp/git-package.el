@@ -57,6 +57,15 @@
 (add-to-list 'load-path "~/.emacs.d/git-package/ox-hugo")
 (require 'ox-hugo)
 
+;; mastodon
+(add-to-list 'load-path "~/.emacs.d/git-package/emacs-request")
+(add-to-list 'load-path "~/.emacs.d/git-package/tp.el")
+(add-to-list 'load-path "~/.emacs.d/git-package/mastodon/lisp")
+(require 'mastodon)
+
+(setq mastodon-instance-url "https://social.13140000.xyz"
+      mastodon-active-user "wdd")
+
 ;; org-roam
 ;;(add-to-list 'load-path "~/.emacs.d/git-package/org-roam")
 ;;(require 'org-roam)
