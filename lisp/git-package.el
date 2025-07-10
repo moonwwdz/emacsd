@@ -44,8 +44,8 @@
 
 ;; 显示UI美化
 (add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")
-;;(load-theme 'modus-vivendi)
-(load-theme 'modus-operandi)
+(load-theme 'modus-vivendi)
+;;(load-theme 'modus-operandi)
 
 ;; 英文空格
 (add-to-list 'load-path "~/.emacs.d/git-package/wraplish")

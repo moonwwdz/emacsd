@@ -40,4 +40,16 @@
   (interactive)
   (insert (format-time-string "** 第 %V 周 \n 1. ")))
 
+;; 切换主题
+(defun moonwwdz-toggle-theme ()
+  "Toggle between modus-operandi and modus-vivendi themes."
+  (interactive)
+  (if (custom-theme-enabled-p 'modus-operandi)
+      (progn
+        (disable-theme 'modus-operandi)
+        (load-theme 'modus-vivendi t))
+    (progn
+      (disable-theme 'modus-vivendi)
+      (load-theme 'modus-operandi t))))
+
 (provide 'moonwwdz-helper)
