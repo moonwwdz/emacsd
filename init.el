@@ -13,7 +13,7 @@
 (require 'init-keyboard)
 (require 'company-english-helper)
 (require 'moonwwdz-helper)
-;;(require 'moonwwdz-golang)
+(require 'moonwwdz-golang)
 (require 'moonwwdz-shell)
 (require 'jsonrpc)
 (require 'git-package)

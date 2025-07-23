@@ -13,6 +13,7 @@
    '(rainbow-delimiters jedi company smooth-scrolling hungry-delete swiper counsel smartparens popwin pipenv youdao-dictionary js2-mode js2-refactor web-mode markdown-mode nodejs-repl exec-path-from-shell))
  '(safe-local-variable-values '((eval org-content 2)))
  '(show-paren-mode t)
+ '(tab-width 4)
  '(tool-bar-mode nil))
 
 

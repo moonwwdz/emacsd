@@ -1,39 +1,18 @@
 ;;golang 配置
 
-;; go get github.com/rogpeppe/godef
-;; go get golang.org/x/tools/cmd/goimports
-;; go get -u github.com/nsf/gocode
+;;go install golang.org/x/tools/gopls@latest       # 语言服务器
+;;go install github.com/go-delve/delve/cmd/dlv@latest  # 调试器
+;;go install golang.org/x/tools/cmd/goimports@latest   # 自动导入管理
 
-;; (add-to-list 'load-path "~/.emacs.d/lisp/golang/goflymake")
-;; (require 'go-flymake)
-;; (add-to-list 'load-path "~/.emacs.d/lisp/golang/goflymake")
-;; (require 'go-flycheck)
+;; 保存时自动格式化
+(add-hook 'go-mode-hook
+          (lambda ()
+            (setq go-tab-width 4)
+            (setq go-indent-with-tabs t)
+            (setq compilation-read-command nil)
+            (setq gofmt-command "goimports")
+            (add-hook 'before-save-hook #'gofmt-before-save nil t)))
 
-(require 'company-go)
-(require 'go-eldoc)
-(require 'go-mode)
-(require 'auto-complete-config)
-(require 'golint)
-(ac-config-default)
-(defun go-mode-setup ()
-  (go-eldoc-setup)
-  (setq indent-tabs-mode 1)
-  (setq tab-width 4)
-  (setq gofmt-command "goimports")
-  (setq compile-command (format "go run %s" (file-name-nondirectory buffer-file-name)))
-  ;; (setq compile-command "go build -v && go test -v && go vet")
-  ;; (define-key (current-local-map) "\C-c\C-c" 'compile)
-  (define-key (current-local-map) "\C-c\C-c" '(lambda()
-						" go run file directly "
-						(interactive)
-						(compile compile-command)
-						(switch-to-buffer-other-window "*compilation*")))
 
-  (define-key (current-local-map) "\C-c\C-p" 'compile)
-  
-  (add-hook 'before-save-hook 'gofmt-before-save)
-  (local-set-key (kbd "M-.") 'godef-jump))
-
-(add-hook 'go-mode-hook 'go-mode-setup)
 
 (provide 'moonwwdz-golang)
