@@ -1,13 +1,14 @@
 ;;
-(setq default-tab-width 4)
-(save-place-mode 1)
+;;(setq tab-width 4)
+;;(setq indent-tabs-mode nil)
+;;(save-place-mode 1)
 (when (eq system-type 'gun/linux)
   (set-frame-font "LXGW WenKai Mono Screen 14" nil t)
   (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120))
 ;;(when (eq system-type 'darwin)
 ;;  (set-frame-font "TsangerXuanSan03 15" nil t)
 ;;  (set-face-attribute 'default nil :family "TsangerXuanSan03" :height 120))
-(set-frame-size nil 200 60)
+(set-frame-size nil 100 40)
 ;; direct 中显示友好的文件消息
 (setq dired-listing-switches "-alh")
 ;; 自动缩进
@@ -18,7 +19,7 @@
 
 ;; smartparens与hungry-delete冲突解决
 (defadvice hungry-delete-backward (before sp-delete-pair-advice activate) (save-match-data (sp-delete-pair (ad-get-arg 0))))
-(electric-pair-mode 1)
+;;(electric-pair-mode 1)
 
 ;; 补全括号、引号
 (require 'smartparens-config)

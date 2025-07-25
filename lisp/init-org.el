@@ -37,7 +37,9 @@
 ;; 设置默认 Org Agenda 文件目录
 (setq org-agenda-files '("~/Documents/emacsNotes/agenda/work.org" "~/Documents/emacsNotes/agenda/learn.org" "~/Documents/emacsNotes/agenda/life.org"))
 
-(add-hook 'org-mode-hook (lambda () (setq truncate-lines nil)))
+(add-hook 'org-mode-hook (lambda ()
+                           (setq truncate-lines nil)
+                           (set-face-attribute 'default nil :family "TsangerXuanSan03" :height 120)))
 
 ;; Make verbatim with highlight text background.
 (add-to-list 'org-emphasis-alist

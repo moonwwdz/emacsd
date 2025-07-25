@@ -3,10 +3,10 @@
   ;; 关闭工具栏，tool-bar-mode 即为一个 Minor Mode
   (tool-bar-mode -1)
   ;; 颜色配置
-  (set-background-color "#2E3436")
-  (set-foreground-color "white")
-  (set-face-foreground 'region "green")
-  (set-face-background 'region "blue")
+  ;;(set-background-color "#2E3436")
+  ;;(set-foreground-color "white")
+  ;;(set-face-foreground 'region "green")
+  ;;(set-face-background 'region "blue")
 
   ;; 关闭滚动条
   (set-scroll-bar-mode nil)
@@ -49,9 +49,6 @@
 ;;全屏显示(不生效)
 ;;(add-to-list 'default-frame-alist '(fullscreen . maximizd))
 
-;;theme
-;;(add-to-list 'custom-theme-load-path "~/.emacs.d/theme/")
-;;(setq molokai-theme-kit t)
 
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
