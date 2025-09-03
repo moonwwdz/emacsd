@@ -37,3 +37,9 @@
 [submodule "git-package/tp.el"]
 	path = git-package/tp.el
 	url = https://codeberg.org/martianh/tp.el.git
+[submodule "git-package/nov"]
+	path = git-package/nov
+	url = https://depp.brause.cc/nov.el.git
+[submodule "git-package/esxml"]
+	path = git-package/esxml
+	url = https://github.com/tali713/esxml.git

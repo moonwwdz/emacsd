@@ -103,9 +103,12 @@
   (evil-mode 1))
 
 ;; nov
-;;(add-to-list 'load-path "~/.emacs.d/git-package/nov")
-;;(require 'nov)
-;;(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+(use-package esxml
+  :load-path "~/.emacs.d/git-package/esxml")
+
+(use-package nov
+  :load-path "~/.emacs.d/git-package/nov"
+  :mode ("\\.epub\\'" . nov-mode))
 
 ;; eaf
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
