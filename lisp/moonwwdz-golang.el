@@ -13,6 +13,14 @@
             (setq gofmt-command "goimports")
             (add-hook 'before-save-hook #'gofmt-before-save nil t)))
 
+;; 一键运行
+(add-hook 'go-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-c")
+                           (lambda ()
+                             (interactive)
+                             (compile (concat "go run " buffer-file-name))
+                             (switch-to-buffer-other-window "*compilation*")))))
 
 
 (provide 'moonwwdz-golang)

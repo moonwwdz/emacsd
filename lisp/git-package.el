@@ -19,7 +19,7 @@
   ;;:ensure t                   
   :after evil
   :hook ((go-mode . lsp-bridge-mode)
-         (elisp-mode . lsp-bridge-mode))
+         (emacs-lisp-mode . lsp-bridge-mode))
   :config                     ; 包加载后的配置
   ;; 如果你确实想全局激活lsp-bridge，可以保留下面这行，但和上面的:hook是互斥的，通常二选一
   ;; (global-lsp-bridge-mode)
