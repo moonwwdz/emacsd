@@ -43,3 +43,6 @@
 [submodule "git-package/esxml"]
 	path = git-package/esxml
 	url = https://github.com/tali713/esxml.git
+[submodule "git-package/dired-sidebar"]
+	path = git-package/dired-sidebar
+	url = https://github.com/jojojames/dired-sidebar.git

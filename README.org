@@ -6,7 +6,7 @@
 
 ** 安装
 #+BEGIN_SRC sh
-  pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz
+  pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz --break-system-packages
   git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
   cd ~/.emacs.d
   git submodule init
@@ -81,4 +81,16 @@
 | M-,      | 返回跳转前位置      |
 | C-x 4 .  | 新Frame中打开定义   |
 | C-x 5 .  | 新Windows中打开定义 |
+
+*** dired-sidebar
+| keyboard | action       |
+|----------+--------------|
+| C-x C-n  | 打开侧边栏窗口 |
+
+*** tab-bar-mode
+| keyboard    | action   |
+|-------------+----------|
+| C-x t 1     | 关闭标签  |
+| C-x t 2 / n | 打开新标签 |
+| C-x t r     | 重命名 |
 

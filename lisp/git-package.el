@@ -67,15 +67,35 @@
 ;;(load-theme 'modus-operandi)
 
 ;; 英文空格
-(add-to-list 'load-path "~/.emacs.d/git-package/wraplish")
 (use-package wraplish
+  :load-path "~/.emacs.d/git-package/wraplish"
   :config
   (dolist (hook (list 'markdown-mode-hook))
     (add-hook hook #'(lambda () (wraplish-mode 1)))))
 
+;; 侧边栏
+(use-package dired-sidebar
+  :load-path "~/.emacs.d/git-package/dired-sidebar"
+  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
+  :ensure t
+  :commands (dired-sidebar-toggle-sidebar)
+  :init
+  (add-hook 'dired-sidebar-mode-hook
+            (lambda ()
+              (unless (file-remote-p default-directory)
+                (auto-revert-mode))))
+  :config
+  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+  (setq dired-sidebar-subtree-line-prefix "__")
+  (setq dired-sidebar-theme 'ascii)
+  (setq dired-sidebar-use-term-integration t)
+  (setq dired-sidebar-use-custom-font t))
+
 ;; hugo
-(add-to-list 'load-path "~/.emacs.d/git-package/ox-hugo")
-(use-package ox-hugo)
+(use-package ox-hugo
+  :load-path "~/.emacs.d/git-package/ox-hugo")
 
 ;; mastodon
 (add-to-list 'load-path "~/.emacs.d/git-package/emacs-request")
@@ -95,12 +115,15 @@
 ;;(org-roam-db-autosync-mode)
 
 ;; evil 模式
-(add-to-list 'load-path "~/.emacs.d/git-package/evil")
 (use-package evil
+  :load-path "~/.emacs.d/git-package/evil"
   :init
   (setq evil-want-keybinding nil)
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (evil-set-initial-state 'image-mode 'emacs)
+  (evil-global-set-key 'normal (kbd "M-.") 'lsp-bridge-find-def)
+  (evil-global-set-key 'normal (kbd "M-,") 'lsp-bridge-find-def-return))
 
 ;; nov
 (use-package esxml
