@@ -46,3 +46,6 @@
 [submodule "git-package/dired-sidebar"]
 	path = git-package/dired-sidebar
 	url = https://github.com/jojojames/dired-sidebar.git
+[submodule "git-package/org-modern"]
+	path = git-package/org-modern
+	url = https://github.com/minad/org-modern.git

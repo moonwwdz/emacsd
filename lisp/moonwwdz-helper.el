@@ -52,4 +52,12 @@
       (disable-theme 'modus-vivendi)
       (load-theme 'modus-operandi t))))
 
+;; 选择一个文件，将文件的全部内容插入到当前光标位置"
+(defun moonwwdz-insert-file-content-at-point ()
+  (interactive)
+  (let ((file-path (read-file-name "select one note: " "~/Documents/org-roam/")))
+    (when (file-exists-p file-path)
+      (insert-file-contents file-path))))
+
+
 (provide 'moonwwdz-helper)

@@ -31,6 +31,7 @@
 ;;
 (global-set-key (kbd "M-s w") 'moonwwdz-insert-current-week)
 (global-set-key (kbd "M-s t") 'moonwwdz-toggle-theme)
+(global-set-key (kbd "M-s i") 'moonwwdz-insert-file-content-at-point)
 
 ;; Enable Cache
 (setq url-automatic-caching t)

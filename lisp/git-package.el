@@ -133,6 +133,38 @@
   :load-path "~/.emacs.d/git-package/nov"
   :mode ("\\.epub\\'" . nov-mode))
 
+(use-package org-modern
+  :load-path "~/.emacs.d/git-package/org-modern"
+;;  :ensure t
+  :after org
+  :hook (after-init . (lambda ()
+			(setq org-modern-hide-stars 'leading)
+			(global-org-modern-mode t)))
+  :config
+  ;; 定义各级标题行字符
+  (setq org-modern-star ["◉" "○" "✸" "✳" "◈" "◇" "✿" "❀" "✜"])
+  (setq-default line-spacing 0.1)
+  (setq org-modern-label-border 1)
+  (setq org-modern-table-vectical 2)
+  (setq org-modern-table-horizontal 0)
+
+  ;; 复选框美化
+  (setq org-modern-checkbox
+	'((?X . #("▢✓" 0 2 (composition ((2)))))
+	  (?- . #("▢–" 0 2 (composition ((2)))))
+	  (?\s . #("▢" 0 1 (composition ((1)))))))
+  ;; 列表符号美化
+  (setq org-modern-list
+	'((?- . "•")
+	  (?+ . "◦")
+	  (?* . "▹")))
+  ;; 代码块左边加上一条竖边线
+  (setq org-modern-block-fringe t)
+
+  ;; 属性标签使用上述定义的符号，不由 org-modern 定义
+  (setq org-modern-block-name nil)
+  (setq org-modern-keyword nil))
+
 ;; eaf
 ;;(add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
 ;;(require 'eaf)
