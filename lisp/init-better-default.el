@@ -2,6 +2,7 @@
 ;;(setq tab-width 4)
 ;;(setq indent-tabs-mode nil)
 ;;(save-place-mode 1)
+(setq system-time-locale "C")
 (when (eq system-type 'gun/linux)
   (set-frame-font "LXGW WenKai Mono Screen 14" nil t)
   (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120))
