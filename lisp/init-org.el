@@ -36,7 +36,8 @@
            "***** %U - %^{heading}\n %?")
           ;;日记
           ("d" "Daily" entry (file+weektree "~/Documents/emacsNotes/org/daily.org")
-           "* %U - %^{heading}\n %?")))
+           "* %U - %^{heading}\n %?")
+          ("g" "Gratefule" entry (file+weektree "~/Documents/emacsNotes/org/grateful.org") "* %U - %^{heading}\n %?")))
 
 
   ;; org-roam
@@ -59,9 +60,9 @@
 
   )
 
-(add-hook 'org-mode-hook (lambda ()
-                           (setq truncate-lines nil)
-                           (set-face-attribute 'default nil :family "TsangerXuanSan03" :height 120)))
+;;(add-hook 'org-mode-hook (lambda ()
+ ;;                          (setq truncate-lines nil)
+  ;;                         (set-face-attribute 'default nil :family "TsangerXuanSan03" :height 120)))
 
 ;; 自动计算完成状态
 (defun org-summary-todo (n-done n-not-done)
