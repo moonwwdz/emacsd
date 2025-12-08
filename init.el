@@ -14,6 +14,7 @@
 (require 'company-english-helper)
 (require 'moonwwdz-helper)
 (require 'moonwwdz-golang)
+(require 'moonwwdz-rust)
 (require 'moonwwdz-shell)
 (require 'moonwwdz-dict)
 (require 'jsonrpc)

@@ -48,6 +48,8 @@
 		      exec-path-from-shell
 		      go-eldoc
                       golint
+                      flycheck
+                      cargo
 		      ;; --- Themes ---
                       rainbow-delimiters
                       ;; --- org-roam

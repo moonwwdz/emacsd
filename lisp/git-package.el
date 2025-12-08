@@ -16,22 +16,24 @@
     (setq acm-backend-yas-candidate-min-length 2)))
 
 (use-package lsp-bridge
-  ;;:ensure t                   
+  ;;:ensure t
   :after evil
   :hook ((go-mode . lsp-bridge-mode)
+         (rust-mode . lsp-bridge-mode)
          (emacs-lisp-mode . lsp-bridge-mode))
-  :config                     ; 包加载后的配置
-  ;; 如果你确实想全局激活lsp-bridge，可以保留下面这行，但和上面的:hook是互斥的，通常二选一
-  ;; (global-lsp-bridge-mode)
-  ;(setq lsp-bridge-enable-hover-diagnostic t) ; 启用悬停诊断
-  ;; 注意：lsp-bridge-default-mode-hooks 通常用于内部控制，如果你通过:hook指定了，就不太需要直接设置它
   :bind                       ; 绑定快捷键
   (:map lsp-bridge-mode-map
         ;;("M-n" . lsp-bridge-diagnostic-jump-next)
         ;;("M-p" . lsp-bridge-diagnostic-jump-prev)
         ("M-." . lsp-bridge-find-def)
         ("M-," . lsp-bridge-find-def-return)
-        ("C-." . lsp-bridge-show-documentation)))
+        ("C-." . lsp-bridge-show-documentation))
+  :config                     ; 包加载后的配置
+  ;; 启用悬停诊断
+  (setq lsp-bridge-enable-hover-diagnostic t)
+  ;; 启用自动补全
+  (setq acm-enable-icon t)
+  (setq acm-enable-doc t))
 
 
 ;; 终端使用lsp_bridge
