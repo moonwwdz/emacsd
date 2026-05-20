@@ -6,91 +6,122 @@
 
 ** 安装
 #+BEGIN_SRC sh
-  pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz --break-system-packages
+  # macOS 需要安装 Python 3.10+（系统自带 3.9 不够）
+  brew install python@3.12
+  ln -s python3.12 /opt/homebrew/bin/python3
+  pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz watchdog packaging pyyaml --break-system-packages
   git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
   cd ~/.emacs.d
   git submodule init
   git submodule update
 #+END_SRC
 
-** 原有快捷键
-*** [todo] Org-mode
-| keyboard  | action       |
-|-----------+--------------|
-| C-c C-l   | 编辑链接     |
-| C-c c     | Capture      |
-| C-c C-e h | 生成html文件 |
+** 全局快捷键
 
-
-*** 操作
-
-| keyboard | action                        |
-|----------+-------------------------------|
-| C-M-f/b  | 跳转到对应括号                |
-| M-r      | 跳转 页面开始行 中间行 结尾行 |
-| M-s o    | 查找内容并全部展示            |
-
-
-
-
-**** magit使用
-| keyboard | action                  |
-|----------+-------------------------|
-| C-c g    | 激活                    |
-| 1,2,3,4  | 收缩显示                |
-| s        | git add                 |
-| u        | git checkout <filename> |
-| c c      | 进入提交页面            |
-| C-c C-c  | 在提交页面正式提交      |
-| l l      | 显示日志                |
-| P        | 进入推送                |
-*** 编辑
-- M-% :: 替换
-- C-x r t :: 行首插入字符
-- C-x r k :: 删除插入字符
-  
-*** 书签
-- C-x r m :: 标记书签
-- C-x r l :: 列出书签
-
-** 已安装包快捷键
-
-*** [[https://github.com/pwalsh/pipenv.el][pipenv]]
-在emacs中使用pipenv虚拟环境
-| keyboard  | action            |
-|-----------+-------------------|
-| C-c C-p a | pipenv-activate   |
-| C-c C-p d | pipenv-deactivate |
-| C-c C-p s | pipenv-shell      |
-| C-c C-p o | pipenv-open       |
-| C-c C-p i | pipenv-install    |
-| C-c C-p u | pipenv-uninstall  | 
-
-
-*** [[https://emacs-china.org/t/topic/6322][英语自动补全]]
-- M-s s :: 激活/关闭
-
-*** 英语字典查询
-- C-c d :: Mac自带词典
-- C-c y :: 有道在线词典
-
-*** xref 自带快捷键
+*** 搜索与导航
 | keyboard | action              |
 |----------+---------------------|
-| M-.      | 函数定义            |
-| M-,      | 返回跳转前位置      |
-| C-x 4 .  | 新Frame中打开定义   |
-| C-x 5 .  | 新Windows中打开定义 |
+| C-s      | swiper 搜索         |
+| M-x      | counsel M-x         |
+| C-x C-f  | 查找文件            |
+| C-x C-r  | 最近打开的文件      |
+| C-x C-b  | ibuffer             |
+| M-s o    | occur 搜索并展示    |
+| M-s i    | counsel-imenu       |
+| M-1/2/3  | 跳转到对应窗口      |
 
-*** dired-sidebar
-| keyboard | action       |
-|----------+--------------|
-| C-x C-n  | 打开侧边栏窗口 |
+*** 编辑
+| keyboard | action              |
+|----------+---------------------|
+| C-=      | expand-region 选区  |
+| M-s e    | iedit 多点编辑      |
+| M-%      | 查找替换            |
+| C-x r t  | 行首插入字符        |
+| C-x r k  | 删除矩形区域        |
+| C-\      | 切换输入法          |
 
-*** tab-bar-mode
-| keyboard    | action   |
-|-------------+----------|
-| C-x t 1     | 关闭标签  |
-| C-x t 2 / n | 打开新标签 |
-| C-x t r     | 重命名 |
+*** 书签
+| keyboard | action   |
+|----------+----------|
+| C-x r m  | 标记书签 |
+| C-x r l  | 列出书签 |
 
+*** 文件与窗口
+| keyboard | action           |
+|----------+------------------|
+| C-x C-n  | 打开侧边栏       |
+| C-x t 2  | 新建标签页        |
+| C-x t r  | 重命名标签页      |
+| C-x t 1  | 关闭其他标签页    |
+
+*** Org-mode
+| keyboard  | action       |
+|-----------+--------------|
+| C-c c     | Capture      |
+| C-c a     | Agenda       |
+| C-c C-l   | 编辑链接     |
+| C-c C-e h | 导出 HTML    |
+
+*** 工具
+| keyboard | action                      |
+|----------+-----------------------------|
+| C-c g    | magit 状态                  |
+| C-c d    | macOS 词典查词              |
+| C-c y    | 有道词典查词                |
+| M-s s    | 英语自动补全 开关           |
+| M-s p    | 粘贴辅助 开关               |
+| M-s w    | 插入当前周数                |
+| M-s t    | 切换主题                    |
+| C-c t i  | 切换 Web 缩进 (2/4空格)     |
+
+** LSP (lsp-bridge)
+
+以下快捷键在 lsp-bridge-mode 激活时生效（go-mode、rust-mode、emacs-lisp-mode 等）：
+
+| keyboard | action                  |
+|----------+-------------------------|
+| M-.      | 跳转到定义              |
+| M-,      | 返回跳转前位置          |
+| M-n      | 跳到下一个诊断          |
+| M-p      | 跳到上一个诊断          |
+| C-.      | 显示文档                |
+
+** 语言快捷键
+
+*** Rust (rust-mode)
+| keyboard    | action                    |
+|-------------+---------------------------|
+| C-c C-c     | 运行 (cargo run / rustc)  |
+| C-u C-c C-c | 运行并输入参数            |
+| C-c C-b     | 构建 (cargo build)        |
+| C-c C-t     | 测试 (cargo test)         |
+| C-c C-k     | 检查 (cargo check)        |
+
+*** Go (go-mode)
+| keyboard | action           |
+|----------+------------------|
+| C-c C-c  | 运行 (go run)    |
+
+*** Python (python-mode)
+| keyboard | action          |
+|----------+-----------------|
+| <f5>     | 运行当前文件    |
+
+** uv (Python 虚拟环境)
+打开 Python 文件时自动激活项目 .venv，也可手动执行：
+| command      | action                    |
+|--------------+---------------------------|
+| M-x uv-activate | 手动激活项目 .venv     |
+| M-x pyvenv-deactivate | 退出虚拟环境    |
+
+** magit
+| keyboard | action                  |
+|----------+-------------------------|
+| C-c g    | 激活 magit              |
+| s        | stage (git add)         |
+| u        | unstage                 |
+| c c      | 进入提交页面            |
+| C-c C-c  | 确认提交                |
+| l l      | 查看日志                |
+| P        | 推送                    |
+| 1,2,3,4  | 收缩/展开显示           |

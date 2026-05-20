@@ -1,7 +1,3 @@
-;;
-;;(setq tab-width 4)
-;;(setq indent-tabs-mode nil)
-;;(save-place-mode 1)
 (setq system-time-locale "C")
 (when (eq system-type 'gun/linux)
   (set-frame-font "LXGW WenKai Mono Screen 14" nil t)
@@ -127,12 +123,22 @@
   (set (make-local-variable 'electric-indent-mode) nil)) ;关闭自动缩进
 
 ;; 打开python文件时自动执行
-(add-hook 'python-mode-hook 'pipenv-mode)            
 (add-hook 'python-mode-hook 'my-python-mode-config)
-;;(add-hook 'python-mode-hook 'jedi:install-server)   ;;自动补全
-;;(add-hook 'python-mode-hook 'jedi:setup)
 
-;;(setq jedi:complete-on-dot t)
+;; uv 虚拟环境激活
+(defun uv-activate ()
+  "Activate uv .venv in current project."
+  (interactive)
+  (let* ((project-root (or (project-root (project-current)) default-directory))
+         (venv-path (expand-file-name ".venv" project-root))
+         (python-path (expand-file-name "bin/python" venv-path)))
+    (if (file-exists-p python-path)
+        (progn
+          (pyvenv-activate venv-path)
+          (message "Activated uv venv: %s" venv-path))
+      (message "No .venv found in %s" project-root))))
+
+(add-hook 'python-mode-hook 'uv-activate)
 
 ;; run-python 的时候，python shell 里显示一堆乱码
 (setenv "IPY_TEST_SIMPLE_PROMPT" "1")

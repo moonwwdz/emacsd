@@ -17,14 +17,17 @@
 
 (use-package lsp-bridge
   ;;:ensure t
+  :init
+  (when (eq system-type 'darwin)
+    (setq lsp-bridge-python-command "python3.12"))
   :after evil
   :hook ((go-mode . lsp-bridge-mode)
          (rust-mode . lsp-bridge-mode)
          (emacs-lisp-mode . lsp-bridge-mode))
   :bind                       ; 绑定快捷键
   (:map lsp-bridge-mode-map
-        ;;("M-n" . lsp-bridge-diagnostic-jump-next)
-        ;;("M-p" . lsp-bridge-diagnostic-jump-prev)
+        ("M-n" . lsp-bridge-diagnostic-jump-next)
+        ("M-p" . lsp-bridge-diagnostic-jump-prev)
         ("M-." . lsp-bridge-find-def)
         ("M-," . lsp-bridge-find-def-return)
         ("C-." . lsp-bridge-show-documentation))
@@ -33,8 +36,14 @@
   (setq lsp-bridge-enable-hover-diagnostic t)
   ;; 启用自动补全
   (setq acm-enable-icon t)
-  (setq acm-enable-doc t))
-
+  (setq acm-enable-doc t)
+  (defun my/lsp-bridge-doc-setup (&rest _)
+    "Jump to doc window and bind q to close."
+    (let ((win (get-buffer-window "*lsp-bridge-doc*")))
+      (when win
+        (select-window win)
+        (evil-local-set-key 'normal (kbd "q") 'delete-window))))
+  (advice-add 'lsp-bridge-show-documentation--callback :after #'my/lsp-bridge-doc-setup))
 
 ;; 终端使用lsp_bridge
 (unless (display-graphic-p)
@@ -125,7 +134,8 @@
   (evil-mode 1)
   (evil-set-initial-state 'image-mode 'emacs)
   (evil-global-set-key 'normal (kbd "M-.") 'lsp-bridge-find-def)
-  (evil-global-set-key 'normal (kbd "M-,") 'lsp-bridge-find-def-return))
+  (evil-global-set-key 'normal (kbd "M-,") 'lsp-bridge-find-def-return)
+  (evil-global-set-key 'normal (kbd "C-.") 'lsp-bridge-show-documentation))
 
 ;; nov
 (use-package esxml

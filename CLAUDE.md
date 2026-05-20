@@ -9,7 +9,10 @@ This is a personal Emacs configuration repository (`~/.emacs.d`) with a modular 
 ## Installation & Setup
 
 ```bash
-pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz --break-system-packages
+# macOS 需要安装 Python 3.10+（系统自带 3.9 不够）
+brew install python@3.12
+ln -s python3.12 /opt/homebrew/bin/python3
+pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz watchdog packaging pyyaml --break-system-packages
 git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
 cd ~/.emacs.d
 git submodule init
@@ -57,7 +60,7 @@ git submodule update
 - Go development with LSP integration
 - JavaScript/JS2 mode
 - Rust mode
-- Python development with pipenv integration
+- Python development with uv/pyvenv integration
 - Git integration via magit
 
 ### Org-Mode
@@ -72,7 +75,7 @@ git submodule update
 
 ### UI/UX
 - Evil mode for Vim keybindings
-- Company mode for auto-completion
+- lsp-bridge for LSP auto-completion (requires Python 3.10+)
 - Dired sidebar for file navigation
 - Tab bar mode for workspace management
 
@@ -86,8 +89,9 @@ git submodule update
 | `C-x C-n` | Toggle dired sidebar |
 | `C-c d` | Mac dictionary lookup |
 | `C-c y` | Youdao dictionary |
-| `M-.` | Jump to definition (xref) |
+| `M-.` | Jump to definition (lsp-bridge) |
 | `M-,` | Return from definition |
+| `C-.` | Show documentation (lsp-bridge) |
 
 ## Development Notes
 

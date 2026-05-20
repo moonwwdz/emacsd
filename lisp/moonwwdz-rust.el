@@ -31,38 +31,26 @@
               ;; lsp-bridge 会自动检测 rust-analyzer，这里可以添加 Rust 特定配置
               (message "lsp-bridge for Rust mode enabled"))))
 
-;; 启用 flycheck 语法检查，使用 clippy 避免临时目录问题
+;; 诊断由 lsp-bridge + rust-analyzer 提供，禁用 flycheck 避免冲突和误报
 (add-hook 'rust-mode-hook
           (lambda ()
-    ;; 重新设置环境变量，确保在子进程中生效
-    (let ((temp-dir "/tmp"))
-      (setenv "TMPDIR" temp-dir)
-      (setenv "TMP" temp-dir)
-      (setenv "TEMP" temp-dir)
-      (setenv "RUST_TMPDIR" temp-dir))
-    ;; 禁用 rustc 检查器，使用 cargo-clippy 代替
-    (setq-local flycheck-disabled-checkers '(rust rust-clippy))
-    (setq-local flycheck-checkers '(rust-cargo-clippy rust-cargo))
-    (setq flycheck-checker-error-threshold 100)
-    (flycheck-mode 1)))
+            (setq-local flycheck-disabled-checkers '(rust rust-clippy rust-cargo rust-cargo-clippy))))
 
-;; 一键运行 (C-c C-c)
+;; 一键运行 (C-c C-c)，带前缀 C-u 可输入参数
 (add-hook 'rust-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-c")
-                           (lambda ()
-                             (interactive)
-                             (let ((file-name buffer-file-name))
-                               (if (string-suffix-p ".rs" file-name)
-                                   ;; 如果是单个 .rs 文件，使用 rustc 编译运行
-                                   (progn
-                                     (compile (concat "rustc " file-name " && "
-                                                    (file-name-base file-name)))
-                                     (switch-to-buffer-other-window "*compilation*"))
-                                 ;; 如果是在 Cargo 项目中，使用 cargo run
-                                 (progn
-                                   (compile "cargo run")
-                                   (switch-to-buffer-other-window "*compilation*"))))))))
+                           (lambda (arg)
+                             (interactive "P")
+                             (let* ((file-name buffer-file-name)
+                                    (args (if arg (read-string "Args: ") ""))
+                                    (cargo-dir (locate-dominating-file default-directory "Cargo.toml"))
+                                    (cmd (if cargo-dir
+                                             (concat "cargo run --" (unless (string= args "") (concat " " args)))
+                                           (concat "rustc " file-name " && ./" (file-name-base file-name)
+                                                   (unless (string= args "") (concat " " args))))))
+                               (compile cmd)
+                               (switch-to-buffer-other-window "*compilation*"))))))
 
 ;; Cargo 常用命令快捷键
 (add-hook 'rust-mode-hook

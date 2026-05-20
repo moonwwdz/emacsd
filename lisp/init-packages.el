@@ -7,8 +7,8 @@
 (when (>= emacs-major-version 24)
   (require 'package)
   (package-initialize)
-  (setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
-			   ("melpa" . "https://melpa.org/packages/"))))
+  (setq package-archives '(("gnu"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
+			   ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/"))))
 
 ;; cl - Common Lisp Extension
 (require 'cl)
@@ -17,20 +17,16 @@
 (defvar my/packages '(
 		      ;; --- Auto-completion ---
 		      company
-		      ;;company-go
                       posframe
 		      ;; --- Better Editor ---
-		      smooth-scrolling
 		      hungry-delete
 		      swiper
 		      counsel
 		      smartparens
 		      expand-region
 		      popwin
-		      pipenv
-		      youdao-dictionary
+		      pyvenv
                       osx-dictionary
-		      ;;jedi
 		      magit
 		      iedit
                       pyim
@@ -38,25 +34,16 @@
                       ox-hugo
 		      ;; --- Major Mode ---
 		      js2-mode
-		      js2-refactor
 		      web-mode
 		      markdown-mode
 		      go-mode
                       rust-mode
 		      ;; --- Minor Mode ---
-		      nodejs-repl
 		      exec-path-from-shell
-		      go-eldoc
-                      golint
                       flycheck
-                      cargo
 		      ;; --- Themes ---
                       rainbow-delimiters
-                      ;; --- org-roam
-                      ;;emacsql
-                      ;;emacsql-sqlite
                       magit-section
-                      ;;mastodon
                       persist
 		      ) "Default packages" )
 
