@@ -2,7 +2,7 @@
 
 (require 'json)  ; 确保支持 JSON 解析（Emacs < 27 需要）
 
-(defconst moonwwdz-dict-api-url "https://dict.13140000.xyz/api/query?word=%s"
+(defconst moonwwdz-dict-api-url "https://dict.13140000.xyz/api/query?q=%s"
   "API endpoint for dictionary lookup at https://dict.13140000.xyz.")
 
 (defcustom moonwwdz-dict-buffer-name "*Moonwwdz Dictionary*"
@@ -18,8 +18,6 @@
 (defvar moonwwdz-dict-history nil
   "History list for word lookups.")
 
-(defvar moonwwdz-dict--last-result nil
-  "Cache the last API result as an alist.")
 
 (defun moonwwdz-dict-lookup (word)
   "Query the dictionary API for WORD and display translation."
@@ -39,32 +37,37 @@
   (declare (ignore status))
   (goto-char (point-min))
   (re-search-forward "^$" nil 'move)
-  (let ((json-text (buffer-substring-no-properties (point) (point-max)))
-        result translation)
+  (let ((json-text (decode-coding-string
+                     (buffer-substring-no-properties (point) (point-max))
+                     'utf-8))
+        result data translation)
     (kill-buffer (current-buffer))
     (set-buffer-file-coding-system 'utf-8)
     (condition-case err
         (progn
           (setq result (json-read-from-string json-text))
-          (setq moonwwdz-dict--last-result result)
-          (setq translation (alist-get 'translation result))
+          (setq data (alist-get 'data result))
+          (setq translation (when data (alist-get 'translation data)))
           (if translation
-              (moonwwdz-dict--show-result word translation)
+              (moonwwdz-dict--show-result word (or data result))
             (moonwwdz-dict--show-error word "No translation available")))
       (error (moonwwdz-dict--show-error word (format "JSON parse error: %s" (error-message-string err)))))))
 
 
-(defun moonwwdz-dict--show-result (word translation)
+(defun moonwwdz-dict--show-result (word data)
   "Display the result in a buffer."
   (let ((buf (get-buffer-create moonwwdz-dict-buffer-name)))
     (with-current-buffer buf
-      (setq buffer-read-only nil)  ; 临时允许编辑
+      (setq buffer-read-only nil)
       (erase-buffer)
-      (insert (format "📘 Word: %s\n\n" word))
-      (insert (format "📝 Translation: %s\n" translation))
-      (when-let ((phonetic (alist-get 'phonetic (moonwwdz-dict--get-last-result))))
-        (insert (format "\n🔊 Phonetic: [%s]\n" phonetic)))
-      (moonwwdz-dict-mode)  ; 重新启用 mode（会再次设置 read-only）
+      (insert (format "Word: %s\n\n" word))
+      (when-let ((phonetic (alist-get 'phonetic data)))
+        (insert (format "Phonetic: [%s]\n" phonetic)))
+      (when-let ((translation (alist-get 'translation data)))
+        (insert (format "\nTranslation: %s\n" translation)))
+      (when-let ((definition (alist-get 'definition data)))
+        (insert (format "\nDefinition: %s\n" definition)))
+      (moonwwdz-dict-mode)
       (goto-char (point-min)))
     (pop-to-buffer buf)))
 
@@ -79,15 +82,12 @@
       (goto-char (point-min)))
     (pop-to-buffer buf)))
 
-(defun moonwwdz-dict--get-last-result ()
-  "Return last parsed result."
-  moonwwdz-dict--last-result)
-
 ;; Define a simple major mode for styling
 (define-derived-mode moonwwdz-dict-mode special-mode "MoonDict"
   "Major mode for displaying dictionary results from moonwwdz-dict."
   (setq buffer-read-only t)
-  (use-local-map (make-sparse-keymap)))
+  (define-key moonwwdz-dict-mode-map (kbd "q") #'delete-window)
+  (evil-local-set-key 'normal (kbd "q") #'delete-window))
 
 ;; Optional: Quick command to lookup word at point
 (defun moonwwdz-dict-lookup-at-point ()

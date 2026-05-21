@@ -36,11 +36,12 @@
 ;; Enable Cache
 (setq url-automatic-caching t)
 
-;; 有道字典翻译 Example Key binding
+;; 字典查词
 (global-set-key (kbd "C-c y") 'moonwwdz-dict-lookup-at-point)
-;; Mac 自带字典
-(require 'osx-dictionary)
-(global-set-key (kbd "C-c d") 'osx-dictionary-search-word-at-point)
+;; Mac 自带字典（仅 macOS）
+(when (eq system-type 'darwin)
+  (require 'osx-dictionary)
+  (global-set-key (kbd "C-c d") 'osx-dictionary-search-word-at-point))
 
 ;;  打开/关闭粘贴模式
 (global-set-key (kbd "M-s p") 'moonwwdz-toggle-paste-helper)

@@ -9,11 +9,39 @@
   # macOS 需要安装 Python 3.10+（系统自带 3.9 不够）
   brew install python@3.12
   ln -s python3.12 /opt/homebrew/bin/python3
+
+  # Python 依赖（lsp-bridge 运行所需）
   pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz watchdog packaging pyyaml --break-system-packages
+
+  # 克隆配置
   git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
   cd ~/.emacs.d
   git submodule init
   git submodule update
+#+END_SRC
+
+** 语言环境依赖
+
+*** Go
+#+BEGIN_SRC sh
+  go install golang.org/x/tools/gopls@latest         # LSP 语言服务器
+  go install golang.org/x/tools/cmd/goimports@latest  # 自动导入管理
+  go install github.com/go-delve/delve/cmd/dlv@latest # 调试器
+#+END_SRC
+
+*** Rust
+#+BEGIN_SRC sh
+  rustup component add rust-src       # 源码（IDE 支持）
+  rustup component add rustfmt        # 格式化
+  rustup component add clippy         # 代码检查
+#+END_SRC
+
+*** Python
+#+BEGIN_SRC sh
+  pip3 install basedpyright           # LSP 语言服务器
+  pip3 install ipython                # 交互式解释器
+  pip3 install pytest                 # 测试框架
+  pip3 install uv                     # 虚拟环境管理
 #+END_SRC
 
 ** 全局快捷键
@@ -76,15 +104,17 @@
 
 ** LSP (lsp-bridge)
 
-以下快捷键在 lsp-bridge-mode 激活时生效（go-mode、rust-mode、emacs-lisp-mode 等）：
+以下快捷键在 lsp-bridge-mode 激活时生效（go-mode、rust-mode、python-mode、emacs-lisp-mode 等）：
 
 | keyboard | action                  |
 |----------+-------------------------|
 | M-.      | 跳转到定义              |
 | M-,      | 返回跳转前位置          |
-| M-n      | 跳到下一个诊断          |
-| M-p      | 跳到上一个诊断          |
+| C-c n    | 跳到下一个诊断          |
+| C-c p    | 跳到上一个诊断          |
 | C-.      | 显示文档                |
+| M-n      | 补全菜单下一个候选项    |
+| M-p      | 补全菜单上一个候选项    |
 
 ** 语言快捷键
 
@@ -98,14 +128,22 @@
 | C-c C-k     | 检查 (cargo check)        |
 
 *** Go (go-mode)
-| keyboard | action           |
-|----------+------------------|
-| C-c C-c  | 运行 (go run)    |
+| keyboard    | action              |
+|-------------+---------------------|
+| C-c C-c     | 运行 (go run)       |
+| C-u C-c C-c | 运行并输入参数      |
+| C-c C-b     | 构建 (go build)     |
+| C-c C-t     | 测试 (go test)      |
+| C-c C-k     | 检查 (go vet)       |
 
 *** Python (python-mode)
-| keyboard | action          |
-|----------+-----------------|
-| <f5>     | 运行当前文件    |
+| keyboard    | action                  |
+|-------------+-------------------------|
+| C-c C-c     | 运行 (python3)          |
+| C-u C-c C-c | 运行并输入参数          |
+| C-c C-t     | 测试 (pytest)           |
+| C-c C-k     | 语法检查 (py_compile)   |
+| <f5>        | 快速执行当前文件        |
 
 ** uv (Python 虚拟环境)
 打开 Python 文件时自动激活项目 .venv，也可手动执行：

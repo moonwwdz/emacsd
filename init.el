@@ -15,6 +15,7 @@
 (require 'moonwwdz-helper)
 (require 'moonwwdz-golang)
 (require 'moonwwdz-rust)
+(require 'moonwwdz-python)
 (require 'moonwwdz-shell)
 (require 'moonwwdz-dict)
 (require 'jsonrpc)

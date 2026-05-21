@@ -23,11 +23,12 @@
   :after evil
   :hook ((go-mode . lsp-bridge-mode)
          (rust-mode . lsp-bridge-mode)
+         (python-mode . lsp-bridge-mode)
          (emacs-lisp-mode . lsp-bridge-mode))
   :bind                       ; 绑定快捷键
   (:map lsp-bridge-mode-map
-        ("M-n" . lsp-bridge-diagnostic-jump-next)
-        ("M-p" . lsp-bridge-diagnostic-jump-prev)
+        ("C-c n" . lsp-bridge-diagnostic-jump-next)
+        ("C-c p" . lsp-bridge-diagnostic-jump-prev)
         ("M-." . lsp-bridge-find-def)
         ("M-," . lsp-bridge-find-def-return)
         ("C-." . lsp-bridge-show-documentation))

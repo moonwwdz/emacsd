@@ -12,11 +12,34 @@ This is a personal Emacs configuration repository (`~/.emacs.d`) with a modular 
 # macOS 需要安装 Python 3.10+（系统自带 3.9 不够）
 brew install python@3.12
 ln -s python3.12 /opt/homebrew/bin/python3
+
+# Python 依赖（lsp-bridge 运行所需）
 pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz watchdog packaging pyyaml --break-system-packages
+
+# 克隆配置
 git clone https://github.com/moonwwdz/emacsd.git ~/.emacs.d
 cd ~/.emacs.d
 git submodule init
 git submodule update
+```
+
+### Language Dependencies
+
+**Go:**
+```bash
+go install golang.org/x/tools/gopls@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/go-delve/delve/cmd/dlv@latest
+```
+
+**Rust:**
+```bash
+rustup component add rust-src rustfmt clippy
+```
+
+**Python:**
+```bash
+pip3 install basedpyright ipython pytest uv
 ```
 
 ## Architecture
@@ -35,6 +58,8 @@ git submodule update
 
 - **`lisp/moonwwdz-*.el`** - Personal custom utilities:
   - `moonwwdz-golang.el` - Go development setup
+  - `moonwwdz-rust.el` - Rust development setup
+  - `moonwwdz-python.el` - Python development setup
   - `moonwwdz-shell.el` - Shell configuration
   - `moonwwdz-dict.el` - Dictionary integration
   - `moonwwdz-helper.el` - General helper functions
@@ -87,11 +112,25 @@ git submodule update
 | `C-c c` | Org-capture |
 | `C-c g` | Magit status |
 | `C-x C-n` | Toggle dired sidebar |
+| `C-c n` | Jump to next diagnostic |
+| `C-c p` | Jump to previous diagnostic |
 | `C-c d` | Mac dictionary lookup |
 | `C-c y` | Youdao dictionary |
 | `M-.` | Jump to definition (lsp-bridge) |
 | `M-,` | Return from definition |
 | `C-.` | Show documentation (lsp-bridge) |
+| `M-n` / `M-p` | Select next/prev completion candidate (acm) |
+
+### Language-specific Keybindings (Go / Rust / Python)
+
+| Keyboard | Go | Rust | Python |
+|----------|-----|------|--------|
+| `C-c C-c` | `go run` | `cargo run` | `python3` run |
+| `C-c C-b` | `go build` | `cargo build` | — |
+| `C-c C-t` | `go test` | `cargo test` | `pytest` |
+| `C-c C-k` | `go vet` | `cargo check` | `py_compile` |
+
+所有 `C-c C-c` 支持 `C-u` 前缀传入参数。Python 额外保留 `F5` 快速执行脚本。
 
 ## Development Notes
 
