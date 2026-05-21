@@ -8,7 +8,6 @@
   (setq python-indent-offset 4
 	python-indent 4
 	indent-tabs-mode nil
-	default-tab-width 4
 
 	;; 设置 run-python 的参数
 	python-shell-interpreter "ipython"
@@ -65,16 +64,19 @@
 
 ;; uv 虚拟环境激活
 (defun uv-activate ()
-  "Activate uv .venv in current project."
+  "Activate uv .venv in current project (skip if already active)."
   (interactive)
-  (let* ((project-root (or (project-root (project-current)) default-directory))
-         (venv-path (expand-file-name ".venv" project-root))
-         (python-path (expand-file-name "bin/python" venv-path)))
-    (if (file-exists-p python-path)
-        (progn
-          (pyvenv-activate venv-path)
-          (message "Activated uv venv: %s" venv-path))
-      (message "No .venv found in %s" project-root))))
+  (let* ((proj (project-current))
+         (root (if proj (project-root proj) default-directory))
+         (venv-path (expand-file-name ".venv" root)))
+    (unless (and (bound-and-true-p pyvenv-virtual-env)
+                 (file-equal-p pyvenv-virtual-env venv-path))
+      (let ((python-path (expand-file-name "bin/python" venv-path)))
+        (if (file-exists-p python-path)
+            (progn
+              (pyvenv-activate venv-path)
+              (message "Activated uv venv: %s" venv-path))
+          (message "No .venv found in %s" root))))))
 
 (add-hook 'python-mode-hook 'uv-activate)
 

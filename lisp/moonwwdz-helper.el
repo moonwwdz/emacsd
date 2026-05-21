@@ -3,23 +3,26 @@
   (interactive)
   (if smartparens-mode
 	  (progn
-		(setq smartparens-mode nil)
-		(setq electric-indent-mode nil)
-		(message "Paste mode has enable"))
+		(smartparens-mode -1)
+		(electric-indent-local-mode -1)
+		(message "Paste mode enabled"))
 	(progn
-	  (setq smartparens-mode t)
-	  (setq electric-indent-mode t)
-	  (message "Paste mode has disable"))))
+	  (smartparens-mode 1)
+	  (electric-indent-local-mode 1)
+	  (message "Paste mode disabled"))))
 ;;
+(defvar moonwwdz-work-journal-file "~/Documents/emacsNotes/org/work-journal.org")
+
 (defun append-work-journal()
   (interactive)
-  (let* ((the-buffer (find-file-noselect "~/Documents/emacsNotes/org/work-journal.org")))
-    (set-buffer the-buffer)
-    (goto-char (point-max))))
+  (set-buffer (find-file-noselect moonwwdz-work-journal-file))
+  (goto-char (point-max)))
 
 (defun update-work-journal()
   (interactive)
-  (set-buffer (current-buffer)))
+  (set-buffer (find-file-noselect moonwwdz-work-journal-file))
+  (goto-char (point-max))
+  (re-search-backward "^\\*" nil t))
 
 
 (defun moonwwdz-org-insert-custom-headlines ()

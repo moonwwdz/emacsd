@@ -16,25 +16,15 @@
 ;; 保存时自动格式化
 (add-hook 'rust-mode-hook
           (lambda ()
-            ;; 设置 Rust 环境变量
             (setq rust-indent-offset 4)
             (setq compilation-read-command nil)
-            (setq process-environment (cons (concat "TMPDIR=" (or (getenv "TMPDIR") "/tmp")) process-environment))
             (add-hook 'before-save-hook #'rust-format-buffer nil t)))
 
-;; lsp-bridge 配置已在 git-package.el 中全局设置
-;; 这里可以添加 Rust 特定的 lsp-bridge 配置
+;; 禁用 flycheck 的 Rust checker，避免与 lsp-bridge 冲突
 (add-hook 'rust-mode-hook
           (lambda ()
-            ;; 设置 lsp-bridge Rust 特定选项
             (when (featurep 'lsp-bridge)
-              ;; lsp-bridge 会自动检测 rust-analyzer，这里可以添加 Rust 特定配置
-              (message "lsp-bridge for Rust mode enabled"))))
-
-;; 诊断由 lsp-bridge + rust-analyzer 提供，禁用 flycheck 避免冲突和误报
-(add-hook 'rust-mode-hook
-          (lambda ()
-            (setq-local flycheck-disabled-checkers '(rust rust-clippy rust-cargo rust-cargo-clippy))))
+              (setq-local flycheck-disabled-checkers '(rust rust-clippy rust-cargo rust-cargo-clippy)))))
 
 ;; 一键运行 (C-c C-c)，带前缀 C-u 可输入参数
 (add-hook 'rust-mode-hook

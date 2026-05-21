@@ -11,7 +11,7 @@
 			   ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/"))))
 
 ;; cl - Common Lisp Extension
-(require 'cl)
+(require 'cl-lib)
 
 ;; Add Packages
 (defvar my/packages '(
@@ -52,7 +52,7 @@
 (defun my/packages-installed-p ()
   (cl-loop for pkg in my/packages
 	when (not (package-installed-p pkg)) do (cl-return nil)
-	finally (return t)))
+	finally (cl-return t)))
 
 (unless (my/packages-installed-p)
   (message "%s" "Refreshing package database...")

@@ -35,9 +35,9 @@
           ("u" "Update Work Journal" plain (function update-work-journal)
            "***** %U - %^{heading}\n %?")
           ;;日记
-          ("d" "Daily" entry (file+weektree "~/Documents/emacsNotes/org/daily.org")
+          ("d" "Daily" entry (file+olp+datetree "~/Documents/emacsNotes/org/daily.org" :tree-type week)
            "* %U - %^{heading}\n %?")
-          ("g" "Gratefule" entry (file+weektree "~/Documents/emacsNotes/org/grateful.org") "* %U - %^{heading}\n %?")))
+          ("g" "Grateful" entry (file+olp+datetree "~/Documents/emacsNotes/org/grateful.org" :tree-type week) "* %U - %^{heading}\n %?")))
 
 
   ;; org-roam
@@ -50,7 +50,7 @@
           ;;("c" "company" plain "%?" :target (file+head "company/company%<%Y%m%d%H>-${slug}.org" "#+title: ${title}\n#filetags: :compnay: \n\n") :unnarrowed t)
           ("c" "Coding" plain "%?" :target (file+head "Coding/coding%<%Y%m%d%H%M%S>-${slug}.org" "#+STARTUP: content\n#+title: ${title}\n#+filetags: :marketing: \n\n") :unnarrowed t)
           ("p" "project" plain "%?" :target (file+head "Project/Project%<%Y%m%d%H>-${slug}.org" "#+STARTUP: content\n#+title: ${title}\n#+filetags: :project: \n\n - tag ::") :unnarrowed t)
-          ("r" "reference" plain "%?" :target (file+head "<%Y%m%d%H>-${slug}.org" "#+STARTUP: content\n#+title: {$title}\n%filetags: reference \n\n -tag ::") :unarrowed t)))
+          ("r" "reference" plain "%?" :target (file+head "<%Y%m%d%H>-${slug}.org" "#+STARTUP: content\n#+title: ${title}\n#+filetags: :reference: \n\n -tag ::") :unnarrowed t)))
 
   ;; 设置默认 Org Agenda 文件目录
   (setq org-agenda-files

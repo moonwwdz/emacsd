@@ -31,7 +31,7 @@
 ;;
 (global-set-key (kbd "M-s w") 'moonwwdz-insert-current-week)
 (global-set-key (kbd "M-s t") 'moonwwdz-toggle-theme)
-(global-set-key (kbd "M-s i") 'moonwwdz-insert-file-content-at-point)
+(global-set-key (kbd "M-s f") 'moonwwdz-insert-file-content-at-point)
 
 ;; Enable Cache
 (setq url-automatic-caching t)
@@ -51,7 +51,6 @@
 
 ;; key bindings
 ;; mac 右command作为ctrl键用
-(setq mac-right-command-modifier 'control)
 (setq mac-option-modifier 'meta)
 (setq mac-command-modifier 'meta)
 (setq mac-right-command-modifier 'meta)

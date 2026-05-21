@@ -89,8 +89,6 @@
 (use-package dired-sidebar
   :load-path "~/.emacs.d/git-package/dired-sidebar"
   :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-  :ensure t
-  :commands (dired-sidebar-toggle-sidebar)
   :init
   (add-hook 'dired-sidebar-mode-hook
             (lambda ()
@@ -158,7 +156,7 @@
   (setq org-modern-star ["◉" "○" "✸" "✳" "◈" "◇" "✿" "❀" "✜"])
   (setq-default line-spacing 0.1)
   (setq org-modern-label-border 1)
-  (setq org-modern-table-vectical 2)
+  (setq org-modern-table-vertical 2)
   (setq org-modern-table-horizontal 0)
 
   ;; 复选框美化

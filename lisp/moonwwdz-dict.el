@@ -27,14 +27,12 @@
     (error "Empty word"))
   (let ((url-request-extra-headers '(("User-Agent" . "Emacs Elisp"))))
     (url-retrieve
-     (format moonwwdz-dict-api-url (url-encode-url word))
+     (format moonwwdz-dict-api-url (url-hexify-string word))
      'moonwwdz-dict--receive-callback
      (list word)
-     nil
-     (list (cons 'buffer-file-coding-system 'utf-8)))))
+     t)))
 
-(defun moonwwdz-dict--receive-callback (status word)
-  (declare (ignore status))
+(defun moonwwdz-dict--receive-callback (_status word)
   (goto-char (point-min))
   (re-search-forward "^$" nil 'move)
   (let ((json-text (decode-coding-string
@@ -42,7 +40,6 @@
                      'utf-8))
         result data translation)
     (kill-buffer (current-buffer))
-    (set-buffer-file-coding-system 'utf-8)
     (condition-case err
         (progn
           (setq result (json-read-from-string json-text))

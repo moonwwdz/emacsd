@@ -1,11 +1,9 @@
 (setq system-time-locale "C")
-(when (eq system-type 'gun/linux)
-  (set-frame-font "LXGW WenKai Mono Screen 14" nil t)
-  (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120))
-(when (eq system-type 'darwin)
-  (set-frame-font "LXGW WenKai Mono Screen 16" nil t)
-  (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120))
-(set-frame-size nil 160 60)
+(when (find-font (font-spec :family "LXGW WenKai Mono Screen"))
+  (let ((size (if (eq system-type 'darwin) 16 14)))
+    (set-frame-font (format "LXGW WenKai Mono Screen %d" size) nil t)
+    (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120)))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 ;; direct 中显示友好的文件消息
 (setq dired-listing-switches "-alh")
 ;; 自动缩进
@@ -15,7 +13,9 @@
 (global-hungry-delete-mode)
 
 ;; smartparens与hungry-delete冲突解决
-(defadvice hungry-delete-backward (before sp-delete-pair-advice activate) (save-match-data (sp-delete-pair (ad-get-arg 0))))
+(defun my/sp-delete-pair-before-hungry-delete (n &rest _)
+  (save-match-data (sp-delete-pair n)))
+(advice-add 'hungry-delete-backward :before #'my/sp-delete-pair-before-hungry-delete)
 ;;(electric-pair-mode 1)
 
 ;; 补全括号、引号
@@ -86,7 +86,7 @@
 			(mode . enh-ruby-mode)
 			(mode . inf-ruby-mode)))))))
 ;;设置缩进
-(setq default-tab-width 4)
+(setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 (setq c-basic-offset 4)
 

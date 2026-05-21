@@ -22,8 +22,6 @@
 ;; 显示行号
 (global-display-line-numbers-mode 1)
 
-;; 行号样式
-(setq linum-format "%2d ")
 ;; 更改光标的样式（不能生效，解决方案见第二集）
 (setq cursor-type 'bar)
 ;; 括号颜色

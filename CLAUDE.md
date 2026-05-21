@@ -13,6 +13,9 @@ This is a personal Emacs configuration repository (`~/.emacs.d`) with a modular 
 brew install python@3.12
 ln -s python3.12 /opt/homebrew/bin/python3
 
+# Linux (Arch) 安装字体
+yay -S ttf-lxgw-wenkai-screen
+
 # Python 依赖（lsp-bridge 运行所需）
 pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz watchdog packaging pyyaml --break-system-packages
 
@@ -59,10 +62,11 @@ pip3 install basedpyright ipython pytest uv
 - **`lisp/moonwwdz-*.el`** - Personal custom utilities:
   - `moonwwdz-golang.el` - Go development setup
   - `moonwwdz-rust.el` - Rust development setup
-  - `moonwwdz-python.el` - Python development setup
-  - `moonwwdz-shell.el` - Shell configuration
-  - `moonwwdz-dict.el` - Dictionary integration
+  - `moonwwdz-python.el` - Python development setup (uv/pyvenv 自动激活)
+  - `moonwwdz-shell.el` - Shell configuration (保存时自动 chmod +x)
+  - `moonwwdz-dict.el` - Dictionary integration (dict.13140000.xyz API)
   - `moonwwdz-helper.el` - General helper functions
+- **`lisp/git-package.el`** - Third-party git submodule packages configuration (lsp-bridge, evil, rime, dired-sidebar, org-modern, etc.)
 
 ### Package Structure
 
@@ -111,15 +115,44 @@ pip3 install basedpyright ipython pytest uv
 | `C-c C-l` | Edit org-mode links |
 | `C-c c` | Org-capture |
 | `C-c g` | Magit status |
+| `C-c a` | Org-agenda |
 | `C-x C-n` | Toggle dired sidebar |
+| `C-x C-r` | Recent files |
+| `C-x C-b` | ibuffer |
 | `C-c n` | Jump to next diagnostic |
 | `C-c p` | Jump to previous diagnostic |
-| `C-c d` | Mac dictionary lookup |
-| `C-c y` | Youdao dictionary |
+| `C-c d` | Mac dictionary lookup (macOS only) |
+| `C-c y` | Dictionary lookup (dict.13140000.xyz) |
 | `M-.` | Jump to definition (lsp-bridge) |
 | `M-,` | Return from definition |
 | `C-.` | Show documentation (lsp-bridge) |
 | `M-n` / `M-p` | Select next/prev completion candidate (acm) |
+| `C-=` | Expand region |
+| `C-\` | Toggle input method (rime) |
+
+### M-s Prefix Keybindings
+
+| Keyboard | Action |
+|----------|--------|
+| `M-s o` | Occur (search word at point) |
+| `M-s i` | counsel-imenu |
+| `M-s s` | Toggle sdcv helper (English word completion) |
+| `M-s w` | Insert current week heading |
+| `M-s t` | Toggle theme (modus-operandi / modus-vivendi) |
+| `M-s f` | Insert file content at point |
+| `M-s p` | Toggle paste mode |
+| `M-s e` | iedit mode (multi-cursor edit) |
+
+### Org-roam Keybindings
+
+| Keyboard | Action |
+|----------|--------|
+| `C-c n i` | Insert org-roam node |
+| `C-c n f` | Find org-roam node |
+| `C-c n l` | Toggle org-roam buffer |
+| `C-c n u` | Org-roam UI mode |
+| `C-c n c` | Org-roam capture |
+| `C-c n d` | Org-roam dailies |
 
 ### Language-specific Keybindings (Go / Rust / Python)
 
@@ -134,8 +167,14 @@ pip3 install basedpyright ipython pytest uv
 
 ## Development Notes
 
+- Requires Emacs 30+, tested on GNU Emacs 30.2
 - Configuration uses a modular approach with separate files for different aspects
 - Custom packages are managed as git submodules in `git-package/`
 - Personal custom utilities are prefixed with `moonwwdz-`
 - The setup supports both Chinese and English input methods
-- Uses modern Emacs features while maintaining compatibility
+- Uses `cl-lib` (not deprecated `cl`) for Common Lisp extensions
+- Uses `advice-add` (not deprecated `defadvice`) for function advice
+- Font configuration uses `find-font` guard to avoid errors when fonts are not installed
+- Emacs 30 defaults `.py` to `python-ts-mode`; explicit `auto-mode-alist` entry forces `python-mode` for lsp-bridge compatibility
+- Shell scripts are automatically made executable on first save via `executable-make-buffer-file-executable-if-script-p`
+- Window starts maximized via `(fullscreen . maximized)` in `default-frame-alist`
