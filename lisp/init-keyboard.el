@@ -33,6 +33,9 @@
 (global-set-key (kbd "M-s t") 'moonwwdz-toggle-theme)
 (global-set-key (kbd "M-s f") 'moonwwdz-insert-file-content-at-point)
 
+;; 对存量文本批量补中英文空格（选中 region 处理区域，否则整个 buffer）
+(global-set-key (kbd "M-s c") 'moonwwdz-space-cjk-ascii)
+
 ;; Enable Cache
 (setq url-automatic-caching t)
 

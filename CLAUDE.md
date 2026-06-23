@@ -148,6 +148,7 @@ pip3 install basedpyright ipython pytest uv
 | `M-s f` | Insert file content at point |
 | `M-s p` | Toggle paste mode |
 | `M-s e` | iedit mode (multi-cursor edit) |
+| `M-s c` | Add spaces between CJK and ASCII (region or whole buffer) |
 
 ### Org-roam Keybindings
 

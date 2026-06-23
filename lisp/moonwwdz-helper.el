@@ -63,4 +63,23 @@
       (insert-file-contents file-path))))
 
 
+;; 对存量文本批量在中文与英文/数字边界补空格
+;; （wraplish 只处理实时输入，无法处理打开的旧文件；此命令弥补这个空缺）
+(defun moonwwdz-space-cjk-ascii ()
+  "在当前 region（未选中则整个 buffer）的中文与英文/数字边界插入空格。
+中文与英数相邻、英数与中文相邻各补一个空格；已有空格的不重复处理。"
+  (interactive)
+  (save-restriction
+    (narrow-to-region (if (use-region-p) (region-beginning) (point-min))
+                      (if (use-region-p) (region-end) (point-max)))
+    (save-excursion
+      (goto-char (point-min))
+      ;; 中文 + 英数 -> 中文 空格 英数
+      (while (re-search-forward "\\([一-龥]+\\)\\([0-9A-Za-z]+\\)" nil t)
+        (replace-match "\\1 \\2"))
+      (goto-char (point-min))
+      ;; 英数 + 中文 -> 英数 空格 中文
+      (while (re-search-forward "\\([0-9A-Za-z]+\\)\\([一-龥]+\\)" nil t)
+        (replace-match "\\1 \\2")))))
+
 (provide 'moonwwdz-helper)

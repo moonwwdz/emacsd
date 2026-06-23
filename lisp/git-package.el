@@ -76,6 +76,7 @@
   (setq rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include"))
 (add-to-list 'load-path "~/.emacs.d/git-package/emacs-rime")
 (use-package rime
+  :defer t                       ; 按需加载：激活输入法（C-\）时才载入
   :config
   (setq rime-user-data-dir "~/.config/ibus/rime"))
 
@@ -97,9 +98,7 @@
 ;; 英文空格
 (use-package wraplish
   :load-path "~/.emacs.d/git-package/wraplish"
-  :config
-  (dolist (hook (list 'markdown-mode-hook))
-    (add-hook hook #'(lambda () (wraplish-mode 1)))))
+  :hook ((markdown-mode org-mode) . wraplish-mode))   ; 打开 markdown/org 时加载并启用，自动在中英文之间补空格
 
 ;; 侧边栏
 (use-package dired-sidebar
@@ -128,6 +127,7 @@
 (add-to-list 'load-path "~/.emacs.d/git-package/tp.el")
 (add-to-list 'load-path "~/.emacs.d/git-package/mastodon/lisp")
 (use-package mastodon
+  :commands (mastodon)           ; 按需加载：调用 mastodon 时才载入
   :config
   (setq mastodon-instance-url "https://social.13140000.xyz"
       mastodon-active-user "wdd"))

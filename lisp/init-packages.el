@@ -61,9 +61,9 @@
     (when (not (package-installed-p pkg))
       (package-install pkg))))
 
-;; Find Executable Path on OS X
+;; Find Executable Path on OS X（延迟到 startup 后执行，避免启动时阻塞调用 shell）
 (when (memq window-system '(mac ns))
-  (exec-path-from-shell-initialize))
+  (add-hook 'emacs-startup-hook #'exec-path-from-shell-initialize))
 
 ;; 文件末尾
 (provide 'init-packages)
