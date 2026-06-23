@@ -37,7 +37,7 @@ go install github.com/go-delve/delve/cmd/dlv@latest
 
 **Rust:**
 ```bash
-rustup component add rust-src rustfmt clippy
+rustup component add rust-src rustfmt clippy rust-analyzer
 ```
 
 **Python:**
@@ -126,6 +126,12 @@ pip3 install basedpyright ipython pytest uv
 | `M-.` | Jump to definition (lsp-bridge) |
 | `M-,` | Return from definition |
 | `C-.` | Show documentation (lsp-bridge) |
+| `M-?` | Find references (lsp-bridge) |
+| `C-c r` | Rename symbol (lsp-bridge) |
+| `C-c q` | Code action / quickfix (lsp-bridge) |
+| `C-c C-p` | Peek definition (lsp-bridge) |
+| `C-c j` | Search workspace symbols (lsp-bridge) |
+| `C-c h` | Incoming call hierarchy (lsp-bridge) |
 | `M-n` / `M-p` | Select next/prev completion candidate (acm) |
 | `C-=` | Expand region |
 | `C-\` | Toggle input method (rime) |
@@ -178,3 +184,4 @@ pip3 install basedpyright ipython pytest uv
 - Emacs 30 defaults `.py` to `python-ts-mode`; explicit `auto-mode-alist` entry forces `python-mode` for lsp-bridge compatibility
 - Shell scripts are automatically made executable on first save via `executable-make-buffer-file-executable-if-script-p`
 - Window starts maximized via `(fullscreen . maximized)` in `default-frame-alist`
+- lsp-bridge 启用 inlay hints（变量后自动显示推断类型）、document-highlight（光标符号高亮）、which-function（mode-line 显示当前函数）；`lsp-bridge-symbols-enable-which-func` 需配合 `which-function-mode` 才生效。rust-analyzer 默认提供类型提示，无需额外服务器配置

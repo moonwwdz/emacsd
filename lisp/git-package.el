@@ -31,13 +31,29 @@
         ("C-c p" . lsp-bridge-diagnostic-jump-prev)
         ("M-." . lsp-bridge-find-def)
         ("M-," . lsp-bridge-find-def-return)
-        ("C-." . lsp-bridge-show-documentation))
+        ("C-." . lsp-bridge-show-documentation)
+        ("M-?" . lsp-bridge-find-references)            ; 查找引用 (VSCode Shift+F12)
+        ("C-c r" . lsp-bridge-rename)                   ; 重命名 (VSCode F2)
+        ("C-c q" . lsp-bridge-code-action)              ; 代码操作/Quickfix (VSCode Ctrl+.)
+        ("C-c C-p" . lsp-bridge-peek)                   ; Peek 定义 (VSCode Alt+F12)
+        ("C-c j" . lsp-bridge-workspace-list-symbols)   ; 全项目符号搜索 (VSCode Ctrl+T)
+        ("C-c h" . lsp-bridge-incoming-call-hierarchy)) ; 调用层级
   :config                     ; 包加载后的配置
   ;; 启用悬停诊断
   (setq lsp-bridge-enable-hover-diagnostic t)
   ;; 启用自动补全
   (setq acm-enable-icon t)
   (setq acm-enable-doc t)
+  ;; 启用 inlay hint：像 VSCode 一样在变量后面自动显示推断出的类型
+  (setq lsp-bridge-enable-inlay-hint t)
+  ;; inlay hint 文字样式（颜色 + 斜体，便于和真实代码区分；换颜色只需改 :foreground）
+  (set-face-attribute 'lsp-bridge-inlay-hint-face nil
+                      :foreground "#7FDBFF" :slant 'italic)
+  ;; 光标停在符号上时，高亮 buffer 内所有同名引用（VSCode 默认效果）
+  (setq lsp-bridge-enable-document-highlight t)
+  ;; 在 mode-line 显示当前所在的函数/符号名（需配合 which-function-mode 才生效）
+  (setq lsp-bridge-symbols-enable-which-func t)
+  (which-function-mode 1)
   (defun my/lsp-bridge-doc-setup (&rest _)
     "Jump to doc window and bind q to close."
     (let ((win (get-buffer-window "*lsp-bridge-doc*")))
