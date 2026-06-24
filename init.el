@@ -20,8 +20,6 @@
 (require 'init-better-default)
 (require 'init-org)
 (require 'init-keyboard)
-;; 英文单词补全：文件约 1.6MB，启动后空闲 1 秒再加载，避免拖慢启动
-(run-with-idle-timer 1 nil (lambda () (require 'company-english-helper)))
 (require 'moonwwdz-helper)
 (require 'moonwwdz-golang)
 (require 'moonwwdz-rust)
