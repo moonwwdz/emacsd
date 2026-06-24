@@ -46,9 +46,18 @@
   (setq acm-enable-doc t)
   ;; 启用 inlay hint：像 VSCode 一样在变量后面自动显示推断出的类型
   (setq lsp-bridge-enable-inlay-hint t)
-  ;; inlay hint 文字样式（颜色 + 斜体，便于和真实代码区分；换颜色只需改 :foreground）
+  ;; inlay hint 文字样式：用冷调中灰 #8e949a，刻意和 molokai 的 type 青蓝(#66D9EF)拉开色相，
+  ;; 靠斜体传达“这是编辑器推断的类型，非真实代码”。不要用饱和鲜艳色，会撞 molokai 的语法高亮。
   (set-face-attribute 'lsp-bridge-inlay-hint-face nil
-                      :foreground "#7FDBFF" :slant 'italic)
+                      :foreground "#8e949a" :slant 'italic)
+  ;; 小文件 / 全屏打开时窗口可视范围不变，post-command 的滚动检测不再触发刷新，
+  ;; 而初次请求又落在服务器尚未分析完的空窗期，导致「不编辑就不显示类型」。
+  ;; 诊断到达（publishDiagnostics）说明服务器刚完成一次完整分析，此时 inlay hint 必然可用，借机补刷新一次。
+  (defun my/lsp-bridge-inlay-hint-after-diagnostic (&rest _)
+    "诊断到达时强制刷新一次 inlay hint，修复小文件打开后不显示类型的问题。"
+    (when lsp-bridge-enable-inlay-hint
+      (lsp-bridge-inlay-hint)))
+  (add-hook 'lsp-bridge-diagnostic-update-hook #'my/lsp-bridge-inlay-hint-after-diagnostic)
   ;; 光标停在符号上时，高亮 buffer 内所有同名引用（VSCode 默认效果）
   (setq lsp-bridge-enable-document-highlight t)
   ;; 在 mode-line 显示当前所在的函数/符号名（需配合 which-function-mode 才生效）
