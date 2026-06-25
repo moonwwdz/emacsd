@@ -121,7 +121,7 @@
 *** Rust (rust-mode)
 | keyboard    | action                    |
 |-------------+---------------------------|
-| C-c C-c     | 运行 (cargo run / rustc)  |
+| C-c C-c     | 运行 (src/bin 下 cargo run --bin，否则 cargo run / rustc) |
 | C-u C-c C-c | 运行并输入参数            |
 | C-c C-b     | 构建 (cargo build)        |
 | C-c C-t     | 测试 (cargo test)         |

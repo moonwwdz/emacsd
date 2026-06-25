@@ -170,7 +170,7 @@ pip3 install basedpyright ipython pytest uv
 | `C-c C-t` | `go test` | `cargo test` | `pytest` |
 | `C-c C-k` | `go vet` | `cargo check` | `py_compile` |
 
-所有 `C-c C-c` 支持 `C-u` 前缀传入参数。Python 额外保留 `F5` 快速执行脚本。
+所有 `C-c C-c` 支持 `C-u` 前缀传入参数。Python 额外保留 `F5` 快速执行脚本。Rust 在 `src/bin/NAME.rs`（或 `src/bin/NAME/main.rs`）下用 `cargo run --bin NAME`，其余 cargo 项目用 `cargo run`，无 `Cargo.toml` 时回退 `rustc` 直接编译运行。
 
 ## Development Notes
 
