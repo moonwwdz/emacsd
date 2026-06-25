@@ -91,30 +91,30 @@
 | C-c C-e h | 导出 HTML    |
 
 *** 工具
-| keyboard | action                      |
-|----------+-----------------------------|
-| C-c g    | magit 状态                  |
-| C-c d    | macOS 词典查词              |
-| C-c y    | 有道词典查词                |
-| M-s s    | 英语自动补全 开关           |
-| M-s p    | 粘贴辅助 开关               |
-| M-s w    | 插入当前周数                |
-| M-s t    | 切换主题                    |
-| C-c t i  | 切换 Web 缩进 (2/4空格)     |
+| keyboard | action                |
+|----------+-----------------------|
+| C-c g    | magit 状态            |
+| C-c d    | macOS 词典查词         |
+| C-c y    | 有道词典查词            |
+| M-s s    | 英语自动补全 开关       |
+| M-s p    | 粘贴辅助 开关           |
+| M-s w    | 插入当前周数            |
+| M-s t    | 切换主题               |
+| C-c t i  | 切换 Web 缩进 (2/4空格) |
 
 ** LSP (lsp-bridge)
 
 以下快捷键在 lsp-bridge-mode 激活时生效（go-mode、rust-mode、python-mode、emacs-lisp-mode 等）：
 
-| keyboard | action                  |
-|----------+-------------------------|
-| M-.      | 跳转到定义              |
-| M-,      | 返回跳转前位置          |
-| C-c n    | 跳到下一个诊断          |
-| C-c p    | 跳到上一个诊断          |
-| C-.      | 显示文档                |
-| M-n      | 补全菜单下一个候选项    |
-| M-p      | 补全菜单上一个候选项    |
+| keyboard | action            |
+|----------+-------------------|
+| M-.      | 跳转到定义         |
+| M-,      | 返回跳转前位置      |
+| C-c n    | 跳到下一个诊断      |
+| C-c p    | 跳到上一个诊断      |
+| C-.      | 显示文档           |
+| M-n      | 补全菜单下一个候选项 |
+| M-p      | 补全菜单上一个候选项 |
 
 ** 语言快捷键
 
@@ -137,29 +137,29 @@
 | C-c C-k     | 检查 (go vet)       |
 
 *** Python (python-mode)
-| keyboard    | action                  |
-|-------------+-------------------------|
-| C-c C-c     | 运行 (python3)          |
-| C-u C-c C-c | 运行并输入参数          |
-| C-c C-t     | 测试 (pytest)           |
-| C-c C-k     | 语法检查 (py_compile)   |
-| <f5>        | 快速执行当前文件        |
+| keyboard    | action               |
+|-------------+----------------------|
+| C-c C-c     | 运行 (python3)       |
+| C-u C-c C-c | 运行并输入参数         |
+| C-c C-t     | 测试 (pytest)        |
+| C-c C-k     | 语法检查 (py_compile) |
+| <f5>        | 快速执行当前文件       |
 
 ** uv (Python 虚拟环境)
 打开 Python 文件时自动激活项目 .venv，也可手动执行：
-| command      | action                    |
-|--------------+---------------------------|
-| M-x uv-activate | 手动激活项目 .venv     |
-| M-x pyvenv-deactivate | 退出虚拟环境    |
+| command               | action           |
+|-----------------------+------------------|
+| M-x uv-activate       | 手动激活项目 .venv |
+| M-x pyvenv-deactivate | 退出虚拟环境       |
 
 ** magit
-| keyboard | action                  |
-|----------+-------------------------|
-| C-c g    | 激活 magit              |
-| s        | stage (git add)         |
-| u        | unstage                 |
-| c c      | 进入提交页面            |
-| C-c C-c  | 确认提交                |
-| l l      | 查看日志                |
-| P        | 推送                    |
-| 1,2,3,4  | 收缩/展开显示           |
+| keyboard | action          |
+|----------+-----------------|
+| C-c g    | 激活 magit      |
+| s        | stage (git add) |
+| u        | unstage         |
+| c c      | 进入提交页面      |
+| C-c C-c  | 确认提交         |
+| l l      | 查看日志         |
+| P        | 推送            |
+| 1,2,3,4  | 收缩/展开显示     |

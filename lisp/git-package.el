@@ -76,9 +76,6 @@
   (with-eval-after-load 'acm
     (require 'acm-terminal)))
 
-;; 英语提示
-(add-to-list 'load-path "~/.emacs.d/git-package/company-english-helper")
-
 ;; 输入法
 (when (eq system-type 'darwin)
   (setq rime-librime-root "~/.emacs.d/librime/")
