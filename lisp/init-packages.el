@@ -20,8 +20,11 @@
                       posframe
 		      ;; --- Better Editor ---
 		      hungry-delete
-		      swiper
-		      counsel
+		      ;; 补全栈：vertico 纵向 UI + consult 命令 + orderless 模糊匹配 + marginalia 注解
+		      vertico
+		      consult
+		      orderless
+		      marginalia
 		      smartparens
 		      expand-region
 		      popwin
@@ -32,6 +35,13 @@
                       pyim
                       pyim-basedict
                       ox-hugo
+		      ;; --- Editing / Navigation 增强 ---
+		      vundo          ; 可视化撤销树
+		      avy            ; 屏内快速跳转
+		      wgrep          ; grep buffer 可编辑批量改
+		      hl-todo        ; 高亮 TODO/FIXME/HACK
+		      rainbow-mode   ; buffer 内显示颜色码对应色块
+		      treesit-auto   ; 自动启用并安装 tree-sitter 语法
 		      ;; --- Major Mode ---
 		      js2-mode
 		      web-mode
@@ -60,8 +70,9 @@
     (when (not (package-installed-p pkg))
       (package-install pkg))))
 
-;; Find Executable Path on OS X（延迟到 startup 后执行，避免启动时阻塞调用 shell）
-(when (memq window-system '(mac ns))
+;; Find Executable Path（GUI 下继承 shell 的 PATH，mac/ns 与 Linux x/pgtk 均启用，
+;; 延迟到 startup 后执行，避免启动时阻塞调用 shell）
+(when (memq window-system '(mac ns x pgtk))
   (add-hook 'emacs-startup-hook #'exec-path-from-shell-initialize))
 
 ;; 文件末尾

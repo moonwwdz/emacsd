@@ -1,11 +1,10 @@
 ;;; init-keyboard.el --- 快捷键定义  -*- lexical-binding: t; -*-
-;;搜索增强
-(global-set-key "\C-s" 'swiper)
-(global-set-key (kbd "C-c C-r") 'ivy-resume)
-(global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
-(global-set-key (kbd "C-h f") 'counsel-describe-function)
-(global-set-key (kbd "C-h v") 'counsel-describe-variable)
+;;搜索增强（vertico/consult 栈）
+(global-set-key "\C-s" 'consult-line)
+(global-set-key (kbd "C-c C-r") 'vertico-repeat)
+;; M-x / C-x C-f / C-h f / C-h v 使用原生命令，由 vertico + marginalia 美化与注解
+(global-set-key (kbd "C-x b") 'consult-buffer)
+(global-set-key (kbd "M-s g") 'consult-ripgrep)
 
 ;;打开自动备份文件列表
 (global-set-key "\C-x\ \C-r" 'recentf-open-files)
@@ -24,7 +23,7 @@
 (global-set-key (kbd "M-s o") 'occur-dwim)
 
 ;;
-(global-set-key (kbd "M-s i") 'counsel-imenu)
+(global-set-key (kbd "M-s i") 'consult-imenu)
 
 ;; 英语单词自动补全
 (global-set-key (kbd "M-s s") 'lsp-bridge-toggle-sdcv-helper)
@@ -65,6 +64,13 @@
 
 ;; 多行选中编辑
 (global-set-key (kbd "M-s e") 'iedit-mode)
+
+;; avy 屏内快速跳转
+(global-set-key (kbd "C-'") 'avy-goto-char-timer)
+(global-set-key (kbd "M-s j") 'avy-goto-line)
+
+;; vundo 可视化撤销树（替换默认 C-x u 的简易 undo 入口）
+(global-set-key (kbd "C-x u") 'vundo)
 
 ;; 切换输入法
 (global-set-key (kbd "C-\\") 'toggle-input-method)

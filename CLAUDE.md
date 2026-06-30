@@ -74,7 +74,6 @@ pip3 install basedpyright ipython pytest uv
   - `lsp-bridge` - LSP client with async completion
   - `evil` - Vim emulation layer
   - `emacs-rime` - Rime input method integration
-  - `company-english-helper` - English word completion
   - `nov` - EPUB reader
   - `org-modern` - Modern org-mode styling
   - `mastodon` - Mastodon client
@@ -107,11 +106,24 @@ pip3 install basedpyright ipython pytest uv
 - lsp-bridge for LSP auto-completion (requires Python 3.10+)
 - Dired sidebar for file navigation
 - Tab bar mode for workspace management
+- `rainbow-mode` shows color codes as swatches (enabled in elisp/css/web/conf modes)
+- `hl-todo` highlights TODO/FIXME/HACK keywords
+
+### Minibuffer Completion & Navigation
+- Completion stack: **vertico** (vertical UI) + **consult** (commands) + **orderless** (fuzzy matching) + **marginalia** (annotations); `savehist` for history-based sorting
+- `avy` for quick on-screen jumps; `vundo` for a visual undo tree
+- `wgrep` makes grep buffers editable for batch search-and-replace (lazy-loaded with grep)
+- `treesit-auto` auto-enables tree-sitter for non-lsp-bridge languages (json/yaml/toml/…); python/go/rust are deliberately excluded so they keep using lsp-bridge on the non-`*-ts-mode` major modes
 
 ## Essential Keybindings
 
 | Keyboard | Action |
 |----------|--------|
+| `C-s` | consult-line (in-buffer incremental search) |
+| `C-x b` | consult-buffer (switch buffer) |
+| `C-c C-r` | vertico-repeat (repeat last minibuffer session) |
+| `C-'` | avy-goto-char-timer (jump to char on screen) |
+| `C-x u` | vundo (visual undo tree) |
 | `C-c C-l` | Edit org-mode links |
 | `C-c c` | Org-capture |
 | `C-c g` | Magit status |
@@ -141,7 +153,9 @@ pip3 install basedpyright ipython pytest uv
 | Keyboard | Action |
 |----------|--------|
 | `M-s o` | Occur (search word at point) |
-| `M-s i` | counsel-imenu |
+| `M-s i` | consult-imenu |
+| `M-s g` | consult-ripgrep (project-wide content search) |
+| `M-s j` | avy-goto-line |
 | `M-s s` | Toggle sdcv helper (English word completion) |
 | `M-s w` | Insert current week heading |
 | `M-s t` | Toggle theme (modus-operandi / modus-vivendi) |
@@ -183,6 +197,8 @@ pip3 install basedpyright ipython pytest uv
 - Uses `advice-add` (not deprecated `defadvice`) for function advice
 - Font configuration uses `find-font` guard to avoid errors when fonts are not installed
 - Emacs 30 defaults `.py` to `python-ts-mode`; explicit `auto-mode-alist` entry forces `python-mode` for lsp-bridge compatibility
+- `treesit-auto` is configured to **exclude** `python`/`go`/`gomod`/`rust` from `treesit-auto-langs`: its `major-mode-remap-alist` entries would otherwise remap `python-mode`/`go-mode`/`rust-mode` to `*-ts-mode` once a grammar is installed, which would silently disable lsp-bridge (it hooks the non-ts major modes in `git-package.el`). When adding a new lsp-bridge language, also add it to this exclusion list.
+- Minibuffer completion uses the vertico stack (vertico/consult/orderless/marginalia), not ivy/counsel/swiper; `M-x`/`C-x C-f`/`C-h f`/`C-h v` use native commands enhanced by vertico + marginalia
 - Shell scripts are automatically made executable on first save via `executable-make-buffer-file-executable-if-script-p`
 - Window starts maximized via `(fullscreen . maximized)` in `default-frame-alist`
 - lsp-bridge 启用 inlay hints（变量后自动显示推断类型）、document-highlight（光标符号高亮）、which-function（mode-line 显示当前函数）；`lsp-bridge-symbols-enable-which-func` 需配合 `which-function-mode` 才生效。rust-analyzer 默认提供类型提示，无需额外服务器配置

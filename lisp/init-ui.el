@@ -51,4 +51,10 @@
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
+;; 在 buffer 内把 #RRGGBB / 颜色名显示成对应色块（写主题/配置时直观）。
+;; 只在与颜色强相关的模式启用，避免在普通源码里把名为 white/red 的标识符也染色。
+(dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook
+                css-mode-hook web-mode-hook conf-mode-hook))
+  (add-hook hook #'rainbow-mode))
+
 (provide 'init-ui)

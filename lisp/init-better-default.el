@@ -29,9 +29,45 @@
        '(("\\.js\\'" . js2-mode)
 	 ("\\.html\\'" . web-mode))
           auto-mode-alist))
-;; 搜索增强
-(ivy-mode 1)
-(setq ivy-use-virtual-buffers t)
+;; 补全栈：vertico(纵向 UI) + orderless(模糊匹配) + marginalia(注解) + consult(命令)
+(require 'vertico)
+(vertico-mode 1)
+(setq vertico-cycle t)
+(require 'marginalia)
+(marginalia-mode 1)
+(require 'orderless)
+(setq completion-styles '(orderless basic)
+      completion-category-overrides '((file (styles partial-completion))))
+;; vertico 按历史排序需要 savehist
+(require 'savehist)
+(savehist-mode 1)
+;; C-c C-r 重复上次 minibuffer 会话（vertico 已同步加载，直接 require 扩展即可）
+(require 'vertico-repeat)
+(add-hook 'minibuffer-setup-hook #'vertico-repeat-save)
+
+;; 高亮 TODO/FIXME/HACK 等关键字
+(require 'hl-todo)
+(global-hl-todo-mode 1)
+
+;; grep buffer 内可编辑，批量修改后一键写回（grep-mode 默认 C-c C-p 进入编辑）。
+;; 惰性加载：首次用到 grep 时再载入 wgrep，由其自身挂上 grep-setup-hook。
+(with-eval-after-load 'grep (require 'wgrep))
+
+;; 自动启用 tree-sitter：对不依赖 lsp-bridge 的语言提供更准的高亮/缩进。
+;; 'prompt 表示首次遇到缺失语法时询问安装（需 git + C 编译器），不会静默卡住。
+;; 关键：treesit-auto 会把 python-mode/go-mode/rust-mode 重映射到 *-ts-mode，
+;; 而 lsp-bridge 挂在非 ts 版模式上（见 git-package.el），一旦装了对应 grammar
+;; 就会使这三门语言的 lsp-bridge 失效。因此从 treesit-auto 中剔除这些语言，
+;; 只让它接管 json/yaml/toml/dockerfile 等无 lsp-bridge 的语言。
+(when (treesit-available-p)
+  (require 'treesit-auto)
+  (setq treesit-auto-install 'prompt)
+  (setq treesit-auto-langs
+        (seq-difference treesit-auto-langs '(python go gomod rust)))
+  (global-treesit-auto-mode 1))
+
+;; 屏内快速跳转(avy) / 可视化撤销树(vundo) 的命令已由各自包的 autoloads 提供，
+;; 这里无需再显式声明；键绑定见 init-keyboard，按键时按需加载。
 
 ;; 打开新窗口后，光标自动切换到新窗口
 (require 'popwin)

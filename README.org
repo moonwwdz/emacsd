@@ -4,6 +4,14 @@
 
 该配置是学习[[https://github.com/emacs-china/Spacemacs-rocks][21 天学习 Emacs]]的产物，感觉日用也顺手，抄了些python的配置，感觉不错
 
+** 主要特性
+
+- 补全栈：=vertico=（纵向 UI）+ =consult=（命令）+ =orderless=（模糊匹配）+ =marginalia=（注解），=savehist= 按历史排序
+- 编程语言：Go / Rust / Python / JS 经 =lsp-bridge= 提供补全、诊断、跳转、inlay hint
+- =treesit-auto= 为非 lsp-bridge 语言（json/yaml/toml 等）自动启用 tree-sitter；Python/Go/Rust 刻意排除，继续走 lsp-bridge
+- 导航与编辑：=avy=（屏内跳转）、=vundo=（可视化撤销树）、=wgrep=（grep 结果批量编辑）、=hl-todo=（关键字高亮）、=rainbow-mode=（颜色码色块）
+- Evil（Vim 键位）、Rime 输入法、org-mode + org-modern、magit、dired 侧边栏
+
 ** 安装
 #+BEGIN_SRC sh
   # macOS 需要安装 Python 3.10+（系统自带 3.9 不够）
@@ -49,13 +57,17 @@
 *** 搜索与导航
 | keyboard | action              |
 |----------+---------------------|
-| C-s      | swiper 搜索         |
-| M-x      | counsel M-x         |
+| C-s      | consult-line 搜索   |
+| M-x      | 执行命令 (vertico)  |
 | C-x C-f  | 查找文件            |
+| C-x b    | consult-buffer 切换 |
 | C-x C-r  | 最近打开的文件      |
 | C-x C-b  | ibuffer             |
 | M-s o    | occur 搜索并展示    |
-| M-s i    | counsel-imenu       |
+| M-s i    | consult-imenu       |
+| M-s g    | consult-ripgrep 全项目搜索 |
+| C-'      | avy 跳转到屏内字符   |
+| M-s j    | avy 跳转到行        |
 | M-1/2/3  | 跳转到对应窗口      |
 
 *** 编辑
@@ -63,6 +75,7 @@
 |----------+---------------------|
 | C-=      | expand-region 选区  |
 | M-s e    | iedit 多点编辑      |
+| C-x u    | vundo 可视化撤销树  |
 | M-%      | 查找替换            |
 | C-x r t  | 行首插入字符        |
 | C-x r k  | 删除矩形区域        |
