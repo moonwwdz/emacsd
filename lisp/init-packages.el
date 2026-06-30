@@ -1,3 +1,4 @@
+;;; init-packages.el --- 包管理与安装  -*- lexical-binding: t; -*-
 ;;  __        __             __   ___
 ;; |__)  /\  /  ` |__/  /\  / _` |__
 ;; |    /~~\ \__, |  \ /~~\ \__> |___
@@ -16,7 +17,6 @@
 ;; Add Packages
 (defvar my/packages '(
 		      ;; --- Auto-completion ---
-		      company
                       posframe
 		      ;; --- Better Editor ---
 		      hungry-delete
@@ -40,7 +40,6 @@
                       rust-mode
 		      ;; --- Minor Mode ---
 		      exec-path-from-shell
-                      flycheck
 		      ;; --- Themes ---
                       rainbow-delimiters
                       magit-section

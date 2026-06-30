@@ -1,3 +1,4 @@
+;;; init-better-default.el --- 增强默认设置  -*- lexical-binding: t; -*-
 (setq system-time-locale "C")
 (when (find-font (font-spec :family "LXGW WenKai Mono Screen"))
   (let ((size (if (eq system-type 'darwin) 16 14)))
@@ -58,7 +59,6 @@
 
 ;;取消提示音
 (setq ring-bell-function 'ignore)
-(setq visible-bell t)
 
 ;;粘贴到光标位置而不是鼠标位置
 (setq mouse-yank-at-point t)

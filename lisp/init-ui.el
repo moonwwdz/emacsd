@@ -1,3 +1,4 @@
+;;; init-ui.el --- 界面与主题设置  -*- lexical-binding: t; -*-
 ;;在图形界面的配置
 (when (display-graphic-p)
   ;; 关闭工具栏，tool-bar-mode 即为一个 Minor Mode
@@ -23,7 +24,6 @@
 (global-display-line-numbers-mode 1)
 
 ;; 更改光标的样式（不能生效，解决方案见第二集）
-(setq cursor-type 'bar)
 ;; 括号颜色
 (setq show-paren-style 'expression)
 ;; 关闭启动帮助画面

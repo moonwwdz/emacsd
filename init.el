@@ -1,3 +1,4 @@
+;;; init.el --- Emacs 配置入口  -*- lexical-binding: t; -*-
 
 
 ;; init config

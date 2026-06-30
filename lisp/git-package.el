@@ -1,3 +1,4 @@
+;;; git-package.el --- 第三方 git 子模块包配置  -*- lexical-binding: t; -*-
 ;; 自动补全
 
 ;; 终端显示补全

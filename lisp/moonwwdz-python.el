@@ -1,7 +1,12 @@
+;;; moonwwdz-python.el --- Python 开发配置  -*- lexical-binding: t; -*-
 ;; Python 配置
 
 ;; pip install ipython  # 交互式解释器
 ;; pip install uv       # 虚拟环境管理
+
+;; 强制 .py 使用 python-mode（而非 Emacs 30 默认的 python-ts-mode），
+;; lsp-bridge 的 python-mode hook 才能生效。必须在顶层设置，放进 python-mode-hook 永不触发。
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 
 ;; 基础设置
 (defun my-python-mode-config ()
@@ -9,8 +14,8 @@
 	python-indent 4
 	indent-tabs-mode nil
 
-	;; 设置 run-python 的参数
-	python-shell-interpreter "ipython"
+	;; 设置 run-python 的参数（ipython 未安装时回退到 python3，避免 run-python 失败）
+	python-shell-interpreter (if (executable-find "ipython") "ipython" "python3")
 	python-shell-interpreter-args "-i"
 	python-shell-prompt-regexp "In \\[[0-9]+\\]: "
 	python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
@@ -18,7 +23,6 @@
 	python-shell-completion-module-string-code "';'.join(module_completion('''%s'''))\n"
 	python-shell-completion-string-code "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
-  (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
   (hs-minor-mode t)
   (auto-fill-mode 0)
   (set (make-local-variable 'electric-indent-mode) nil)

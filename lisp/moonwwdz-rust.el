@@ -1,3 +1,4 @@
+;;; moonwwdz-rust.el --- Rust 开发配置  -*- lexical-binding: t; -*-
 ;; Rust 配置
 
 ;; rustup component add rust-src rust-analyzer  # 安装 Rust 源码和 rust-analyzer
@@ -28,12 +29,6 @@
             (setq rust-indent-offset 4)
             (setq compilation-read-command nil)
             (add-hook 'before-save-hook #'rust-format-buffer nil t)))
-
-;; 禁用 flycheck 的 Rust checker，避免与 lsp-bridge 冲突
-(add-hook 'rust-mode-hook
-          (lambda ()
-            (when (featurep 'lsp-bridge)
-              (setq-local flycheck-disabled-checkers '(rust rust-clippy rust-cargo rust-cargo-clippy)))))
 
 ;; 检测当前文件是否为 cargo bin 目标，返回 bin 名或 nil。
 ;; 支持两种约定：src/bin/NAME.rs（bin 名 NAME）、src/bin/NAME/main.rs（bin 名 NAME）。

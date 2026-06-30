@@ -8,7 +8,6 @@ transient
 elpa
 recentf
 eshell
-.python-environments
 session.*
 \#*
 *~
@@ -24,3 +23,5 @@ eln-cache
 request
 eww-bookmarks
 mastodon.plstore
+tramp
+persist

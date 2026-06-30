@@ -1,3 +1,4 @@
+;;; moonwwdz-helper.el --- 通用辅助函数  -*- lexical-binding: t; -*-
 ;; 打开/关闭粘贴模式，粘贴模式下没有自动补全和自动缩进
 (defun moonwwdz-toggle-paste-helper()
   (interactive)
@@ -35,8 +36,8 @@
       (org-end-of-line)
       (dotimes (i 8)
         (org-insert-heading-respect-content)
-        (setq timestamp (format-time-string "<%Y-%m-%d %a 21:00>" (time-add (current-time) (* (nth i memory-curve-days) 86400))))
-        (insert (format "TODO  %s-%s %s"  (nth i custom-text) headline-text timestamp)))))
+        (let ((timestamp (format-time-string "<%Y-%m-%d %a 21:00>" (time-add (current-time) (* (nth i memory-curve-days) 86400)))))
+          (insert (format "TODO  %s-%s %s"  (nth i custom-text) headline-text timestamp))))))
   (org-metaleft))
 
 (defun moonwwdz-insert-current-week ()

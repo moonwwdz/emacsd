@@ -1,4 +1,4 @@
-;;; moonwwdz-dict.el --- Chinese-English dictionary lookup using https://dict.13140000.xyz
+;;; moonwwdz-dict.el --- Chinese-English dictionary lookup using https://dict.13140000.xyz  -*- lexical-binding: t; -*-
 
 (require 'json)  ; 确保支持 JSON 解析（Emacs < 27 需要）
 
@@ -58,11 +58,11 @@
       (setq buffer-read-only nil)
       (erase-buffer)
       (insert (format "Word: %s\n\n" word))
-      (when-let ((phonetic (alist-get 'phonetic data)))
+      (when-let* ((phonetic (alist-get 'phonetic data)))
         (insert (format "Phonetic: [%s]\n" phonetic)))
-      (when-let ((translation (alist-get 'translation data)))
+      (when-let* ((translation (alist-get 'translation data)))
         (insert (format "\nTranslation: %s\n" translation)))
-      (when-let ((definition (alist-get 'definition data)))
+      (when-let* ((definition (alist-get 'definition data)))
         (insert (format "\nDefinition: %s\n" definition)))
       (moonwwdz-dict-mode)
       (goto-char (point-min)))

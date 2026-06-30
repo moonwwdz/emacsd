@@ -1,3 +1,4 @@
+;;; init-org.el --- Org-mode 配置  -*- lexical-binding: t; -*-
 ;; 必须在org导入之前
 (setq org-emphasis-regexp-components
       ;; markup 记号前后允许中文
@@ -8,7 +9,6 @@
             1))
  
 (use-package org
-  :ensure t
   :config
   ;; 1. 设置自定义强调样式（org-emphasis-alist）
   (setq org-emphasis-alist

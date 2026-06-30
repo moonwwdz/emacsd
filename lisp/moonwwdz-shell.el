@@ -1,3 +1,4 @@
+;;; moonwwdz-shell.el --- Shell 脚本配置  -*- lexical-binding: t; -*-
 ;;shell配置
 
 (defun moonwwdz-shell-mode-setup()
