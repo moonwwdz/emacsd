@@ -204,4 +204,10 @@
 
 
 
+;; GPG 解密走 Emacs minibuffer 口令输入（loopback），不依赖外部 pinentry。
+;; 否则 i3 等非 KDE 桌面下，常驻 gpg-agent 调用的 pinentry 会回退到
+;; pinentry-curses/tty，需要控制终端；GUI 启动的 Emacs 没有终端就看不到弹框。
+;; 需配合 ~/.gnupg/gpg-agent.conf 里的 allow-loopback-pinentry。
+(setq epg-pinentry-mode 'loopback)
+
 (provide 'init-better-default)

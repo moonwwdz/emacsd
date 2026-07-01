@@ -83,9 +83,16 @@
   (setq rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include"))
 (add-to-list 'load-path "~/.emacs.d/git-package/emacs-rime")
 (use-package rime
-  :defer t                       ; 按需加载：激活输入法（C-\）时才载入
+  ;; 不能用 :defer t：输入法没有 :commands/:bind 之类触发器，且 emacs-rime
+  ;; 不是 package.el 包、无 *-autoloads.el，:defer t 会导致 rime.el 永不加载、
+  ;; register-input-method 不执行，按 C-\ 报 "Can't activate input method 'rime'"。
+  ;; 改用 :demand t 启动即加载（动态模块仍按需在首次激活时载入，开销很小）。
+  :demand t
   :config
-  (setq rime-user-data-dir "~/.config/ibus/rime"))
+  ;; 必须用 emacs-rime 专属目录，不能和系统 fcitx5-rime 共用：
+  ;; fcitx5 登录自启后会独占 rime 的 LevelDB userdb 锁，emacs-rime 拿不到锁
+  ;; 会部署失败/崩溃。schema 已从 fcitx5 目录复制过来（不含 build/userdb）。
+  (setq rime-user-data-dir "~/.local/share/emacs-rime"))
 
 ;;(setq rime-posframe-properties
 ;;      (list :background-color "#333333"
