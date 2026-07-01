@@ -42,6 +42,7 @@
 		      hl-todo        ; 高亮 TODO/FIXME/HACK
 		      rainbow-mode   ; buffer 内显示颜色码对应色块
 		      treesit-auto   ; 自动启用并安装 tree-sitter 语法
+		      gcmh           ; 动态 GC：空闲时才回收，活跃期不卡顿
 		      ;; --- Major Mode ---
 		      js2-mode
 		      web-mode

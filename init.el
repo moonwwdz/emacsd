@@ -1,18 +1,21 @@
 ;;; init.el --- Emacs 配置入口  -*- lexical-binding: t; -*-
 
-
-;; init config
 ;;(package-initialize)
 
-;; 启动加速：启动期临时调大 GC 阈值，startup 完成后恢复为 64MB（默认仅 800KB，频繁 GC 拖慢启动）
+;; 启动期暂时关闭 GC；启动完成后由 gcmh 接管（空闲才回收，活跃期不卡）
 (setq gc-cons-threshold most-positive-fixnum
       gc-cons-percentage 0.6)
-(setq read-process-output-max (* 1024 1024)) ; 1MB，提升 lsp-bridge 等 IPC 吞吐
+(setq read-process-output-max (* 1024 1024)) ; 提升 lsp-bridge IPC 吞吐
 (add-hook 'emacs-startup-hook
           (lambda ()
             (garbage-collect)
-            (setq gc-cons-threshold (* 64 1024 1024)
-                  gc-cons-percentage 0.1)))
+            (setq gc-cons-percentage 0.1)
+            ;; gcmh 不可用时回退有界阈值，避免 gc-cons-threshold 停留在 most-positive-fixnum
+            (if (require 'gcmh nil t)
+                (progn
+                  (setq gcmh-high-cons-threshold (* 128 1024 1024))
+                  (gcmh-mode 1))
+              (setq gc-cons-threshold (* 64 1024 1024)))))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
 ;; Package Management
 ;; -----------------------------------------------------------------

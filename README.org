@@ -10,13 +10,19 @@
 - 编程语言：Go / Rust / Python / JS 经 =lsp-bridge= 提供补全、诊断、跳转、inlay hint
 - =treesit-auto= 为非 lsp-bridge 语言（json/yaml/toml 等）自动启用 tree-sitter；Python/Go/Rust 刻意排除，继续走 lsp-bridge
 - 导航与编辑：=avy=（屏内跳转）、=vundo=（可视化撤销树）、=wgrep=（grep 结果批量编辑）、=hl-todo=（关键字高亮）、=rainbow-mode=（颜色码色块）
-- Evil（Vim 键位）、Rime 输入法、org-mode + org-modern、magit、dired 侧边栏
+- =wraplish= 在所有 text-mode 派生 buffer（markdown/org/mastodon 等）自动在中英文间补空格
+- =project.el= 内置项目管理（=C-x p= 前缀），=C-x p b= 接入 consult-project-buffer
+- =gcmh= 动态 GC：活跃期高水位（128 MB），空闲时才回收，避免 lsp-bridge 高频 IPC 场景卡顿
+- Evil（Vim 键位）、Rime 输入法、org-mode + org-modern、magit、dired 侧边栏、tab-bar 多工作区
 
 ** 安装
 #+BEGIN_SRC sh
   # macOS 需要安装 Python 3.10+（系统自带 3.9 不够）
   brew install python@3.12
   ln -s python3.12 /opt/homebrew/bin/python3
+
+  # macOS dired 目录优先排序（GNU ls）
+  brew install coreutils
 
   # Python 依赖（lsp-bridge 运行所需）
   pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz watchdog packaging pyyaml --break-system-packages
@@ -88,12 +94,19 @@
 | C-x r l  | 列出书签 |
 
 *** 文件与窗口
-| keyboard | action           |
-|----------+------------------|
-| C-x C-n  | 打开侧边栏       |
-| C-x t 2  | 新建标签页        |
-| C-x t r  | 重命名标签页      |
-| C-x t 1  | 关闭其他标签页    |
+| keyboard      | action                         |
+|---------------+--------------------------------|
+| C-x C-n       | 打开/关闭侧边栏                |
+| C-x t 2       | 新建标签页                     |
+| C-x t 0       | 关闭当前标签页                 |
+| C-x t o       | 切换到下一个标签页             |
+| C-x t r       | 重命名标签页                   |
+| C-<tab>       | 切换到下一个标签页（快捷）     |
+| C-S-<tab>     | 切换到上一个标签页（快捷）     |
+| C-x p f       | 在项目内查找文件               |
+| C-x p p       | 切换项目                       |
+| C-x p b       | 在项目内切换 buffer（consult） |
+| C-x p g       | 在项目内搜索（grep）           |
 
 *** Org-mode
 | keyboard  | action       |

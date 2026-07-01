@@ -26,3 +26,5 @@ mastodon.plstore
 tramp
 persist
 history
+backups
+auto-save

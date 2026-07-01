@@ -112,7 +112,13 @@
 ;; 英文空格
 (use-package wraplish
   :load-path "~/.emacs.d/git-package/wraplish"
-  :hook ((markdown-mode org-mode) . wraplish-mode))   ; 打开 markdown/org 时加载并启用，自动在中英文之间补空格
+  :hook (text-mode . wraplish-mode) ; 覆盖 markdown/org/gfm/mastodon 等所有 text 派生 buffer
+  :config
+  ;; message-mode 排除：wraplish 不区分 header/body，会污染 Subject/From 等邮件头
+  (defun my/wraplish-disable ()
+    "在当前 buffer 关闭 `wraplish-mode'。"
+    (wraplish-mode -1))
+  (add-hook 'message-mode-hook #'my/wraplish-disable))
 
 ;; 侧边栏
 (use-package dired-sidebar

@@ -13,6 +13,9 @@ This is a personal Emacs configuration repository (`~/.emacs.d`) with a modular 
 brew install python@3.12
 ln -s python3.12 /opt/homebrew/bin/python3
 
+# macOS dired 目录优先排序依赖 GNU ls
+brew install coreutils
+
 # Linux (Arch) 安装字体
 yay -S ttf-lxgw-wenkai-screen
 
@@ -49,6 +52,7 @@ pip3 install basedpyright ipython pytest uv
 
 ### Core Configuration Files
 
+- **`early-init.el`** - 早于 package.el 和建帧执行：禁用 UI 控件（从源头不绘制）、最大化、native-comp 静音、frame-inhibit-implicit-resize；Emacs 27+ 专属
 - **`init.el`** - Main configuration entry point that loads all modules
 - **`lisp/init-*.el`** - Modular configuration files:
   - `init-packages.el` - Package management and installation
@@ -104,10 +108,11 @@ pip3 install basedpyright ipython pytest uv
 ### UI/UX
 - Evil mode for Vim keybindings
 - lsp-bridge for LSP auto-completion (requires Python 3.10+)
-- Dired sidebar for file navigation
-- Tab bar mode for workspace management
+- Dired sidebar for file navigation (`C-x C-n`)
+- Tab-bar for workspace management: each tab is an independent window layout; `C-x t` prefix to manage, `C-<tab>` / `C-S-<tab>` to cycle tabs
 - `rainbow-mode` shows color codes as swatches (enabled in elisp/css/web/conf modes)
 - `hl-todo` highlights TODO/FIXME/HACK keywords
+- `wraplish` auto-inserts spaces between CJK and ASCII characters (hooks `text-mode`; `message-mode` excluded to avoid corrupting email headers)
 
 ### Minibuffer Completion & Navigation
 - Completion stack: **vertico** (vertical UI) + **consult** (commands) + **orderless** (fuzzy matching) + **marginalia** (annotations); `savehist` for history-based sorting
@@ -131,6 +136,8 @@ pip3 install basedpyright ipython pytest uv
 | `C-x C-n` | Toggle dired sidebar |
 | `C-x C-r` | Recent files |
 | `C-x C-b` | ibuffer |
+| `C-<tab>` | tab-bar-switch-to-next-tab |
+| `C-S-<tab>` | tab-bar-switch-to-prev-tab |
 | `C-c n` | Jump to next diagnostic |
 | `C-c p` | Jump to previous diagnostic |
 | `C-c d` | Mac dictionary lookup (macOS only) |
@@ -147,6 +154,15 @@ pip3 install basedpyright ipython pytest uv
 | `M-n` / `M-p` | Select next/prev completion candidate (acm) |
 | `C-=` | Expand region |
 | `C-\` | Toggle input method (rime) |
+
+### project.el Keybindings (C-x p prefix)
+
+| Keyboard | Action |
+|----------|--------|
+| `C-x p f` | Find file in project |
+| `C-x p p` | Switch project |
+| `C-x p b` | consult-project-buffer (switch buffer in project) |
+| `C-x p g` | Search in project (grep) |
 
 ### M-s Prefix Keybindings
 
@@ -200,5 +216,10 @@ pip3 install basedpyright ipython pytest uv
 - `treesit-auto` is configured to **exclude** `python`/`go`/`gomod`/`rust` from `treesit-auto-langs`: its `major-mode-remap-alist` entries would otherwise remap `python-mode`/`go-mode`/`rust-mode` to `*-ts-mode` once a grammar is installed, which would silently disable lsp-bridge (it hooks the non-ts major modes in `git-package.el`). When adding a new lsp-bridge language, also add it to this exclusion list.
 - Minibuffer completion uses the vertico stack (vertico/consult/orderless/marginalia), not ivy/counsel/swiper; `M-x`/`C-x C-f`/`C-h f`/`C-h v` use native commands enhanced by vertico + marginalia
 - Shell scripts are automatically made executable on first save via `executable-make-buffer-file-executable-if-script-p`
-- Window starts maximized via `(fullscreen . maximized)` in `default-frame-alist`
+- `(fullscreen . maximized)` and all frame decoration settings live in `early-init.el` (via `default-frame-alist`), applied before the first frame is created — do not add frame-alist entries in `init-better-default.el`
+- GC is managed by **gcmh**: `gc-cons-threshold` is raised to 128 MB during active use (via `pre-command-hook`) and lowered on idle. If gcmh is unavailable at startup, falls back to a fixed 64 MB threshold. Do not set `gc-cons-threshold` manually after startup.
+- File backups are centralised to `~/.emacs.d/backups/` (versioned, 6 kept) and auto-save to `~/.emacs.d/auto-save/`; `make-backup-files` is **enabled** — the old `nil` setting has been removed.
+- Project navigation uses built-in **project.el** (`C-x p` prefix), not projectile. `C-x p b` is rebound to `consult-project-buffer`.
+- `wraplish` hooks `text-mode` to auto-insert spaces between CJK and ASCII. `message-mode` is excluded (via `my/wraplish-disable` on `message-mode-hook`) to prevent space injection into email headers. When adding a new text-derived mode that should NOT get wraplish, add a similar hook.
+- `dired-listing-switches` uses `--group-directories-first` on Linux; on macOS uses `gls` (from `coreutils`) if available, otherwise falls back to plain `-alh`. Install with `brew install coreutils` to get directory-first sorting on macOS.
 - lsp-bridge 启用 inlay hints（变量后自动显示推断类型）、document-highlight（光标符号高亮）、which-function（mode-line 显示当前函数）；`lsp-bridge-symbols-enable-which-func` 需配合 `which-function-mode` 才生效。rust-analyzer 默认提供类型提示，无需额外服务器配置
