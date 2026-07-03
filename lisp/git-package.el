@@ -168,6 +168,7 @@
   :config
   (evil-mode 1)
   (evil-set-initial-state 'image-mode 'emacs)
+  (evil-set-initial-state 'mastodon-mode 'emacs)
   (evil-global-set-key 'normal (kbd "M-.") 'lsp-bridge-find-def)
   (evil-global-set-key 'normal (kbd "M-,") 'lsp-bridge-find-def-return)
   (evil-global-set-key 'normal (kbd "C-.") 'lsp-bridge-show-documentation))
