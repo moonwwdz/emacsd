@@ -70,6 +70,7 @@ pip3 install basedpyright ipython pytest uv
   - `moonwwdz-shell.el` - Shell configuration (保存时自动 chmod +x)
   - `moonwwdz-dict.el` - Dictionary integration (dict.13140000.xyz API)
   - `moonwwdz-helper.el` - General helper functions
+  - `moonwwdz-media.el` - 电影库（NFO）管理：扫描纯电影库、海报/元数据展示、NFO 编辑、外调播放器
 - **`lisp/git-package.el`** - Third-party git submodule packages configuration (lsp-bridge, evil, rime, dired-sidebar, org-modern, etc.)
 
 ### Package Structure
@@ -120,6 +121,12 @@ pip3 install basedpyright ipython pytest uv
 - `wgrep` makes grep buffers editable for batch search-and-replace (lazy-loaded with grep)
 - `treesit-auto` auto-enables tree-sitter for non-lsp-bridge languages (json/yaml/toml/…); python/go/rust are deliberately excluded so they keep using lsp-bridge on the non-`*-ts-mode` major modes
 
+### Media Library (NFO)
+- `moonwwdz-media` (`C-c m`): 扫描「一文件夹一部电影」的 NFO 电影库（Kodi/Jellyfin/Emby/TMM 刮削产物），列表/详情展示（海报+元数据+简介+背景图），可编辑 NFO、外调播放器
+- 默认读 `moonwwdz-media-root-dir`（nil 则每次提示）；图片本地优先（poster/-poster/folder/cover/thumb…），本地缺失时按 nfo 内 `<thumb>`/`<fanart>` URL 下载到 `~/.emacs.d/.cache/moonwwdz-media/`
+- 表单编辑（`E`）用 dom 重序列化保证 well-formed，但会丢失刮削器注释（如 `<!--created by TMM-->`）；`e` 直接打开原始 nfo 用 nxml-mode 编辑
+- 列表/详情内部键位：`RET` 详情/播放、`e` 打开 nfo、`E` 表单改字段、`p` 外调播放器、`/` 过滤、`g` 刷新、`q` 退出
+
 ## Essential Keybindings
 
 | Keyboard | Action |
@@ -142,6 +149,7 @@ pip3 install basedpyright ipython pytest uv
 | `C-c p` | Jump to previous diagnostic |
 | `C-c d` | Mac dictionary lookup (macOS only) |
 | `C-c y` | Dictionary lookup (dict.13140000.xyz) |
+| `C-c m` | 电影库（NFO）管理 (moonwwdz-media) |
 | `M-.` | Jump to definition (lsp-bridge) |
 | `M-,` | Return from definition |
 | `C-.` | Show documentation (lsp-bridge) |

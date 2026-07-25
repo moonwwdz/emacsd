@@ -32,6 +32,7 @@
 (require 'moonwwdz-dict)
 (require 'jsonrpc)
 (require 'git-package)
+(require 'moonwwdz-media)
 
 
 (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))

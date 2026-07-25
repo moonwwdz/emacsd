@@ -52,6 +52,9 @@
 ;;magit
 (global-set-key (kbd "C-c g") 'magit-status)
 
+;; 电影库（NFO）管理：扫描、展示海报/元数据、编辑 nfo、外调播放器
+(global-set-key (kbd "C-c m") 'moonwwdz-media)
+
 ;; key bindings
 ;; mac 右command作为ctrl键用
 (setq mac-option-modifier 'meta)
