@@ -79,7 +79,7 @@
 
 ;; 输入法
 (when (eq system-type 'darwin)
-  (setq rime-librime-root "~/.emacs.d/librime/")
+  (setq rime-librime-root "/opt/homebrew/opt/librime/")
   (setq rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include"))
 (add-to-list 'load-path "~/.emacs.d/git-package/emacs-rime")
 (use-package rime
@@ -92,7 +92,17 @@
   ;; 必须用 emacs-rime 专属目录，不能和系统 fcitx5-rime 共用：
   ;; fcitx5 登录自启后会独占 rime 的 LevelDB userdb 锁，emacs-rime 拿不到锁
   ;; 会部署失败/崩溃。schema 已从 fcitx5 目录复制过来（不含 build/userdb）。
-  (setq rime-user-data-dir "~/.local/share/emacs-rime"))
+  (setq rime-user-data-dir "~/.local/share/emacs-rime")
+  ;; 退出前主动用 librime 官方 API 释放 Service（含 leveldb、后台维护线程），
+  ;; 不要留给 libc exit() 的 C++ 全局析构——后者在 elisp 环境/线程已半拆解时
+  ;; 析构 rime::Service 会段错误：librime 1.14+ 上 GUI 正常退出偶发 SIGSEGV
+  ;; （~/Library/Logs/DiagnosticReports/Emacs-*.ips 可见 Service→Session→
+  ;; ConcreteEngine 析构栈，最终 emacs_abort 触发 Abort trap: 6）。
+  ;; 模块未加载（会话内未激活过 rime）时 finalize 不存在，fboundp 守护跳过。
+  (add-hook 'kill-emacs-hook
+            (lambda ()
+              (when (fboundp 'rime-lib-finalize)
+                (ignore-errors (rime-lib-finalize))))))
 
 ;;(setq rime-posframe-properties
 ;;      (list :background-color "#333333"
