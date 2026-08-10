@@ -76,6 +76,13 @@
 (when (memq window-system '(mac ns x pgtk))
   (add-hook 'emacs-startup-hook #'exec-path-from-shell-initialize))
 
+;; GPG pinentry：让 gpg-agent 把密码请求转发到 Emacs minibuffer
+;; 配合 ~/.gnupg/gpg-agent.conf 的 allow-emacs-pinentry，GUI Emacs 也能输 GPG 密码
+(use-package pinentry
+  :ensure t
+  :config
+  (pinentry-start))
+
 ;; 文件末尾
 (provide 'init-packages)
 
