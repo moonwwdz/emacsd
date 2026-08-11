@@ -30,7 +30,7 @@
 		      popwin
 		      pyvenv
                       osx-dictionary
-                      pinentry
+                      pinentry       ; GPG pinentry（loopback 模式密码转发到 minibuffer），防 autoremove 误删
 		      magit
 		      iedit
 		      ox-hugo

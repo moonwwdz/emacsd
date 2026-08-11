@@ -79,8 +79,18 @@
 
 ;; 输入法
 (when (eq system-type 'darwin)
-  (setq rime-librime-root "/opt/homebrew/opt/librime/")
-  (setq rime-emacs-module-header-root "/Applications/Emacs.app/Contents/Resources/include"))
+  ;; librime：按 Homebrew 前缀选——aarch64 -> /opt/homebrew，其余 -> /usr/local
+  ;; module-header：从当前 Emacs 的 .app bundle 推断（emacsformacosx/emacs-plus 通用），
+  ;; 推断不到时回退官方 app bundle 路径
+  (let ((mod-dir (expand-file-name "../Resources/include/" invocation-directory)))
+    (setq rime-librime-root
+          (if (string-prefix-p "aarch64" system-configuration)
+              "/opt/homebrew/opt/librime/"
+            "/usr/local/opt/librime/")
+          rime-emacs-module-header-root
+          (if (file-exists-p (expand-file-name "emacs-module.h" mod-dir))
+              mod-dir
+            "/Applications/Emacs.app/Contents/Resources/include"))))
 (add-to-list 'load-path "~/.emacs.d/git-package/emacs-rime")
 (use-package rime
   ;; 不能用 :defer t：输入法没有 :commands/:bind 之类触发器，且 emacs-rime
@@ -93,6 +103,10 @@
   ;; fcitx5 登录自启后会独占 rime 的 LevelDB userdb 锁，emacs-rime 拿不到锁
   ;; 会部署失败/崩溃。schema 已从 fcitx5 目录复制过来（不含 build/userdb）。
   (setq rime-user-data-dir "~/.local/share/emacs-rime")
+  ;; 设为默认输入法；候选词 GUI 用 posframe，终端回退 popup
+  ;; （posframe 在 TTY 下无法建子框，必须用 display-graphic-p 守护）
+  (setq default-input-method "rime"
+        rime-show-candidate (if (display-graphic-p) 'posframe 'popup))
   ;; 退出前主动用 librime 官方 API 释放 Service（含 leveldb、后台维护线程），
   ;; 不要留给 libc exit() 的 C++ 全局析构——后者在 elisp 环境/线程已半拆解时
   ;; 析构 rime::Service 会段错误：librime 1.14+ 上 GUI 正常退出偶发 SIGSEGV
@@ -110,9 +124,7 @@
 ;;            :font "WenQuanYi Micro Hei Mono-14"
 ;;            :internal-border-width 10))
 (use-package posframe
-  :config
-  (setq default-input-method "rime"
-      rime-show-candidate 'posframe))
+  :ensure t)
 
 ;; 显示UI美化
 (add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")
