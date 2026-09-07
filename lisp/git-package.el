@@ -116,7 +116,12 @@
 
 ;; 显示UI美化
 (add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")
-(load-theme 'modus-vivendi)
+;; load-theme 按 custom-theme-load-path 查找，只加 load-path 会落到内置 5.2.0 主题、
+;; 而 (require 'modus-themes) 又解析到本 submodule 5.3.0，造成主题/库版本错配。
+;; 两处都指向 submodule，保证版本一致。
+(add-to-list 'custom-theme-load-path "~/.emacs.d/git-package/modus-themes")
+;; t = 跳过主题安全确认（自己 submodule 里的主题，明确信任；否则 batch/首次加载会弹确认）
+(load-theme 'modus-vivendi t)
 ;;(load-theme 'modus-operandi)
 
 ;; 英文空格
@@ -184,8 +189,10 @@
   (evil-global-set-key 'normal (kbd "C-.") 'lsp-bridge-show-documentation))
 
 ;; nov
-(use-package esxml
-  :load-path "~/.emacs.d/git-package/esxml")
+;; esxml 只被 nov（EPUB）使用，且 nov 仅按需 require esxml-query（自带 lexical-binding，
+;; 不拉 esxml.el）。这里只登记 load-path，不再 eager 加载——esxml.el 缺 lexical-binding
+;; cookie 的启动警告随之消失，打开 .epub 时才会真正加载。
+(add-to-list 'load-path "~/.emacs.d/git-package/esxml")
 
 (use-package nov
   :load-path "~/.emacs.d/git-package/nov"

@@ -30,7 +30,6 @@
 (require 'moonwwdz-python)
 (require 'moonwwdz-shell)
 (require 'moonwwdz-dict)
-(require 'jsonrpc)
 (require 'git-package)
 (require 'moonwwdz-media)
 

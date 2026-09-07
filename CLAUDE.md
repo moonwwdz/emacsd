@@ -188,17 +188,6 @@ pip3 install basedpyright ipython pytest uv
 | `M-s e` | iedit mode (multi-cursor edit) |
 | `M-s c` | Add spaces between CJK and ASCII (region or whole buffer) |
 
-### Org-roam Keybindings
-
-| Keyboard | Action |
-|----------|--------|
-| `C-c n i` | Insert org-roam node |
-| `C-c n f` | Find org-roam node |
-| `C-c n l` | Toggle org-roam buffer |
-| `C-c n u` | Org-roam UI mode |
-| `C-c n c` | Org-roam capture |
-| `C-c n d` | Org-roam dailies |
-
 ### Language-specific Keybindings (Go / Rust / Python)
 
 | Keyboard | Go | Rust | Python |
@@ -212,7 +201,7 @@ pip3 install basedpyright ipython pytest uv
 
 ## Development Notes
 
-- Requires Emacs 30+, tested on GNU Emacs 30.2
+- Requires Emacs 30+, tested on GNU Emacs 31.1
 - Configuration uses a modular approach with separate files for different aspects
 - Custom packages are managed as git submodules in `git-package/`
 - Personal custom utilities are prefixed with `moonwwdz-`

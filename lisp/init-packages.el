@@ -30,11 +30,10 @@
 		      popwin
 		      pyvenv
                       osx-dictionary
+                      pinentry
 		      magit
 		      iedit
-                      pyim
-                      pyim-basedict
-                      ox-hugo
+		      ox-hugo
 		      ;; --- Editing / Navigation 增强 ---
 		      vundo          ; 可视化撤销树
 		      avy            ; 屏内快速跳转
@@ -43,6 +42,8 @@
 		      rainbow-mode   ; buffer 内显示颜色码对应色块
 		      treesit-auto   ; 自动启用并安装 tree-sitter 语法
 		      gcmh           ; 动态 GC：空闲时才回收，活跃期不卡顿
+		      yasnippet      ; lsp-bridge snippet 展开依赖
+                      dired-subtree  ; dired-sidebar submodule 的硬依赖
 		      ;; --- Major Mode ---
 		      js2-mode
 		      web-mode
@@ -78,12 +79,11 @@
 
 ;; GPG pinentry：让 gpg-agent 把密码请求转发到 Emacs minibuffer
 ;; 配合 ~/.gnupg/gpg-agent.conf 的 allow-emacs-pinentry，GUI Emacs 也能输 GPG 密码
+;; 安装统一走上方 my/packages 列表，避免 use-package :ensure 每次启动重试
 (use-package pinentry
-  :ensure t
   :config
-  (pinentry-start))
+  ;; agent 不可用/环境受限时不让 :config 抛错拖垮启动
+  (ignore-errors (pinentry-start)))
 
 ;; 文件末尾
 (provide 'init-packages)
-
-
