@@ -65,7 +65,7 @@ pip3 install basedpyright ipython pytest uv
 
 - **`lisp/moonwwdz-*.el`** - Personal custom utilities:
   - `moonwwdz-golang.el` - Go development setup
-  - `moonwwdz-rust.el` - Rust development setup
+  - `moonwwdz-rust.el` - Rust 开发（`#[test]` 单用例运行、`src/bin` 目标识别运行、保存自动格式化、langserver 配置覆盖）
   - `moonwwdz-python.el` - Python development setup (uv/pyvenv 自动激活)
   - `moonwwdz-shell.el` - Shell configuration (保存时自动 chmod +x)
   - `moonwwdz-dict.el` - Dictionary integration (dict.13140000.xyz API)
@@ -194,10 +194,10 @@ pip3 install basedpyright ipython pytest uv
 |----------|-----|------|--------|
 | `C-c C-c` | `go run` | `cargo run` | `python3` run |
 | `C-c C-b` | `go build` | `cargo build` | — |
-| `C-c C-t` | `go test` | `cargo test` | `pytest` |
+| `C-c C-t` | `go test` | `cargo test`（#[test] 内只跑该用例） | `pytest` |
 | `C-c C-k` | `go vet` | `cargo check` | `py_compile` |
 
-所有 `C-c C-c` 支持 `C-u` 前缀传入参数。Python 额外保留 `F5` 快速执行脚本。Rust 在 `src/bin/NAME.rs`（或 `src/bin/NAME/main.rs`）下用 `cargo run --bin NAME`，其余 cargo 项目用 `cargo run`，无 `Cargo.toml` 时回退 `rustc` 直接编译运行。
+所有 `C-c C-c` 支持 `C-u` 前缀传入参数。Rust 的 `C-c C-t`：光标在 `#[test]` 函数内（含 `#[tokio::test]` 等）只跑该用例，否则全量 `cargo test`；`C-u` 前缀手动输入过滤词（默认值为光标处用例名）。Python 额外保留 `F5` 快速执行脚本。Rust 在 `src/bin/NAME.rs`（或 `src/bin/NAME/main.rs`）下用 `cargo run --bin NAME`，其余 cargo 项目用 `cargo run`，无 `Cargo.toml` 时回退 `rustc` 直接编译运行。
 
 ## Development Notes
 
@@ -211,6 +211,7 @@ pip3 install basedpyright ipython pytest uv
 - Font configuration uses `find-font` guard to avoid errors when fonts are not installed
 - Emacs 30 defaults `.py` to `python-ts-mode`; explicit `auto-mode-alist` entry forces `python-mode` for lsp-bridge compatibility
 - `treesit-auto` is configured to **exclude** `python`/`go`/`gomod`/`rust` from `treesit-auto-langs`: its `major-mode-remap-alist` entries would otherwise remap `python-mode`/`go-mode`/`rust-mode` to `*-ts-mode` once a grammar is installed, which would silently disable lsp-bridge (it hooks the non-ts major modes in `git-package.el`). When adding a new lsp-bridge language, also add it to this exclusion list.
+- Rust 的 rust-analyzer 配置由 `lisp/langserver/rust-analyzer.json` **整体替换** lsp-bridge 内置默认（`moonwwdz-rust.el` 里 `setq lsp-bridge-user-langserver-dir` 指向该目录；用户文件存在即完全覆盖，不是深合并，改配置需两处对齐）。三个覆盖项：`cargo.autoreload: true`（修 src/bin 等目录新建文件不进 crate graph 无补全）、`cargo.features`/`checkOnSave.features: []` 官方默认（lsp-bridge 默认 `"all"` 会让后台重建分析期间补全排队 3~10 秒甚至返回空候选，2026-09 实测修复）、`checkOnSave.command: clippy`（保存时除编译错误还给 lint）。代价：非默认 feature 门控的 API 拿不到补全，确有需要的项目局部改回。
 - Minibuffer completion uses the vertico stack (vertico/consult/orderless/marginalia), not ivy/counsel/swiper; `M-x`/`C-x C-f`/`C-h f`/`C-h v` use native commands enhanced by vertico + marginalia
 - Shell scripts are automatically made executable on first save via `executable-make-buffer-file-executable-if-script-p`
 - `(fullscreen . maximized)` and all frame decoration settings live in `early-init.el` (via `default-frame-alist`), applied before the first frame is created — do not add frame-alist entries in `init-better-default.el`
@@ -219,4 +220,4 @@ pip3 install basedpyright ipython pytest uv
 - Project navigation uses built-in **project.el** (`C-x p` prefix), not projectile. `C-x p b` is rebound to `consult-project-buffer`.
 - `wraplish` hooks `text-mode` to auto-insert spaces between CJK and ASCII. `message-mode` is excluded (via `my/wraplish-disable` on `message-mode-hook`) to prevent space injection into email headers. When adding a new text-derived mode that should NOT get wraplish, add a similar hook.
 - `dired-listing-switches` uses `--group-directories-first` on Linux; on macOS uses `gls` (from `coreutils`) if available, otherwise falls back to plain `-alh`. Install with `brew install coreutils` to get directory-first sorting on macOS.
-- lsp-bridge 启用 inlay hints（变量后自动显示推断类型）、document-highlight（光标符号高亮）、which-function（mode-line 显示当前函数）；`lsp-bridge-symbols-enable-which-func` 需配合 `which-function-mode` 才生效。rust-analyzer 默认提供类型提示，无需额外服务器配置
+- lsp-bridge 启用 inlay hints（变量后自动显示推断类型）、document-highlight（光标符号高亮）、which-function（mode-line 显示当前函数）；`lsp-bridge-symbols-enable-which-func` 需配合 `which-function-mode` 才生效。rust-analyzer 默认提供类型提示，无需额外服务器配置。inlay hint 的诊断钩子刷新经 0.5s idle-timer 防抖（`git-package.el` 的 `my/lsp-bridge-inlay-hint-after-diagnostic`，直接刷新会在大文件上频繁重建 overlay 造成输入卡顿），诊断更新后的补刷新保留——它修复小文件打开后类型提示不显示的问题

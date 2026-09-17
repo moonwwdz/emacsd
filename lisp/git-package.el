@@ -54,10 +54,24 @@
   ;; 小文件 / 全屏打开时窗口可视范围不变，post-command 的滚动检测不再触发刷新，
   ;; 而初次请求又落在服务器尚未分析完的空窗期，导致「不编辑就不显示类型」。
   ;; 诊断到达（publishDiagnostics）说明服务器刚完成一次完整分析，此时 inlay hint 必然可用，借机补刷新一次。
+  ;; 注意：诊断随每次编辑触发，直接刷新会在大文件上频繁清重建 overlay 造成输入卡顿，
+  ;; 故用 0.5s idle-timer 防抖，且需捕获 buffer——lsp-bridge-inlay-hint 作用于当前 buffer，
+  ;; 定时器触发时用户可能已切换窗口。
+  (defvar my/lsp-bridge-inlay-hint--timer nil)
   (defun my/lsp-bridge-inlay-hint-after-diagnostic (&rest _)
-    "诊断到达时强制刷新一次 inlay hint，修复小文件打开后不显示类型的问题。"
+    "诊断到达后防抖刷新 inlay hint，修复小文件打开后不显示类型的问题。"
     (when lsp-bridge-enable-inlay-hint
-      (lsp-bridge-inlay-hint)))
+      (when my/lsp-bridge-inlay-hint--timer
+        (cancel-timer my/lsp-bridge-inlay-hint--timer))
+      (let ((buf (current-buffer)))
+        (setq my/lsp-bridge-inlay-hint--timer
+              (run-with-idle-timer
+               0.5 nil
+               (lambda ()
+                 (when (and (buffer-live-p buf)
+                            (buffer-local-value 'lsp-bridge-mode buf))
+                   (with-current-buffer buf
+                     (lsp-bridge-inlay-hint)))))))))
   (add-hook 'lsp-bridge-diagnostic-update-hook #'my/lsp-bridge-inlay-hint-after-diagnostic)
   ;; 光标停在符号上时，高亮 buffer 内所有同名引用（VSCode 默认效果）
   (setq lsp-bridge-enable-document-highlight t)

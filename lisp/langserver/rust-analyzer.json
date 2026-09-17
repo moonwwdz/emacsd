@@ -34,6 +34,7 @@
       },
     "checkOnSave": {
       "enable": true,
+      "command": "clippy",
       "allTargets": true,
       "features": [],
       "invocationLocation": "root",

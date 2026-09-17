@@ -27,6 +27,8 @@
 ;; 表现为「输入 for 等关键字后补全菜单偶尔迟迟不弹出」。实测中型项目（~500 crate）：
 ;; "all" 下预热期出现 3~10 秒尖峰与空响应，[] 下全程 4~107ms。
 ;; 代价：cfg(feature=...) 门控在非默认 feature 下的 API 拿不到补全/诊断；确有需要的项目再局部改回。
+;; 覆盖项三：checkOnSave.command 改为 clippy，保存时除编译错误外还给 lint 建议
+;; （无用 clone、多余 borrow 等）。clippy 是 rustup 默认组件（CLAUDE.md 安装说明已含）。
 (setq lsp-bridge-user-langserver-dir (expand-file-name "lisp/langserver" user-emacs-directory))
 
 ;; 保存时自动格式化
@@ -83,6 +85,26 @@
                                (compile cmd)
                                (switch-to-buffer-other-window "*compilation*"))))))
 
+;; 检测光标是否在测试函数内，返回函数名或 nil。
+;; rust-analyzer 的 runnable 协议最准，但 lsp-bridge 不支持，这里用正则近似：
+;; 向上找最近的 fn 声明，再扫其紧邻上方的连续属性行（#[...]、///），含 test 字样
+;; 即视为测试函数（覆盖 #[test]、#[tokio::test]、#[rstest] 等）。
+;; 只认紧邻属性行，避免误捞上一个函数的 #[test]。
+(defun moonwwdz-rust--test-fn-at-point ()
+  (save-excursion
+    (when (re-search-backward
+           "^\\s-*\\(?:pub\\(?:\\s-+crate\\)?\\s-+\\)?\\(?:async\\s-+\\)?fn\\s-+\\([[:word:]_!?]+\\)"
+           nil t)
+      (let ((fn-name (match-string-no-properties 1)))
+        (catch 'found
+          (forward-line -1)
+          (while (and (not (bobp))
+                      (looking-at-p "[ \t]*\\(///?\\|#\\[\\)"))
+            (when (looking-at-p "[ \t]*#\\[[^]]*test")
+              (throw 'found fn-name))
+            (forward-line -1))
+          nil)))))
+
 ;; Cargo 常用命令快捷键
 (add-hook 'rust-mode-hook
           (lambda ()
@@ -92,12 +114,20 @@
                              (interactive)
                              (compile "cargo build")
                              (switch-to-buffer-other-window "*compilation*")))
-            ;; C-c C-t 测试
+            ;; C-c C-t 测试：光标在 #[test] 函数内只跑该用例（全量测试大项目等不起），
+            ;; 否则全量 cargo test；C-u 前缀手动输入过滤词（默认值为光标处用例名）
             (local-set-key (kbd "C-c C-t")
-                           (lambda ()
-                             (interactive)
-                             (compile "cargo test")
-                             (switch-to-buffer-other-window "*compilation*")))
+                           (lambda (arg)
+                             (interactive "P")
+                             (let* ((default (moonwwdz-rust--test-fn-at-point))
+                                    (filter (if arg
+                                                (read-string "Test filter: " default)
+                                              default)))
+                               (compile (concat "cargo test"
+                                                (if (and filter (not (string= filter "")))
+                                                    (concat " " filter)
+                                                  "")))
+                               (switch-to-buffer-other-window "*compilation*"))))
             ;; C-c C-k 检查代码
             (local-set-key (kbd "C-c C-k")
                            (lambda ()
