@@ -5,11 +5,10 @@
 ;;                      __   ___        ___      ___
 ;; |\/|  /\  |\ |  /\  / _` |__   |\/| |__  |\ |  |
 ;; |  | /~~\ | \| /~~\ \__> |___  |  | |___ | \|  |
-(when (>= emacs-major-version 24)
-  (require 'package)
-  (package-initialize)
-  (setq package-archives '(("gnu"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
-			   ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/"))))
+(require 'package)
+(package-initialize)
+(setq package-archives '(("gnu"   . "https://mirrors.ustc.edu.cn/elpa/gnu/")
+			 ("melpa" . "https://mirrors.ustc.edu.cn/elpa/melpa/")))
 
 ;; cl - Common Lisp Extension
 (require 'cl-lib)

@@ -83,8 +83,6 @@ pip3 install basedpyright ipython pytest uv
   - `org-modern` - Modern org-mode styling
   - `mastodon` - Mastodon client
 
-- **`theme/`** - Custom color themes (molokai variants)
-
 - **`elpa/`** - Installed ELPA packages
 
 ## Key Features

@@ -6,8 +6,8 @@
 (global-set-key (kbd "C-x b") 'consult-buffer)
 (global-set-key (kbd "M-s g") 'consult-ripgrep)
 
-;;打开自动备份文件列表
-(global-set-key "\C-x\ \C-r" 'recentf-open-files)
+;; 最近打开的文件列表（原 "\C-x\ \C-r" 写法绑成了 C-x SPC C-r，从未生效）
+(global-set-key (kbd "C-x C-r") 'recentf-open-files)
 
 ;; 设置 org-agenda 打开快捷键
 (global-set-key (kbd "C-c a") 'org-agenda)
@@ -25,8 +25,9 @@
 ;;
 (global-set-key (kbd "M-s i") 'consult-imenu)
 
-;; 英语单词自动补全
-(global-set-key (kbd "M-s s") 'lsp-bridge-toggle-sdcv-helper)
+;; 英语单词自动补全（lsp-bridge 延迟加载，提前按键会 void-function）
+(with-eval-after-load 'lsp-bridge
+  (global-set-key (kbd "M-s s") 'lsp-bridge-toggle-sdcv-helper))
 
 ;;
 (global-set-key (kbd "M-s w") 'moonwwdz-insert-current-week)
@@ -35,9 +36,6 @@
 
 ;; 对存量文本批量补中英文空格（选中 region 处理区域，否则整个 buffer）
 (global-set-key (kbd "M-s c") 'moonwwdz-space-cjk-ascii)
-
-;; Enable Cache
-(setq url-automatic-caching t)
 
 ;; 字典查词
 (global-set-key (kbd "C-c y") 'moonwwdz-dict-lookup-at-point)
@@ -56,10 +54,9 @@
 (global-set-key (kbd "C-c m") 'moonwwdz-media)
 
 ;; key bindings
-;; mac 右command作为ctrl键用
-(setq mac-option-modifier 'meta)
-(setq mac-command-modifier 'meta)
-(setq mac-right-command-modifier 'meta)
+;; mac Option/Command 均作为 Meta（右修饰键继承左侧设置）
+(setq mac-option-modifier 'meta
+      mac-command-modifier 'meta)
 (global-set-key [kp-delete] 'delete-char) ;; sets fn-delete to be right-delete
 
 ;; 选中光标所在字符串（可扩充到整个buffer）

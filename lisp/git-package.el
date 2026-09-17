@@ -47,8 +47,8 @@
   (setq acm-enable-doc t)
   ;; 启用 inlay hint：像 VSCode 一样在变量后面自动显示推断出的类型
   (setq lsp-bridge-enable-inlay-hint t)
-  ;; inlay hint 文字样式：用冷调中灰 #8e949a，刻意和 molokai 的 type 青蓝(#66D9EF)拉开色相，
-  ;; 靠斜体传达“这是编辑器推断的类型，非真实代码”。不要用饱和鲜艳色，会撞 molokai 的语法高亮。
+  ;; inlay hint 文字样式：用冷调中灰 #8e949a，避免和主题语法高亮（如 type 的青蓝）撞色，
+  ;; 靠斜体传达“这是编辑器推断的类型，非真实代码”。不要用饱和鲜艳色。
   (set-face-attribute 'lsp-bridge-inlay-hint-face nil
                       :foreground "#8e949a" :slant 'italic)
   ;; 小文件 / 全屏打开时窗口可视范围不变，post-command 的滚动检测不再触发刷新，
@@ -137,8 +137,6 @@
 ;;            :foreground-color "#dcdccc"
 ;;            :font "WenQuanYi Micro Hei Mono-14"
 ;;            :internal-border-width 10))
-(use-package posframe
-  :ensure t)
 
 ;; 显示UI美化
 (add-to-list 'load-path "~/.emacs.d/git-package/modus-themes")

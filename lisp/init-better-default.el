@@ -84,6 +84,7 @@
         kept-new-versions 6
         kept-old-versions 2))
 
+(setq url-automatic-caching t) ; url-retrieve 结果缓存（字典/媒体 API 查询）
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 25)
@@ -95,22 +96,6 @@
 (setq select-enable-clipboard t)
 (setq save-interprogram-paste-before-kill t)
 (fset 'yes-or-no-p 'y-or-n-p)
-
-(require 'ibuffer)
-(setq ibuffer-saved-filter-groups
-      (quote (("default"
-               ("Dired" (mode . dired-mode))
-               ("Markdown" (or
-                            (name . "^diary$")
-                            (mode . markdown-mode)))
-               ("ReStructText" (mode . rst-mode))
-               ("Python" (or (mode . python-mode)
-                             (mode . ipython-mode)
-                             (mode . inferior-python-mode)))
-               ("Ruby" (or
-                        (mode . ruby-mode)
-                        (mode . enh-ruby-mode)
-                        (mode . inf-ruby-mode)))))))
 
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
