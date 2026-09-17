@@ -17,10 +17,16 @@
 ;; lsp-bridge 的 rust-analyzer 配置覆盖。
 ;; 用用户目录（lisp/langserver/rust-analyzer.json）覆盖 lsp-bridge submodule 的默认配置，避免改动 submodule。
 ;; 本文件在 init.el 中早于 git-package(require 'lsp-bridge) 加载，故此 setq 先于 lsp-bridge 读取 langserver 配置生效。
-;; 覆盖项：cargo.autoreload 改为 true（rust-analyzer 官方默认）。
+;; 覆盖项一：cargo.autoreload 改为 true（rust-analyzer 官方默认）。
 ;; 背景：在 src/bin、examples、tests、benches 等目录新建 .rs 文件后，rust-analyzer 的
 ;; should_refresh_for_change 会判定需要重新加载工作区；但 lsp-bridge 默认 autoreload:false 禁用了自动 reload，
 ;; 导致新文件不进 crate graph（unlinked-file 诊断），rust-analyzer 不提供补全，必须重启 emacs。
+;; 覆盖项二：cargo.features / checkOnSave.features 从 "all" 改回官方默认 []。
+;; 背景：lsp-bridge 默认 "all" 会把每个依赖的全部 feature 拉进 crate graph，proc-macro 与索引量暴涨；
+;; 后台重建分析（开项目/保存/工作区变更后的预热窗口）期间补全请求会排队数秒甚至返回空候选，
+;; 表现为「输入 for 等关键字后补全菜单偶尔迟迟不弹出」。实测中型项目（~500 crate）：
+;; "all" 下预热期出现 3~10 秒尖峰与空响应，[] 下全程 4~107ms。
+;; 代价：cfg(feature=...) 门控在非默认 feature 下的 API 拿不到补全/诊断；确有需要的项目再局部改回。
 (setq lsp-bridge-user-langserver-dir (expand-file-name "lisp/langserver" user-emacs-directory))
 
 ;; 保存时自动格式化
