@@ -33,7 +33,8 @@
                       pinentry       ; GPG pinentry（loopback 模式密码转发到 minibuffer），防 autoremove 误删
 		      magit
 		      iedit
-		      ox-hugo
+                      popup         ; emacs-rime TTY 候选（rime-show-candidate 'popup）的硬依赖，submodule 不走 package.el，防 autoremove 误删
+                      tomelr        ; submodule 版 ox-hugo 的硬依赖（git-package.el 用 :load-path 加载 submodule，elpa 版 ox-hugo 已弃用）
 		      ;; --- Editing / Navigation 增强 ---
 		      vundo          ; 可视化撤销树
 		      avy            ; 屏内快速跳转
