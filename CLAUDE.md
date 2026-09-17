@@ -64,7 +64,7 @@ pip3 install basedpyright ipython pytest uv
 ### Custom Modules
 
 - **`lisp/moonwwdz-*.el`** - Personal custom utilities:
-  - `moonwwdz-golang.el` - Go development setup
+  - `moonwwdz-golang.el` - Go 开发（Test/Benchmark 单用例运行、goimports 保存格式化）
   - `moonwwdz-rust.el` - Rust 开发（`#[test]` 单用例运行、`src/bin` 目标识别运行、保存自动格式化、langserver 配置覆盖）
   - `moonwwdz-python.el` - Python development setup (uv/pyvenv 自动激活)
   - `moonwwdz-shell.el` - Shell configuration (保存时自动 chmod +x)
@@ -194,10 +194,10 @@ pip3 install basedpyright ipython pytest uv
 |----------|-----|------|--------|
 | `C-c C-c` | `go run` | `cargo run` | `python3` run |
 | `C-c C-b` | `go build` | `cargo build` | — |
-| `C-c C-t` | `go test` | `cargo test`（#[test] 内只跑该用例） | `pytest` |
+| `C-c C-t` | `go test`（Test/Benchmark 内只跑该用例） | `cargo test`（#[test] 内只跑该用例） | `pytest` |
 | `C-c C-k` | `go vet` | `cargo check` | `py_compile` |
 
-所有 `C-c C-c` 支持 `C-u` 前缀传入参数。Rust 的 `C-c C-t`：光标在 `#[test]` 函数内（含 `#[tokio::test]` 等）只跑该用例，否则全量 `cargo test`；`C-u` 前缀手动输入过滤词（默认值为光标处用例名）。Python 额外保留 `F5` 快速执行脚本。Rust 在 `src/bin/NAME.rs`（或 `src/bin/NAME/main.rs`）下用 `cargo run --bin NAME`，其余 cargo 项目用 `cargo run`，无 `Cargo.toml` 时回退 `rustc` 直接编译运行。
+所有 `C-c C-c` 支持 `C-u` 前缀传入参数。Go 的 `C-c C-t`：光标在 `Test`/`Fuzz` 函数内只跑当前包该用例（`go test -run '^NAME$' .`），`Benchmark` 函数用 `-bench` 跑并跳过普通测试，否则全仓库 `go test ./...`；`C-u` 前缀手动输入 `-run` 正则（默认值为光标处用例名）。Rust 的 `C-c C-t`：光标在 `#[test]` 函数内（含 `#[tokio::test]` 等）只跑该用例，否则全量 `cargo test`；`C-u` 前缀手动输入过滤词（默认值为光标处用例名）。Python 额外保留 `F5` 快速执行脚本。Rust 在 `src/bin/NAME.rs`（或 `src/bin/NAME/main.rs`）下用 `cargo run --bin NAME`，其余 cargo 项目用 `cargo run`，无 `Cargo.toml` 时回退 `rustc` 直接编译运行。
 
 ## Development Notes
 
