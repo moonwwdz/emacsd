@@ -159,23 +159,27 @@
     (wraplish-mode -1))
   (add-hook 'message-mode-hook #'my/wraplish-disable))
 
-;; 侧边栏
-(use-package dired-sidebar
-  :load-path "~/.emacs.d/git-package/dired-sidebar"
-  :bind (("C-x C-n" . dired-sidebar-toggle-sidebar))
-  :init
-  (add-hook 'dired-sidebar-mode-hook
-            (lambda ()
-              (unless (file-remote-p default-directory)
-                (auto-revert-mode))))
+;; 侧边栏（dirvish 替代 dired-sidebar）
+(use-package dirvish
+  :ensure t
+  :bind (("C-x C-n" . dirvish-side))
   :config
-  (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-  (setq dired-sidebar-subtree-line-prefix "__")
-  (setq dired-sidebar-theme 'ascii)
-  (setq dired-sidebar-use-term-integration t)
-  (setq dired-sidebar-use-custom-font t))
+  (dirvish-override-dired-mode 1)
+  ;; dirvish-side 窗口参数：贴左侧、独占 slot，避免和别的窗口互相挤压
+  (setq dirvish-side-display-alist '((side . left) (slot . -1)))
+  ;; 信息列：图标 + git 状态 + 文件大小（默认只有 file-size，图标必须显式加）
+  (setq dirvish-attributes '(nerd-icons vc-state file-size))
+  ;; 侧边栏跟随当前 buffer 自动跳转目录
+  (with-eval-after-load 'dirvish-side
+    (dirvish-side-follow-mode 1))
+  ;; evil 兼容修复：evil 的 state keymap 是 minor-mode map，优先级高于 dired
+  ;; 本地 map，RET 会被 evil-ret 截胡导致失灵；在 normal state 显式绑回。
+  ;; l/h 顺带做成 ranger 风格（打开/上级目录）。
+  (when (featurep 'evil)
+    (evil-define-key 'normal dirvish-mode-map
+      (kbd "RET") 'dired-find-file
+      (kbd "l")   'dired-find-file
+      (kbd "h")   'dired-up-directory)))
 
 ;; hugo
 (use-package ox-hugo

@@ -29,3 +29,5 @@ persist
 history
 backups
 auto-save
+tree-sitter/
+tree-sitter/

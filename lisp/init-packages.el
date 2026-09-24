@@ -43,7 +43,8 @@
 		      treesit-auto   ; 自动启用并安装 tree-sitter 语法
 		      gcmh           ; 动态 GC：空闲时才回收，活跃期不卡顿
 		      yasnippet      ; lsp-bridge snippet 展开依赖
-                      dired-subtree  ; dired-sidebar submodule 的硬依赖
+                      dirvish        ; 现代 dired 增强，含 dirvish-side 侧边栏
+                      nerd-icons     ; dirvish 文件图标依赖
 		      ;; --- Major Mode ---
 		      js2-mode
 		      web-mode
