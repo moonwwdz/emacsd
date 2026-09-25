@@ -179,7 +179,15 @@
   ;; dirvish-side 窗口参数：贴左侧、独占 slot，避免和别的窗口互相挤压
   (setq dirvish-side-display-alist '((side . left) (slot . -1)))
   ;; 信息列：图标 + git 状态 + 文件大小（默认只有 file-size，图标必须显式加）
-  (setq dirvish-attributes '(nerd-icons vc-state file-size))
+  ;; nerd-icons 依赖 Symbols Nerd Font Mono 字体：
+  ;;   macOS 手动装 ~/Library/Fonts/（M-x nerd-icons-install-fonts 装的
+  ;;   ~/.local/share/fonts 在 macOS 不被识别）；Linux 装该目录或
+  ;;   yay -S ttf-nerd-fonts-symbols-mono 均可
+  ;; 字体缺失时退化为无图标，避免留空白占位
+  (setq dirvish-attributes
+        (if (find-font (font-spec :family "Symbols Nerd Font Mono"))
+            '(nerd-icons vc-state file-size)
+          '(vc-state file-size)))
   ;; 侧边栏跟随当前 buffer 自动跳转目录
   (with-eval-after-load 'dirvish-side
     (dirvish-side-follow-mode 1))

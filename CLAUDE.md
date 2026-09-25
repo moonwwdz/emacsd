@@ -16,8 +16,17 @@ ln -s python3.12 /opt/homebrew/bin/python3
 # macOS dired 目录优先排序依赖 GNU ls
 brew install coreutils
 
+# macOS 侧边栏图标字体（dirvish/nerd-icons 依赖 Symbols Nerd Font Mono）
+# 注意：M-x nerd-icons-install-fonts 在 macOS 无效（装到 ~/.local/share/fonts，
+# CoreText 不扫描），必须手动装到 ~/Library/Fonts/：
+curl -sL -o /tmp/symbols.zip "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.5.1/NerdFontsSymbolsOnly.zip"
+unzip -o -d /tmp/symbols /tmp/symbols.zip
+cp /tmp/symbols/SymbolsNerdFont*.ttf ~/Library/Fonts/
+
 # Linux (Arch) 安装字体
 yay -S ttf-lxgw-wenkai-screen
+# 侧边栏图标字体（或 Emacs 里 M-x nerd-icons-install-fonts，Linux 上路径有效）
+yay -S ttf-nerd-fonts-symbols-mono
 
 # Python 依赖（lsp-bridge 运行所需）
 pip3 install epc orjson sexpdata six setuptools paramiko rapidfuzz watchdog packaging pyyaml --break-system-packages
