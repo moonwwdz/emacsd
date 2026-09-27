@@ -11,7 +11,12 @@
 	  (smartparens-mode 1)
 	  (electric-indent-local-mode 1)
 	  (message "Paste mode disabled"))))
-;;
+;; 各语言 C-c C-c/C-b/C-t/C-k 共用：编译并切到 *compilation* 窗口
+(defun moonwwdz-compile (cmd)
+  "运行 CMD 并选中 *compilation* 窗口。"
+  (compile cmd)
+  (switch-to-buffer-other-window "*compilation*"))
+
 (defvar moonwwdz-work-journal-file "~/Documents/emacsNotes/org/work-journal.org")
 
 (defun append-work-journal()

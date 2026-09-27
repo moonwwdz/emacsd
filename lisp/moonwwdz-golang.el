@@ -28,7 +28,6 @@
             ;; 保存时自动格式化
             (setq go-tab-width 4)
             (setq go-indent-with-tabs t)
-            (setq compilation-read-command nil)
             (setq gofmt-command "goimports")
             (add-hook 'before-save-hook #'gofmt-before-save nil t)
             ;; C-c C-c 一键运行，带前缀 C-u 可输入参数
@@ -37,15 +36,14 @@
                              (interactive "P")
                              (let* ((file-name buffer-file-name)
                                     (args (if arg (read-string "Args: ") "")))
-                               (compile (concat "go run " file-name
-                                                (and (not (string= args "")) (concat " " args))))
-                               (switch-to-buffer-other-window "*compilation*"))))
+                               (moonwwdz-compile
+                                (concat "go run " (shell-quote-argument file-name)
+                                        (and (not (string= args "")) (concat " " args)))))))
             ;; C-c C-b 构建
             (local-set-key (kbd "C-c C-b")
                            (lambda ()
                              (interactive)
-                             (compile "go build")
-                             (switch-to-buffer-other-window "*compilation*")))
+                             (moonwwdz-compile "go build")))
             ;; C-c C-t 测试：光标在 Test/Fuzz 函数内只跑当前包该用例（全仓库 ./...
             ;; 要编译所有包，大仓库等不起）；Benchmark 函数用 -bench 跑（-run '^$'
             ;; 跳过普通测试）；其他位置全量；C-u 前缀手动输入 -run 正则跑全仓库
@@ -57,19 +55,17 @@
                                           (arg
                                            (let ((filter (read-string "Test filter (-run regexp): "
                                                                       (cdr at-point))))
-                                             (concat "go test -run '" filter "' ./...")))
+                                             (concat "go test -run " (shell-quote-argument filter) " ./...")))
                                           ((memq (car at-point) '(test fuzz))
                                            (concat "go test -run '^" (cdr at-point) "$' ."))
                                           ((eq (car at-point) 'bench)
                                            (concat "go test -bench '^" (cdr at-point) "$' -run '^$' ."))
                                           (t "go test ./..."))))
-                               (compile cmd)
-                               (switch-to-buffer-other-window "*compilation*"))))
+                               (moonwwdz-compile cmd))))
             ;; C-c C-k 检查代码
             (local-set-key (kbd "C-c C-k")
                            (lambda ()
                              (interactive)
-                             (compile "go vet ./...")
-                             (switch-to-buffer-other-window "*compilation*")))))
+                             (moonwwdz-compile "go vet ./...")))))
 
 (provide 'moonwwdz-golang)

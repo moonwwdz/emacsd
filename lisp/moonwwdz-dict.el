@@ -23,8 +23,11 @@
   "Query the dictionary API for WORD and display translation."
   (interactive
    (list (read-string "Word to look up: " nil 'moonwwdz-dict-history (thing-at-point 'word t))))
-  (unless (string-trim word)
-    (error "Empty word"))
+  ;; string-trim 永不返回 nil，旧的 (unless (string-trim word)) 判空是死代码；
+  ;; WORD 为 nil（光标在空白处）时 string-trim 还会直接抛 wrong-type-argument
+  (setq word (string-trim (or word "")))
+  (when (string-empty-p word)
+    (user-error "Empty word"))
   (let ((url-request-extra-headers '(("User-Agent" . "Emacs Elisp"))))
     (url-retrieve
      (format moonwwdz-dict-api-url (url-hexify-string word))
@@ -32,23 +35,27 @@
      (list word)
      t)))
 
-(defun moonwwdz-dict--receive-callback (_status word)
+(defun moonwwdz-dict--receive-callback (status word)
   (goto-char (point-min))
   (re-search-forward "^$" nil 'move)
   (let ((json-text (decode-coding-string
                      (buffer-substring-no-properties (point) (point-max))
                      'utf-8))
+        (net-error (plist-get status :error))
         result data translation)
     (kill-buffer (current-buffer))
-    (condition-case err
-        (progn
-          (setq result (json-read-from-string json-text))
-          (setq data (alist-get 'data result))
-          (setq translation (when data (alist-get 'translation data)))
-          (if translation
-              (moonwwdz-dict--show-result word (or data result))
-            (moonwwdz-dict--show-error word "No translation available")))
-      (error (moonwwdz-dict--show-error word (format "JSON parse error: %s" (error-message-string err)))))))
+    (if net-error
+        (moonwwdz-dict--show-error word (format "Request failed: %S" net-error))
+      (condition-case err
+          (progn
+            (setq result (json-parse-string json-text :object-type 'alist
+                                            :null-object nil :false-object nil))
+            (setq data (alist-get 'data result))
+            (setq translation (when data (alist-get 'translation data)))
+            (if translation
+                (moonwwdz-dict--show-result word (or data result))
+              (moonwwdz-dict--show-error word "No translation available")))
+        (error (moonwwdz-dict--show-error word (format "JSON parse error: %s" (error-message-string err))))))))
 
 
 (defun moonwwdz-dict--show-result (word data)
@@ -83,14 +90,18 @@
 (define-derived-mode moonwwdz-dict-mode special-mode "MoonDict"
   "Major mode for displaying dictionary results from moonwwdz-dict."
   (setq buffer-read-only t)
-  (define-key moonwwdz-dict-mode-map (kbd "q") #'delete-window)
-  (evil-local-set-key 'normal (kbd "q") #'delete-window))
+  (when (fboundp 'evil-local-set-key)
+    (evil-local-set-key 'normal (kbd "q") #'delete-window)))
+(define-key moonwwdz-dict-mode-map (kbd "q") #'delete-window)
 
 ;; Optional: Quick command to lookup word at point
 (defun moonwwdz-dict-lookup-at-point ()
-  "Look up the word at point."
+  "Look up the word at point; prompt when there is none."
   (interactive)
-  (moonwwdz-dict-lookup (thing-at-point 'word t)))
+  (let ((word (thing-at-point 'word t)))
+    (if word
+        (moonwwdz-dict-lookup word)
+      (call-interactively #'moonwwdz-dict-lookup))))
 
 ;; Provide feature
 (provide 'moonwwdz-dict)

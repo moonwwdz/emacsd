@@ -5,6 +5,9 @@
 (setq show-paren-style 'expression)
 (setq inhibit-splash-screen 1)
 (setq-default cursor-type 'bar)
+;; 全局行距（原藏在 org-modern 的 :config 里，因 org 启动即加载而对所有 buffer 生效，
+;; org 改为延迟加载后移到这里，保持现有外观）
+(setq-default line-spacing 0.1)
 ;;(global-hl-line-mode t)
 
 (setq display-time-format "[%A %m-%d %H:%M]")
@@ -19,8 +22,9 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;; 仅在颜色相关模式启用 rainbow-mode，避免把普通标识符（如 white/red）也染色
+;; css 挂父模式 css-base-mode：treesit-auto 装了 css grammar 后会进 css-ts-mode，不跑 css-mode-hook
 (dolist (hook '(emacs-lisp-mode-hook lisp-interaction-mode-hook
-                css-mode-hook web-mode-hook conf-mode-hook))
+                css-base-mode-hook web-mode-hook conf-mode-hook))
   (add-hook hook #'rainbow-mode))
 
 ;; tab-bar：每个 tab 是独立的窗口布局，C-x t 前缀管理

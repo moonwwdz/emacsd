@@ -6,13 +6,17 @@
 ;; cargo install clippy                        # 安装代码检查工具
 ;; rustup component add rustfmt                 # 通常已包含在 Rust 工具链中
 
-;; 设置 Rust 临时目录环境变量，解决权限问题
-(let ((temp-dir "/tmp"))
-  (setenv "TMPDIR" temp-dir)
-  (setenv "TMP" temp-dir)
-  (setenv "TEMP" temp-dir)
-  ;; Rust 特定的环境变量
-  (setenv "RUST_TMPDIR" temp-dir))
+;; 设置 Rust 临时目录环境变量，解决权限问题。
+;; 只在 TMPDIR 未设置或不可写时兜底为 /tmp：无条件覆盖会影响 Emacs 启动的所有子进程，
+;; 在 macOS 上还会盖掉系统分配的每用户 TMPDIR（/var/folders/...）。
+(let ((cur (getenv "TMPDIR")))
+  (unless (and cur (file-writable-p cur))
+    (let ((temp-dir "/tmp"))
+      (setenv "TMPDIR" temp-dir)
+      (setenv "TMP" temp-dir)
+      (setenv "TEMP" temp-dir)
+      ;; Rust 特定的环境变量
+      (setenv "RUST_TMPDIR" temp-dir))))
 
 ;; lsp-bridge 的 rust-analyzer 配置覆盖。
 ;; 用用户目录（lisp/langserver/rust-analyzer.json）覆盖 lsp-bridge submodule 的默认配置，避免改动 submodule。
@@ -31,12 +35,13 @@
 ;; （无用 clone、多余 borrow 等）。clippy 是 rustup 默认组件（CLAUDE.md 安装说明已含）。
 (setq lsp-bridge-user-langserver-dir (expand-file-name "lisp/langserver" user-emacs-directory))
 
-;; 保存时自动格式化
+;; 保存时自动格式化：用 rust-mode 自带的 rust-format-on-save（其 before-save 钩子
+;; 会捕获错误）。直接把 rust-format-buffer 挂 before-save-hook 时，rustfmt 不在 PATH
+;; 会抛错中断保存，文件存不下来。
+(setq rust-format-on-save t)
 (add-hook 'rust-mode-hook
           (lambda ()
-            (setq rust-indent-offset 4)
-            (setq compilation-read-command nil)
-            (add-hook 'before-save-hook #'rust-format-buffer nil t)))
+            (setq rust-indent-offset 4)))
 
 ;; 检测当前文件是否为 cargo bin 目标，返回 bin 名或 nil。
 ;; 支持两种约定：src/bin/NAME.rs（bin 名 NAME）、src/bin/NAME/main.rs（bin 名 NAME）。
@@ -80,10 +85,10 @@
                                                    (unless (string= args "") (concat " -- " args))))
                                           ;; 独立文件：rustc 直接编译运行
                                           (t
-                                           (concat "rustc " file-name " && ./" (file-name-base file-name)
+                                           (concat "rustc " (shell-quote-argument file-name)
+                                                   " && ./" (shell-quote-argument (file-name-base file-name))
                                                    (unless (string= args "") (concat " " args)))))))
-                               (compile cmd)
-                               (switch-to-buffer-other-window "*compilation*"))))))
+                               (moonwwdz-compile cmd))))))
 
 ;; 检测光标是否在测试函数内，返回函数名或 nil。
 ;; rust-analyzer 的 runnable 协议最准，但 lsp-bridge 不支持，这里用正则近似：
@@ -112,8 +117,7 @@
             (local-set-key (kbd "C-c C-b")
                            (lambda ()
                              (interactive)
-                             (compile "cargo build")
-                             (switch-to-buffer-other-window "*compilation*")))
+                             (moonwwdz-compile "cargo build")))
             ;; C-c C-t 测试：光标在 #[test] 函数内只跑该用例（全量测试大项目等不起），
             ;; 否则全量 cargo test；C-u 前缀手动输入过滤词（默认值为光标处用例名）
             (local-set-key (kbd "C-c C-t")
@@ -123,21 +127,17 @@
                                     (filter (if arg
                                                 (read-string "Test filter: " default)
                                               default)))
-                               (compile (concat "cargo test"
-                                                (if (and filter (not (string= filter "")))
-                                                    (concat " " filter)
-                                                  "")))
-                               (switch-to-buffer-other-window "*compilation*"))))
+                               (moonwwdz-compile
+                                (concat "cargo test"
+                                        (if (and filter (not (string= filter "")))
+                                            (concat " " (shell-quote-argument filter))
+                                          ""))))))
             ;; C-c C-k 检查代码
             (local-set-key (kbd "C-c C-k")
                            (lambda ()
                              (interactive)
-                             (compile "cargo check")
-                             (switch-to-buffer-other-window "*compilation*")))))
+                             (moonwwdz-compile "cargo check")))))
 
-;; 启用 electric-pair-mode 自动补全括号
-(add-hook 'rust-mode-hook
-          (lambda ()
-            (electric-pair-local-mode 1)))
+;; 括号配对由全局 smartparens 负责，不再叠加 electric-pair-local-mode（两套并存会重复处理）
 
 (provide 'moonwwdz-rust)

@@ -67,11 +67,11 @@ pip3 install basedpyright ipython pytest uv
   - `moonwwdz-golang.el` - Go 开发（Test/Benchmark 单用例运行、goimports 保存格式化）
   - `moonwwdz-rust.el` - Rust 开发（`#[test]` 单用例运行、`src/bin` 目标识别运行、保存自动格式化、langserver 配置覆盖）
   - `moonwwdz-python.el` - Python development setup (uv/pyvenv 自动激活)
-  - `moonwwdz-shell.el` - Shell configuration (保存时自动 chmod +x)
+  - `moonwwdz-shell.el` - Shell configuration (`C-c C-c` 运行脚本、保存时自动 chmod +x；同时覆盖 `sh-mode` 与 `bash-ts-mode`)
   - `moonwwdz-dict.el` - Dictionary integration (dict.13140000.xyz API)
   - `moonwwdz-helper.el` - General helper functions
-  - `moonwwdz-media.el` - 电影库（NFO）管理：扫描纯电影库、海报/元数据展示、NFO 编辑、外调播放器
-- **`lisp/git-package.el`** - Third-party git submodule packages configuration (lsp-bridge, evil, rime, dired-sidebar, org-modern, etc.)
+  - `moonwwdz-media.el` - 电影库（NFO）管理：扫描纯电影库、海报/元数据展示、NFO 编辑、外调播放器（init.el 里 `autoload`，按 `C-c m` 才加载）
+- **`lisp/git-package.el`** - Third-party git submodule packages configuration (lsp-bridge, evil, rime, org-modern, etc.)；dirvish（elpa 包）的配置也在这里
 
 ### Package Structure
 
@@ -107,7 +107,7 @@ pip3 install basedpyright ipython pytest uv
 ### UI/UX
 - Evil mode for Vim keybindings
 - lsp-bridge for LSP auto-completion (requires Python 3.10+)
-- Dired sidebar for file navigation (`C-x C-n`)
+- dirvish 接管 dired（`dirvish-override-dired-mode` 在 dired 首次载入时启用），`C-x C-n` 打开 dirvish-side 侧边栏
 - Tab-bar for workspace management: each tab is an independent window layout; `C-x t` prefix to manage, `C-<tab>` / `C-S-<tab>` to cycle tabs
 - `rainbow-mode` shows color codes as swatches (enabled in elisp/css/web/conf modes)
 - `hl-todo` highlights TODO/FIXME/HACK keywords
@@ -138,8 +138,8 @@ pip3 install basedpyright ipython pytest uv
 | `C-c c` | Org-capture |
 | `C-c g` | Magit status |
 | `C-c a` | Org-agenda |
-| `C-x C-n` | Toggle dired sidebar |
-| `C-x C-r` | Recent files |
+| `C-x C-n` | Toggle dirvish-side sidebar |
+| `C-x C-r` | consult-recent-file (recent files) |
 | `C-x C-b` | ibuffer |
 | `C-<tab>` | tab-bar-switch-to-next-tab |
 | `C-S-<tab>` | tab-bar-switch-to-prev-tab |
@@ -210,7 +210,11 @@ pip3 install basedpyright ipython pytest uv
 - Emacs 30 defaults `.py` to `python-ts-mode`; explicit `auto-mode-alist` entry forces `python-mode` for lsp-bridge compatibility
 - `treesit-auto` is configured to **exclude** `python`/`go`/`gomod`/`rust` from `treesit-auto-langs`: its `major-mode-remap-alist` entries would otherwise remap `python-mode`/`go-mode`/`rust-mode` to `*-ts-mode` once a grammar is installed, which would silently disable lsp-bridge (it hooks the non-ts major modes in `git-package.el`). When adding a new lsp-bridge language, also add it to this exclusion list.
 - Rust 的 rust-analyzer 配置由 `lisp/langserver/rust-analyzer.json` **整体替换** lsp-bridge 内置默认（`moonwwdz-rust.el` 里 `setq lsp-bridge-user-langserver-dir` 指向该目录；用户文件存在即完全覆盖，不是深合并，改配置需两处对齐）。三个覆盖项：`cargo.autoreload: true`（修 src/bin 等目录新建文件不进 crate graph 无补全）、`cargo.features`/`checkOnSave.features: []` 官方默认（lsp-bridge 默认 `"all"` 会让后台重建分析期间补全排队 3~10 秒甚至返回空候选，2026-09 实测修复）、`checkOnSave.command: clippy`（保存时除编译错误还给 lint）。代价：非默认 feature 门控的 API 拿不到补全，确有需要的项目局部改回。
-- **submodule 的运行时依赖必须手动列进 `my/packages`**：git submodule 不走 package.el，package.el 不知道谁在用它，跑 `package-autoremove` 会误删。现有三个：`dired-subtree`（dired-sidebar 依赖）、`popup`（emacs-rime TTY 候选 `rime-show-candidate 'popup` 依赖）、`tomelr`（submodule 版 ox-hugo 依赖，elpa 版 ox-hugo 已删）。新增 submodule 若有 elpa 依赖，同样要入清单。
+- **submodule 的运行时依赖必须手动列进 `my/packages`**：git submodule 不走 package.el，package.el 不知道谁在用它，跑 `package-autoremove` 会误删。现有两个：`popup`（emacs-rime TTY 候选 `rime-show-candidate 'popup` 依赖）、`tomelr`（submodule 版 ox-hugo 依赖，elpa 版 ox-hugo 已删）。新增 submodule 若有 elpa 依赖，同样要入清单。
+- **org 全部延迟加载**：`init-org.el` 不再 require org/org-capture/org-tempo，只 setq 变量（defcustom 先 setq 后加载不会被覆盖）；`org-tempo` 在 org 的 `:config` 里加载，ox-hugo 用 `:after ox`，org-modern 用 `:hook (org-mode . org-modern-mode)`。**不要**再给 org 相关包写 `:after org` 配合 `after-init` 钩子——org 载入时 after-init 早已跑过，永远不会生效。全局 `line-spacing 0.1` 在 `init-ui.el`。
+- **语言模块里改全局变量要用 `setq-local`**：`compile-command` / `compilation-read-command` 这类变量在 mode hook 里 `setq` 会改全局值，串到别的 buffer（曾导致 C-c C-c 跑错脚本、`M-x compile` 永久不提示）。各语言的编译命令统一走 `moonwwdz-helper.el` 的 `moonwwdz-compile`，文件路径一律 `shell-quote-argument`。
+- **treesit-auto 会绕过非 ts 模式的 hook**：装了某语言 grammar 后，treesit-auto 会把 `X-mode` 重映射到 `X-ts-mode`，后者通常派生自 `X-base-mode`，不跑 `X-mode-hook`、也不用 `X-mode-map`（bash 已中招：.sh 进的是 `bash-ts-mode`）。挂 hook 优先用 `X-base-mode-hook`（如 `sh-base-mode-hook`、`css-base-mode-hook`），键位两个 map 都绑。
+- 括号配对统一由全局 smartparens 负责，不要在语言 hook 里再开 `electric-pair-local-mode`。
 - org-roam submodule **保留但停用**（git-package.el 里加载块全注释、`init-org.el` 里 capture 模板已注释留存）；恢复只需解开 git-package.el 的 org-roam 块注释。company-english-helper submodule 已移除（依赖已弃用的 company，0 引用）。
 - Minibuffer completion uses the vertico stack (vertico/consult/orderless/marginalia), not ivy/counsel/swiper; `M-x`/`C-x C-f`/`C-h f`/`C-h v` use native commands enhanced by vertico + marginalia
 - Shell scripts are automatically made executable on first save via `executable-make-buffer-file-executable-if-script-p`

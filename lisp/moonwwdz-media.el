@@ -181,16 +181,24 @@ Windows 默认哨兵值 \"start\"——非真实程序，会走 `w32-shell-execu
        (message "moonwwdz-media: 解析 %s 失败：%s" file (error-message-string err))
        nil))))
 
+(defun moonwwdz-media--node-text (node)
+  "NODE 的文本（trim 后）。
+Emacs 31.1 新增 `dom-inner-text' 并废弃 `dom-text'；本配置最低支持 Emacs 30，
+故有新函数用新函数、否则回退旧函数。nfo 字段都是叶子节点，两者结果相同。"
+  (string-trim (if (fboundp 'dom-inner-text)
+                   (dom-inner-text node)
+                 (with-no-warnings (dom-text node)))))
+
 (defun moonwwdz-media--text (dom tag)
   "取 DOM 下第一个 TAG 节点的纯文本（trim 后）；无则空串。"
   (let ((node (car (dom-by-tag dom tag))))
-    (if node (string-trim (dom-text node)) "")))
+    (if node (moonwwdz-media--node-text node) "")))
 
 (defun moonwwdz-media--multi-text (dom tag)
   "取 DOM 下所有 TAG 节点的文本列表（每个已 trim，过滤空值）。"
   (let (result)
     (dolist (node (dom-by-tag dom tag))
-      (let ((txt (string-trim (dom-text node))))
+      (let ((txt (moonwwdz-media--node-text node)))
         (unless (string-empty-p txt)
           (push txt result))))
     (nreverse result)))
@@ -213,9 +221,8 @@ Windows 默认哨兵值 \"start\"——非真实程序，会走 `w32-shell-execu
     (if node
         (let ((value-node (car (dom-by-tag node 'value))))
           ;; 现代结构取 <value>；老式裸 <rating>7.5</rating> 无 <value>，
-          ;; 回退取节点自身文本（旧版 dom-text 会拼上子节点文本，但裸
-          ;; rating 没有子元素，等价于直接读数值）。
-          (string-trim (if value-node (dom-text value-node) (dom-text node))))
+          ;; 回退取节点自身文本（裸 rating 没有子元素，等价于直接读数值）。
+          (moonwwdz-media--node-text (or value-node node)))
       "")))
 
 (defun moonwwdz-media--rating-source (dom)
@@ -526,17 +533,18 @@ Windows 默认哨兵值 \"start\"——非真实程序，会走 `w32-shell-execu
                  (lambda (c) (and (consp c) (eq (dom-tag c) 'thumb)))
                  (dom-children node))))
     (or (cl-loop for th in thumbs
+                 for txt = (moonwwdz-media--node-text th)
                  when (and (equal (dom-attr th 'aspect) "poster")
-                           (moonwwdz-media--http-url-p (string-trim (dom-text th))))
-                 return (string-trim (dom-text th)))
+                           (moonwwdz-media--http-url-p txt))
+                 return txt)
         (cl-loop for th in thumbs
-                 for txt = (string-trim (dom-text th))
+                 for txt = (moonwwdz-media--node-text th)
                  when (moonwwdz-media--http-url-p txt) return txt))))
 
 (defun moonwwdz-media--first-remote-url (node tag)
   "取 NODE 下第一个 TAG 节点中形如 http(s) 的 URL 文本（含后代）。"
   (cl-loop for n in (dom-by-tag node tag)
-           for txt = (string-trim (dom-text n))
+           for txt = (moonwwdz-media--node-text n)
            when (moonwwdz-media--http-url-p txt) return txt))
 
 (defun moonwwdz-media--url-extension (url)
@@ -568,18 +576,36 @@ Windows 默认哨兵值 \"start\"——非真实程序，会走 `w32-shell-execu
                   url (error-message-string err))
          nil))))))
 
+(defvar moonwwdz-media--remote-url-cache (make-hash-table :test 'equal)
+  "(NFO-PATH KIND MTIME) → nfo 内的远程图片 URL（无则 :none）。
+列表光标联动每移一行都会渲染详情，没有本地图片的电影原本每次都要重读并解析 nfo；
+键里带 mtime，nfo 被编辑后自动失效。")
+
+(defun moonwwdz-media--remote-url (nfo kind)
+  "取 NFO 内 KIND(poster/fanart) 的远程图片 URL，按 mtime 缓存解析结果。"
+  (let* ((mtime (file-attribute-modification-time (file-attributes nfo)))
+         (key (list nfo kind mtime))
+         (cached (gethash key moonwwdz-media--remote-url-cache)))
+    (if cached
+        (unless (eq cached :none) cached)
+      (let* ((dom (moonwwdz-media--xml-file-to-dom nfo))
+             (url (when dom
+                    (pcase kind
+                      ;; poster：只取 <movie> 直接子 <thumb>，排除 actor/fanart 内的 thumb。
+                      ('poster (moonwwdz-media--direct-thumb-url dom))
+                      ('fanart (let ((fan (car (dom-by-tag dom 'fanart))))
+                                 (when fan (moonwwdz-media--first-remote-url fan 'thumb))))))))
+        ;; 解析失败（dom 为 nil）不缓存，下次重试
+        (when dom
+          (puthash key (or url :none) moonwwdz-media--remote-url-cache))
+        url))))
+
 (defun moonwwdz-media--remote-image (movie kind)
   "按 nfo 内 URL 取 MOVIE 的 KIND(poster/fanart) 图片，下载缓存后返回本地路径。
 下载失败返回 nil（不抛错，避免中断详情渲染 / post-command-hook）。"
   (when (and moonwwdz-media-fetch-remote-images
              (moonwwdz-media-movie-nfo-path movie))
-    (let* ((dom (moonwwdz-media--xml-file-to-dom (moonwwdz-media-movie-nfo-path movie)))
-           (url (when dom
-                  (pcase kind
-                    ;; poster：只取 <movie> 直接子 <thumb>，排除 actor/fanart 内的 thumb。
-                    ('poster (moonwwdz-media--direct-thumb-url dom))
-                    ('fanart (let ((fan (car (dom-by-tag dom 'fanart))))
-                               (when fan (moonwwdz-media--first-remote-url fan 'thumb))))))))
+    (let ((url (moonwwdz-media--remote-url (moonwwdz-media-movie-nfo-path movie) kind)))
       (when url (moonwwdz-media--download-cache url moonwwdz-media-cache-dir)))))
 
 (defun moonwwdz-media--detail-poster (movie)

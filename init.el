@@ -31,11 +31,12 @@
 (require 'moonwwdz-shell)
 (require 'moonwwdz-dict)
 (require 'git-package)
-(require 'moonwwdz-media)
+;; 电影库按需加载：按 C-c m 时才载入整个模块
+(autoload 'moonwwdz-media "moonwwdz-media" "打开 NFO 电影库。" t)
 
 
 (setq custom-file (expand-file-name "lisp/custom.el" user-emacs-directory))
-(load-file custom-file)
+(load custom-file 'noerror)
 
 (put 'narrow-to-region 'disabled nil)
 (put 'upcase-region 'disabled nil)

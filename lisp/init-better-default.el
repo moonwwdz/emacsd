@@ -1,9 +1,11 @@
 ;;; init-better-default.el --- 增强默认设置  -*- lexical-binding: t; -*-
 (setq system-time-locale "C")
+;; 字号只由 :height 决定（单位 1/10 pt）。原先 set-frame-font 按平台设 16/14 号后
+;; 又被 :height 120 统一覆盖，macOS 的 16 号从未生效。
 (when (find-font (font-spec :family "LXGW WenKai Mono Screen"))
-  (let ((size (if (eq system-type 'darwin) 16 14)))
-    (set-frame-font (format "LXGW WenKai Mono Screen %d" size) nil t)
-    (set-face-attribute 'default nil :family "LXGW WenKai Mono Screen" :height 120)))
+  (set-face-attribute 'default nil
+                      :family "LXGW WenKai Mono Screen"
+                      :height (if (eq system-type 'darwin) 160 120)))
 
 ;; --group-directories-first 是 GNU ls 特性；macOS 自带 BSD ls 不支持，需用 gls
 (cond
@@ -16,7 +18,8 @@
   (setq dired-listing-switches "-alh --group-directories-first")))
 (setq dired-kill-when-opening-new-dired-buffer t) ; 进子目录复用 buffer，不堆积
 
-(define-key global-map (kbd "RET") 'newline-and-indent)
+;; RET 不再全局绑 newline-and-indent：默认开启的 electric-indent-mode 已让 RET 换行并缩进，
+;; 且全局绑定会让粘贴模式（M-s p 关 electric-indent）对 RET 失效。
 
 (require 'hungry-delete)
 (global-hungry-delete-mode)
@@ -67,7 +70,7 @@
 (require 'popwin)
 (popwin-mode t)
 
-(require 'dired-x)
+(with-eval-after-load 'dired (require 'dired-x)) ; 首次打开 dired 时再载入，不在启动时拉起 dired
 (setq dired-dwim-target t)
 
 ;; 备份集中到 ~/.emacs.d/backups/，自动保存到 auto-save/，不污染工作目录
@@ -86,16 +89,15 @@
 
 (setq url-automatic-caching t) ; url-retrieve 结果缓存（字典/媒体 API 查询）
 (require 'recentf)
+(setq recentf-max-saved-items 200)     ; 默认只存 20 条；recentf-max-menu-items 只影响菜单栏，已去掉
 (recentf-mode 1)
-(setq recentf-max-menu-items 25)
 
 (show-paren-mode t)
 (global-auto-revert-mode 1)
 (setq ring-bell-function 'ignore)
 (setq mouse-yank-at-point t)
-(setq select-enable-clipboard t)
 (setq save-interprogram-paste-before-kill t)
-(fset 'yes-or-no-p 'y-or-n-p)
+(setq use-short-answers t)             ; Emacs 28+ 的正规写法，替代 (fset 'yes-or-no-p 'y-or-n-p)
 
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)

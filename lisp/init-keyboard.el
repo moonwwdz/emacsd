@@ -6,8 +6,8 @@
 (global-set-key (kbd "C-x b") 'consult-buffer)
 (global-set-key (kbd "M-s g") 'consult-ripgrep)
 
-;; 最近打开的文件列表（原 "\C-x\ \C-r" 写法绑成了 C-x SPC C-r，从未生效）
-(global-set-key (kbd "C-x C-r") 'recentf-open-files)
+;; 最近打开的文件（consult 版：vertico 列表 + orderless 模糊匹配 + 预览）
+(global-set-key (kbd "C-x C-r") 'consult-recent-file)
 
 ;; 设置 org-agenda 打开快捷键
 (global-set-key (kbd "C-c a") 'org-agenda)
@@ -50,7 +50,7 @@
 ;;magit
 (global-set-key (kbd "C-c g") 'magit-status)
 
-;; 电影库（NFO）管理：扫描、展示海报/元数据、编辑 nfo、外调播放器
+;; 电影库（NFO）管理：扫描、展示海报/元数据、编辑 nfo、外调播放器（按需 autoload，见 init.el）
 (global-set-key (kbd "C-c m") 'moonwwdz-media)
 
 ;; key bindings

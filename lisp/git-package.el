@@ -12,9 +12,16 @@
 (use-package yasnippet
   :config
   (yas-global-mode 1)
-  ;; org 中对yasnippet输入两个字符再补全 
-  (with-eval-after-load 'org
-    (setq acm-backend-yas-candidate-min-length 2)))
+  ;; yasnippet 候选至少输入两个字符才出现。acm 变量是全局的，对所有 lsp-bridge buffer 生效
+  ;; （原先包在 with-eval-after-load 'org 里、注释写“org 中”，实际因 org 启动即加载而全局生效）
+  (setq acm-backend-yas-candidate-min-length 2))
+
+;; emacs-lisp 开 lsp-bridge，但跳过 lisp-interaction-mode（*scratch*）：它派生自
+;; emacs-lisp-mode，否则每次启动都会为 scratch 拉起 lsp-bridge 的 Python 进程
+(defun my/lsp-bridge-elisp-maybe ()
+  "在 emacs-lisp buffer 启用 `lsp-bridge-mode'，*scratch* 除外。"
+  (unless (derived-mode-p 'lisp-interaction-mode)
+    (lsp-bridge-mode 1)))
 
 (use-package lsp-bridge
   ;;:ensure t
@@ -25,7 +32,7 @@
   :hook ((go-mode . lsp-bridge-mode)
          (rust-mode . lsp-bridge-mode)
          (python-mode . lsp-bridge-mode)
-         (emacs-lisp-mode . lsp-bridge-mode))
+         (emacs-lisp-mode . my/lsp-bridge-elisp-maybe))
   :bind                       ; 绑定快捷键
   (:map lsp-bridge-mode-map
         ("C-c n" . lsp-bridge-diagnostic-jump-next)
@@ -160,11 +167,15 @@
   (add-hook 'message-mode-hook #'my/wraplish-disable))
 
 ;; 侧边栏（dirvish 替代 dired-sidebar）
+;; 安装走 init-packages.el 的 my/packages，不在此 :ensure
 (use-package dirvish
-  :ensure t
   :bind (("C-x C-n" . dirvish-side))
+  :init
+  ;; 必须放 :init：:bind 让包延迟加载，放 :config 时要等第一次按 C-x C-n 才接管，
+  ;; 之前用 C-x d / dired-jump 打开的都是原生 dired。等 dired 载入时再接管，不拖慢启动。
+  (with-eval-after-load 'dired
+    (dirvish-override-dired-mode 1))
   :config
-  (dirvish-override-dired-mode 1)
   ;; dirvish-side 窗口参数：贴左侧、独占 slot，避免和别的窗口互相挤压
   (setq dirvish-side-display-alist '((side . left) (slot . -1)))
   ;; 信息列：图标 + git 状态 + 文件大小（默认只有 file-size，图标必须显式加）
@@ -181,9 +192,10 @@
       (kbd "l")   'dired-find-file
       (kbd "h")   'dired-up-directory)))
 
-;; hugo
+;; hugo：随 ox（org 导出框架）一起加载，不在启动时拉起 org + ox
 (use-package ox-hugo
-  :load-path "~/.emacs.d/git-package/ox-hugo")
+  :load-path "~/.emacs.d/git-package/ox-hugo"
+  :after ox)
 
 ;; mastodon
 (add-to-list 'load-path "~/.emacs.d/git-package/emacs-request")
@@ -229,14 +241,14 @@
 (use-package org-modern
   :load-path "~/.emacs.d/git-package/org-modern"
 ;;  :ensure t
-  :after org
-  :hook (after-init . (lambda ()
-			(setq org-modern-hide-stars 'leading)
-			(global-org-modern-mode t)))
+  ;; org 已改为延迟加载，不能再用 :after org + after-init 钩子开全局模式
+  ;; （org 载入时 after-init 早已跑过，永远不会启用）；改为随 org buffer / agenda 启用
+  :hook ((org-mode . org-modern-mode)
+         (org-agenda-finalize . org-modern-agenda))
   :config
+  (setq org-modern-hide-stars 'leading)
   ;; 定义各级标题行字符
   (setq org-modern-star ["◉" "○" "✸" "✳" "◈" "◇" "✿" "❀" "✜"])
-  (setq-default line-spacing 0.1)
   (setq org-modern-label-border 1)
   (setq org-modern-table-vertical 2)
   (setq org-modern-table-horizontal 0)
