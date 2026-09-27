@@ -82,6 +82,11 @@
   (add-hook 'lsp-bridge-diagnostic-update-hook #'my/lsp-bridge-inlay-hint-after-diagnostic)
   ;; 光标停在符号上时，高亮 buffer 内所有同名引用（VSCode 默认效果）
   (setq lsp-bridge-enable-document-highlight t)
+  ;; lsp-bridge 给高亮 face 写死 :background "gray20"（深灰），浅色主题下黑字不可读；
+  ;; 去掉写死背景、继承 highlight（modus 主题里是 bg-hover 柔和底色 + fg-main 主题主色），
+  ;; 浅/深主题各自适配，主题切换时随 highlight 自动更新，无需重设
+  (set-face-attribute 'lsp-bridge-document-highlight-face nil
+                      :inherit 'highlight :background 'unspecified)
   ;; 在 mode-line 显示当前所在的函数/符号名（需配合 which-function-mode 才生效）
   (setq lsp-bridge-symbols-enable-which-func t)
   (which-function-mode 1)
