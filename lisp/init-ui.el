@@ -18,6 +18,38 @@
                    (abbreviate-file-name (buffer-file-name))
                  "%b"))))
 
+;; Frame transparency is intentionally backend-specific:
+;; - ns (macOS) and x (X11/XWayland) use the whole-frame `alpha' parameter.
+;; - pgtk (native Wayland/GTK) does not implement whole-frame alpha; use
+;;   `alpha-background' to keep text opaque while making the background clear.
+;; X11 additionally requires a compositor such as picom to render the property.
+(defcustom moonwwdz-frame-transparency 90
+  "Frame opacity as a percentage; 100 means completely opaque."
+  :type 'integer
+  :group 'moonwwdz)
+
+(defun moonwwdz-set-frame-transparency (&optional frame)
+  "Apply `moonwwdz-frame-transparency' to FRAME.
+FRAME defaults to the selected frame.  The implementation dispatches on
+the frame's window-system so the same config works on macOS, X11, and
+native Wayland."
+  (let ((frame (or frame (selected-frame))))
+    (when (and (frame-live-p frame) (display-graphic-p frame))
+      (pcase (window-system frame)
+        ((or 'ns 'x)
+         (set-frame-parameter frame 'alpha moonwwdz-frame-transparency))
+        ('pgtk
+         (set-frame-parameter frame 'alpha-background
+                              moonwwdz-frame-transparency)
+         (set-frame-parameter frame 'borders-respect-alpha-background t))))))
+
+(add-hook 'after-make-frame-functions
+          #'moonwwdz-set-frame-transparency)
+
+;; Apply to an already-created initial frame; `after-make-frame-functions'
+;; also covers frames created later by `emacs --daemon'.
+(moonwwdz-set-frame-transparency)
+
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
