@@ -88,4 +88,50 @@
       (while (re-search-forward "\\([0-9A-Za-z]+\\)\\([一-龥]+\\)" nil t)
         (replace-match "\\1 \\2")))))
 
+;;;; 网络代理：本地 7890 存活则走代理，不在则直连
+(defvar my/proxy-host "127.0.0.1")
+(defvar my/proxy-port 7890)
+
+(defun my/proxy-available-p ()
+  "探测本地代理端口是否有服务在监听。"
+  (condition-case nil
+      (let ((proc (open-network-stream " *proxy-probe*" nil
+                                       my/proxy-host my/proxy-port
+                                       :timeout 1)))
+        (prog1 (process-live-p proc)
+          (delete-process proc)))
+    ((error quit) nil)))
+
+(defun my/setup-proxy ()
+  "按本地代理存活情况设置 Emacs 出网代理。
+存活时两层都指向代理：url-proxy-services（package.el、url-retrieve
+等 Emacs url 层）与 http(s)_proxy 环境变量（git clone 装 tree-sitter
+grammar、lsp-bridge 的 python 子进程等）；不在则全部清空直连。
+localhost 始终不走代理。"
+  (interactive)
+  (if (my/proxy-available-p)
+      (let ((addr (format "%s:%d" my/proxy-host my/proxy-port)))
+        (setq url-proxy-services
+              `(("http" . ,addr)
+                ("https" . ,addr)
+                ("no_proxy" . "localhost,127.0.0.1")))
+        (setenv "http_proxy" (concat "http://" addr))
+        (setenv "https_proxy" (concat "http://" addr))
+        (setenv "no_proxy" "localhost,127.0.0.1")
+        (message "proxy on: %s" addr))
+    (setq url-proxy-services nil)
+    (setenv "http_proxy" nil)
+    (setenv "https_proxy" nil)
+    (setenv "no_proxy" nil)
+    (message "proxy off, direct connection")))
+
+;; 启动时设置一次；联网操作前重新探测，中途开关代理也能自适应
+(require 'url-vars)
+(my/setup-proxy)
+(dolist (fn '(treesit-install-language-grammar
+              package-refresh-contents
+              package-install))
+  (advice-add fn :before
+              (lambda (&rest _) (my/setup-proxy))))
+
 (provide 'moonwwdz-helper)

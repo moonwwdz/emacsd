@@ -17,6 +17,8 @@
                   (gcmh-mode 1))
               (setq gc-cons-threshold (* 64 1024 1024)))))
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+;; 通用辅助需先于 init-packages 加载：启动装包前代理（my/setup-proxy）已就绪
+(require 'moonwwdz-helper)
 ;; Package Management
 ;; -----------------------------------------------------------------
 (require 'init-packages)
@@ -24,7 +26,6 @@
 (require 'init-better-default)
 (require 'init-org)
 (require 'init-keyboard)
-(require 'moonwwdz-helper)
 (require 'moonwwdz-golang)
 (require 'moonwwdz-rust)
 (require 'moonwwdz-python)
