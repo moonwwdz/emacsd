@@ -34,6 +34,7 @@
 		      iedit
                       popup         ; emacs-rime TTY 候选（rime-show-candidate 'popup）的硬依赖，submodule 不走 package.el，防 autoremove 误删
                       tomelr        ; submodule 版 ox-hugo 的硬依赖（git-package.el 用 :load-path 加载 submodule，elpa 版 ox-hugo 已弃用）
+                      transient     ; mastodon/tp.el 两个 submodule 的硬依赖，此前仅靠 magit 依赖链间接保留，防 autoremove 误删
 		      ;; --- Editing / Navigation 增强 ---
 		      vundo          ; 可视化撤销树
 		      avy            ; 屏内快速跳转
