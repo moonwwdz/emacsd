@@ -107,6 +107,7 @@ pip3 install basedpyright ipython pytest uv
 - HTML export functionality
 - Modern styling with org-modern
 - Capture templates with `C-c c`
+- Work journal (`work-journal.org`, datetree by day): quick-append `C-c l`, today view `C-c v`, capture `C-c w`, carry-over `C-c o`; clock time report via agenda `C-c a w c` (today) / `C-c a w w` (week)
 
 ### Input & Dictionary
 - Rime input method support
@@ -145,6 +146,10 @@ pip3 install basedpyright ipython pytest uv
 | `C-x u` | vundo (visual undo tree) |
 | `C-c C-l` | Edit org-mode links |
 | `C-c c` | Org-capture |
+| `C-c l` | Quick-append work journal entry (today's node, one line); `C-u` inserts as TODO |
+| `C-c v` | Open work journal and jump to today's node |
+| `C-c w` | Capture work journal (skip template menu); `C-u` uses timed `T` template with auto clock-in |
+| `C-c o` | Carry over today's unfinished TODO entries to tomorrow |
 | `C-c g` | Magit status |
 | `C-c a` | Org-agenda |
 | `C-x C-n` | Toggle dirvish-side sidebar |

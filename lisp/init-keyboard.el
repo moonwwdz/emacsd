@@ -12,6 +12,13 @@
 ;; 设置 org-agenda 打开快捷键
 (global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-c c") 'org-capture)
+;; 工作日志：C-c l 一行快速追加（C-u 插 TODO）；C-c v 跳到今天节点；
+;;          C-c w 一键 capture（C-u 用计时模板 T）；C-c o 把今天未完成项 carry-over 到明天
+;; （避开 C-c j/r/q/h 等：lsp-bridge-mode 在 go/rust/python/elisp 代码 buffer 占用它们）
+(global-set-key (kbd "C-c l") 'moonwwdz-work-log-quick)
+(global-set-key (kbd "C-c v") 'moonwwdz-work-journal-today)
+(global-set-key (kbd "C-c w") 'moonwwdz-capture-work)
+(global-set-key (kbd "C-c o") 'moonwwdz-work-journal-carry-over)
 
 ;; 用ibuffer代替原buffer
 (global-set-key (kbd "C-x C-b") 'ibuffer)

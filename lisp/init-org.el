@@ -27,14 +27,22 @@
   (require 'org-tempo))
 
 ;; 使用capture
-;;工作日志
+;;工作日志（org-capture-templates 是 defcustom，先 setq 后加载不会被覆盖；
+;;file+datetree 目标支持符号，org-capture 用时取其变量值；
+;;l/L 供 C-c l 一行快速追加（moonwwdz-work-log-quick），:immediate-finish 免进 capture buffer）
 (setq org-capture-templates
-      '(("w" "Work Journal" entry (file+datetree "~/Documents/emacsNotes/org/work-journal.org")
-         "* %U - %^{heading}\n  %?")
-        ("a" "Append Work Journal" plain (function append-work-journal)
-         "***** %U - %^{heading}\n %?")
-        ("u" "Update Work Journal" plain (function update-work-journal)
-         "***** %U - %^{heading}\n %?")
+      '(("l" "Quick Work Log" entry (file+datetree moonwwdz-work-journal-file)
+         "* %U - %^{heading}" :immediate-finish t)
+        ("L" "Quick Work Log (TODO)" entry (file+datetree moonwwdz-work-journal-file)
+         "* TODO %U - %^{heading}" :immediate-finish t)
+        ;; w/T：%a 链接放正文首行（拼在标题上会与标题文字无分隔混排）
+        ("w" "Work Journal" entry (file+datetree moonwwdz-work-journal-file)
+         "* %U - %^{heading}\n  %a%i%?")
+        ;; T 计时模板：:clock-keep 让 C-c C-c 完成捕获后时钟继续走，
+        ;; 否则 org-capture-finalize 无条件 clock-out，工时只记到写条目的几十秒
+        ("T" "Timed Work (clock-in)" entry (file+datetree moonwwdz-work-journal-file)
+         "* TODO %U - %^{heading}\n  %a%i%?"
+         :clock-in t :clock-resume t :clock-keep t)
         ;;日记
         ("d" "Daily" entry (file+olp+datetree "~/Documents/emacsNotes/org/daily.org" :tree-type week)
          "* %U - %^{heading}\n %?")
@@ -58,6 +66,22 @@
       '("~/Documents/emacsNotes/agenda/work.org"
         "~/Documents/emacsNotes/agenda/learn.org"
         "~/Documents/emacsNotes/agenda/life.org"))
+
+;; 工作日志工时视图（基于 work-journal.org 的 clock 记录）
+;; 用法：C-c a 后选 w c = 今日工时；w w = 本周工时（clock report 自动汇总）
+;; settings 由 org-agenda 运行期求值，文件用符号活引用（不冻结 defvar 值）
+(setq org-agenda-custom-commands
+      '(("w" . "工作日志")
+        ("wc" "今日工时" agenda ""
+         ((org-agenda-span 'day)
+          (org-agenda-files (list moonwwdz-work-journal-file))
+          (org-agenda-start-with-clockreport-mode t)
+          (org-agenda-overriding-header "今日工作工时 (clock report)")))
+        ("ww" "本周工时" agenda ""
+         ((org-agenda-span 'week)
+          (org-agenda-files (list moonwwdz-work-journal-file))
+          (org-agenda-start-with-clockreport-mode t)
+          (org-agenda-overriding-header "本周工作工时 (clock report)")))))
 
 ;;(add-hook 'org-mode-hook (lambda ()
  ;;                          (setq truncate-lines nil)
