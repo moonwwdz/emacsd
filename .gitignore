@@ -16,6 +16,7 @@ auto-save-list
 url
 *#
 *.#
+*.elc
 ac-comphist.dat
 games
 bookmarks

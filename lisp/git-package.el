@@ -29,9 +29,7 @@
   (when (eq system-type 'darwin)
     (setq lsp-bridge-python-command "python3.12"))
   :after evil
-  :hook ((go-mode . lsp-bridge-mode)
-         (rust-mode . lsp-bridge-mode)
-         (python-mode . lsp-bridge-mode)
+  :hook (((go-mode rust-mode python-mode) . lsp-bridge-mode)
          (emacs-lisp-mode . my/lsp-bridge-elisp-maybe))
   :bind                       ; 绑定快捷键
   (:map lsp-bridge-mode-map
